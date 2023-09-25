@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.string('name', 191).nullable()
       table.string('role', 191).nullable().defaultTo('Customer').comment('Customer, Sales, Admin')
       table.string('email', 191).nullable().unique
-      table.timestamp('email_verified_date', { useTz: true }).nullable
+      table.timestamp('email_verified_at', { useTz: true }).nullable
       table.string('password', 191).nullable()
       table.integer('status', 1).nullable().comment('0 New, 1 Active, 2 Inactive')
       table.string('title', 191).nullable()
