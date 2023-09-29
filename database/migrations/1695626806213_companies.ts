@@ -5,21 +5,20 @@ export default class extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('id', 36).primary()
+      table.increments('id')
+      table.string('xendit_customer_id', 191)
+      table.string('company_id', 191)
       table.string('company_name', 191).index().unique()
-      table.string('brand_name', 191).nullable().unique()
-      table.string('email', 191).nullable().unique()
-      table.string('phone_number', 191).nullable().unique()
       table.text('address').nullable()
       table.string('city', 191).nullable()
       table.string('country', 191).nullable()
-      table.string('logo', 191).nullable()
-      table.string('tax_id_number', 191).nullable().unique()
-      table.string('fax', 191).nullable()
-      table.string('website', 191).nullable().unique()
-      table.boolean('vat_enabled').nullable()
-      table.integer('status').nullable().comment('0 new, 1 active, 2 inactive, 3 on hold, 4 deleted')
-      table.integer('type').nullable().comment('1 untuk UMKM, 2 untuk Enterprise')
+      table.string('email', 191).nullable().unique()
+      table.string('phone_number', 191).nullable().unique()
+      table.string('pic_name', 191).nullable()
+      table.string('pic_email', 191).nullable()
+      table.string('pic_phone_number', 191).nullable()
+      table.string('referral_code', 191).nullable()
+      table.integer('is_verified').nullable().comment('0 - false, 1 - true').defaultTo(0)
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
