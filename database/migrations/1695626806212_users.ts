@@ -12,7 +12,7 @@ export default class extends BaseSchema {
       table.string('password', 191).nullable()
       table.string('role', 191).nullable().defaultTo('Admin').comment('Sales, Admin')
       table.string('phone_number', 191).nullable()
-      table.string('referral_code', 191).nullable().unique
+      table.integer('referral_code').unique().index('users_referral_code_index')
       table.string('remember_token', 191).nullable()
 
       /**

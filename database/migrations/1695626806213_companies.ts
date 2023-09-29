@@ -17,7 +17,8 @@ export default class extends BaseSchema {
       table.string('pic_name', 191).nullable()
       table.string('pic_email', 191).nullable()
       table.string('pic_phone_number', 191).nullable()
-      table.string('referral_code', 191).nullable()
+      table.integer('referral_code').nullable().unique
+      table.foreign('referral_code').references('users.referral_code')
       table.integer('is_verified').nullable().comment('0 - false, 1 - true').defaultTo(0)
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
