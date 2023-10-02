@@ -32,6 +32,8 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/dashboard', 'DashboardController.index').as('dashboard')
 
+  Route.resource('companies', 'CompaniesController')
+
   Route.post('/logout', 'AuthController.logout').as('logout')
 }).middleware(['auth'])
 
