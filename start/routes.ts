@@ -28,9 +28,14 @@ Route.get('/info', () => {
   return 'Hello world'
 })
 
-Route.get('/register', 'AuthController.registerShow').as('register.show')
+Route.group(() => {
+  Route.get('/logout', 'AuthController.logout').as('logout')
+}).middleware(['auth'])
 
-Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
-Route.post('/adminustrator', 'AuthController.login').as('login')
+Route.group(() => {
+  Route.get('/register', 'AuthController.registerShow').as('register.show')
 
-Route.get('/logout', 'AuthController.logout').as('logout')
+  Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
+  Route.post('/adminustrator', 'AuthController.login').as('login')
+
+}).middleware(['guest'])

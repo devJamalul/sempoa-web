@@ -32,7 +32,6 @@
                     <h1 class="h4 text-gray-900 mb-4">Log in to Sempoa Manager</h1>
                   </div>
 
-
                   <form action="{{ route('login') }}" method="POST">
 
                     {{ csrfField() }}
@@ -46,8 +45,9 @@
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" name="remember" for="customCheck">Remember
+                        <input type="checkbox" class="custom-control-input" name="rememberMe" id="customCheck"
+                          value="true">
+                        <label class="custom-control-label" name="rememberMe" for="customCheck">Remember
                           Me</label>
                       </div>
                     </div>
