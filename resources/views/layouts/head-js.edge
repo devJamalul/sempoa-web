@@ -1,0 +1,91 @@
+
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/js/autoNumeric.js"></script>
+<script src="/js/bs-custom-file-input.min.js"></script>
+<script src="/vendor/sweetalert2/sweetalert2.min.js"></script>
+
+<script>
+    $("form").attr('autocomplete', 'off')
+    $("input").attr('autocomplete', false)
+
+    $(document).ready(function() {
+        bsCustomFileInput.init()
+    })
+</script>
+
+@if (flashMessages.has('success'))
+    <script>
+     Swal.fire({
+            "title": `{{ flashMessages.get('success') }}`,
+            "text": "",
+            "timer": 5000,
+            "width": "32rem",
+            "padding": "1.25rem",
+            "showConfirmButton": false,
+            "showCloseButton": true,
+            "timerProgressBar": false,
+            "customClass": {
+                "container": null,
+                "popup": null,
+                "header": null,
+                "title": null,
+                "closeButton": null,
+                "icon": null,
+                "image": null,
+                "content": null,
+                "input": null,
+                "actions": null,
+                "confirmButton": null,
+                "cancelButton": null,
+                "footer": null
+            },
+            "toast": true,
+            "icon": 'success',
+            "position": "top-end"
+        })
+    </script>
+@endif
+
+@if (flashMessages.has('error'))
+ <script>
+    Swal.fire({
+            "title": `{{ flashMessages.get('error') }}`,
+            "text": "",
+            "timer": 5000,
+            "width": "32rem",
+            "padding": "1.25rem",
+            "showConfirmButton": false,
+            "showCloseButton": true,
+            "timerProgressBar": false,
+            "customClass": {
+                "container": null,
+                "popup": null,
+                "header": null,
+                "title": null,
+                "closeButton": null,
+                "icon": null,
+                "image": null,
+                "content": null,
+                "input": null,
+                "actions": null,
+                "confirmButton": null,
+                "cancelButton": null,
+                "footer": null
+            },
+            "toast": true,
+            "icon": 'error',
+            "position": "top-end"
+        })
+    </script>
+@endif  
