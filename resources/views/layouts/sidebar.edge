@@ -5,7 +5,7 @@
         <div class="sidebar-brand-icon">
             <i class="fas fa-school"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">{{ env('APP_NAME') }}</div>
+        <div class="sidebar-brand-text mx-3">Sempoa</div>
     </a>
 
     <!-- Divider -->
@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item ">
-        <a class="nav-link" href="{{ route('home') }}">
+        <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             Dashboard</a>
     </li>
@@ -22,11 +22,11 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - User -->
-    <li class="nav-item ">
+    {{--  <li class="nav-item ">
         <a class="nav-link" href="{{ route('users.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             User</a>
-    </li>
+    </li>  --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -26,6 +26,7 @@ import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
 |
 */
 export const appKey: string = Env.get('APP_KEY')
+export const appName: string = Env.get('APP_NAME', 'Sempoa')
 
 /*
 |--------------------------------------------------------------------------

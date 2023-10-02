@@ -33,7 +33,7 @@ export default class AuthController {
       }
 
       await auth.use('web').login(user)
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('dashboard')
     } catch (error) {
       console.log(error.message);
       session.flash('error', 'Your credentials is incorrect')
