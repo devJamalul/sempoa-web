@@ -9,19 +9,53 @@ export default class Company extends BaseModel {
   public id: string
 
   @column()
-  public name: string
+  public xendit_customer_id: string|null
 
   @column()
-  public email: string
+  public company_id: string|null
 
   @column()
-  public password: string
+  public company_name: string
 
   @column()
-  public role: string
+  public address: string | null
 
   @column()
-  public status: number
+  public city: string | null
+
+  @column()
+  public country: string | null
+
+
+  @column()
+  public email: string | null
+
+
+  @column()
+  public phone_number: string | null
+
+  @column()
+  public pic_name: string | null
+
+  @column()
+  public pic_email: string | null
+
+
+  @column()
+  public pic_phone_number: string | null
+
+  @column()
+  public referral_code: number | null
+
+  @column()
+  public created_by: string|null
+
+  @column()
+  public updated_by: string|null
+
+
+  @column()
+  public is_verified:boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -29,6 +63,9 @@ export default class Company extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => User)
+  @hasMany(() => User,{
+    foreignKey:'referral_code',
+    localKey:'referral_code',
+  })
   public users: HasMany<typeof User>
 }

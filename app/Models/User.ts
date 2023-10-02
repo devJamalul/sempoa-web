@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import Company from './Company'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class User extends BaseModel {
@@ -8,16 +7,11 @@ export default class User extends BaseModel {
   public id: number
 
   @column()
-  public company_id: string
-
-  @column()
   public name: string
 
   @column()
-  public role: string
-
-  @column()
   public email: string
+
 
   @column({
     serializeAs: null
@@ -31,37 +25,24 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public status: number
-
-  @column({
-    serializeAs: null
-  })
-  public title: string
-
-  @column({
-    serializeAs: null
-  })
-  public job: string
+  public role: string
 
   @column({
     serializeAs: null
   })
   public phone_number: string
 
-  @column({
-    serializeAs: null
-  })
-  public address: string
+  @column()
+  public referral_code: number
 
-  @column({
-    serializeAs: null
-  })
-  public created_by: string
+  @column()
+  public remember_token: string
 
-  @column({
-    serializeAs: null
-  })
-  public updated_by: string
+  @column()
+  public created_by: string|null
+
+  @column()
+  public updated_by: string|null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -69,6 +50,4 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => Company)
-  public company: BelongsTo<typeof Company>
 }
