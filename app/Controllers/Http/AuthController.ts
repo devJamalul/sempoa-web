@@ -2,6 +2,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import Hash from '@ioc:Adonis/Core/Hash'
+// import phc from 'phc-bcrypt'
 
 export default class AuthController {
   public async registerShow({ view }: HttpContextContract) {
@@ -22,29 +23,28 @@ export default class AuthController {
         schema: validationSchema
       })
 
-      const user = await User.findBy('email', data.email)
-      if (!user) {
-        session.flash('error', 'Your credential is incorrect')
-        return response.redirect().back()
-      }
+      const user = await User
+        .query()
+        .where('email', data.email)
+        .firstOrFail()
 
-      const passwordMatch = Hash.verify(user.password, data.password)
-      if (!passwordMatch) {
-        session.flash('error', 'Your credentials is incorrect')
+      if (!(await Hash.verify(user.password, data.password))) {
+        session.flash('error', 'Your credentials is incorrect.')
         return response.redirect().back()
       }
 
       await auth.use('web').login(user)
       return response.redirect().toRoute('home')
     } catch (error) {
-      session.flash('error', error.message + 'Your email or password is incorrect')
+      console.log(error.message);
+      session.flash('error', 'Your credentials is incorrect')
       return response.redirect().toRoute('login.show')
     }
   }
 
   public async logout({ auth, response, session }) {
     try {
-      await auth.logout()
+      await auth.use('web').logout()
       session.flash('success', 'You\'ve logged out successfully')
       return response.redirect().toRoute('home')
     } catch (error) {

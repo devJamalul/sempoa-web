@@ -13,10 +13,8 @@ export default class User extends BaseModel {
   public email: string
 
 
-  @column({
-    serializeAs: null
-  })
-  public email_verified_at: string
+  @column()
+  public email_verified_at: DateTime
 
   @column()
   public password: string
@@ -24,9 +22,7 @@ export default class User extends BaseModel {
   @column()
   public role: string
 
-  @column({
-    serializeAs: null
-  })
+  @column()
   public phone_number: string
 
   @column()

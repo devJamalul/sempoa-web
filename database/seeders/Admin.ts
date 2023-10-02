@@ -10,7 +10,7 @@ export default class extends BaseSeeder {
         name: 'Admin Sempoa',
         email: 'admin@sempoa.id',
         role: 'Admin',
-        password: (await Hash.make('password')).toString()
+        password: 'password'
       }
     ])
 
