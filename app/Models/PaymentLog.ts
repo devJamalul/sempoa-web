@@ -4,7 +4,7 @@ import Payment from './Payment'
 
 
 
-export default class PaymentHistory extends BaseModel {
+export default class PaymentLog extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 

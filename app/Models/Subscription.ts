@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Company from './Company'
+import Payment from './Payment'
 
 
 export default class Subscription extends BaseModel {
@@ -14,7 +15,7 @@ export default class Subscription extends BaseModel {
   public reference_number:string
 
   @column()
-  public company_id:number
+  public company_id:number|null
 
 
   @column()
@@ -32,10 +33,10 @@ export default class Subscription extends BaseModel {
   @column()
   public price:number|null
 
-  @column()
+  @column.date()
   public start_date:DateTime|null
 
-  @column()
+  @column.date()
   public end_date:DateTime|null
 
   @column()
@@ -54,7 +55,7 @@ export default class Subscription extends BaseModel {
 
   @column()
   public note:string|null
- 
+
   @column()
   public created_by: string|null
 
@@ -67,13 +68,16 @@ export default class Subscription extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-
-  @hasMany(()=> Company, {
-    foreignKey:'id',
-    localKey:'company_id'
+  @belongsTo(() => Company, {
+    localKey: 'id',
+    foreignKey: 'company_id',
   })
-  
-  public companies: HasMany<typeof Company>
+  public company: BelongsTo<typeof Company>
 
+  @hasMany(() => Payment, {
+    localKey: 'id',
+    foreignKey: 'subscription_id',
+  })
+  public payments: HasMany<typeof Payment>
 
 }

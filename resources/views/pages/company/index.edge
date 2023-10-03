@@ -23,18 +23,17 @@
             </tr>
           </thead>
           <tbody>
-            @each(data in users)
+            @each(company in companies)
             <tr>
-              <th>{{ data.name }}</th>
-              <th>{{ data.role }}</th>
-              <th>{{ data.email }}</th>
-              <th>{{ data.phone_number }}</th>
-              <th>
-                <a href="{{ route('users.edit', { id : data.id }) }}" class="btn btn-sm btn-warning"><i
-                    class="fas fa-edit"></i> Ubah</a>
-                <button class="btn btn-sm btn-danger delete" data-url="{{ route('users.destroy', { id : data.id }) }}"
-                  data-id="{{ data.id }}"><i class="fas fa-trash"></i> Hapus</button>
-              </th>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>
+                <a href="{{ route('companies.edit', { id : company.id }) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-sm btn-danger delete" data-url="{{ route('companies.destroy', { id : company.id }) }}"
+                  data-id="{{ company.id }}"><i class="fas fa-trash"></i></button>
+              </td>
             </tr>
             @end
           </tbody>

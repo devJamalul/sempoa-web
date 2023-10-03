@@ -1,4 +1,5 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Logger from '@ioc:Adonis/Core/Logger'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import Hash from '@ioc:Adonis/Core/Hash'
@@ -35,7 +36,7 @@ export default class AuthController {
       await auth.use('web').login(user)
       return response.redirect().toRoute('dashboard')
     } catch (error) {
-      console.log(error.message);
+      Logger.warn('Error login' , { desc: error.message})
       session.flash('error', 'Your credentials is incorrect')
       return response.redirect().toRoute('login.show')
     }
