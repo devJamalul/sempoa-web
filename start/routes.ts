@@ -22,7 +22,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
-})
+}).as('home')
 
 Route.get('/about', async ({ view }) => {
   return view.render('welcome')
@@ -31,3 +31,15 @@ Route.get('/about', async ({ view }) => {
 Route.get('/info', () => {
   return 'Hello world'
 })
+
+Route.group(() => {
+  Route.get('/logout', 'AuthController.logout').as('logout')
+}).middleware(['auth'])
+
+Route.group(() => {
+  Route.get('/register', 'AuthController.registerShow').as('register.show')
+
+  Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
+  Route.post('/adminustrator', 'AuthController.login').as('login')
+
+}).middleware(['guest'])
