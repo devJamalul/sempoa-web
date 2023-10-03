@@ -24,6 +24,10 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 
+Route.get('/about', async ({ view }) => {
+  return view.render('welcome')
+})
+
 Route.get('/info', () => {
   return 'Hello world'
 })
