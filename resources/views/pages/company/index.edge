@@ -48,12 +48,9 @@
 @section('js')
 <script>
   $(document).ready(function () {
+    const csrfToken = '{{ csrfToken }}'
 
-        const csrfToken = '{{ csrfToken }}'
-
-        $('#user-table').DataTable({
-        })
-      })
-
+    $('#user-table').DataTable()
+  })
 </script>
 @endsection

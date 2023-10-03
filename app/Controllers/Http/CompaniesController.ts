@@ -9,4 +9,12 @@ export default class CompaniesController {
     const companies = await Company.all()
     return view.render('pages/company/index', { title, companies });
   }
+
+  public async create({ view }: HttpContextContract) {
+    const title = 'New ' + this.title
+    return view.render('pages/company/create', { title });
+  }
+
+  public async store({ request, response, session}: HttpContextContract) {
+  }
 }
