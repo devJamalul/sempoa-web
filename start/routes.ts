@@ -33,7 +33,7 @@ Route.get('/info', () => {
 })
 
 Route.group(() => {
-  Route.get('/', 'HomeController.index').as('home')
+  // Route.get('/', 'HomeController.index').as('home')
 
   Route.get('/register', 'AuthController.registerShow').as('register.show')
 
