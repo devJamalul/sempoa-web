@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+     "target": "es5",
+     "module": "esnext",
+     "moduleResolution": "node",
+     "strict": true,
+     "jsx": "preserve",
+     "importHelpers": true,
+     "esModuleInterop": true,
+     "allowJs": true,
+     "sourceMap": true,
+     "baseUrl": ".",
+     "paths": {
+       "@/*": ["resources/js/*"]
+     },
+     "lib": ["dom", "dom.iterable", "esnext"],
+     
+  },
+  "include": [
+     "resources/js/**/*.ts",
+     "resources/js/**/*.tsx",
+     "resources/js/**/*.vue"
+  ]
+ }
