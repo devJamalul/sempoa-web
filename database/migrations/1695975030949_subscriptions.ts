@@ -8,8 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('xendit_repl_id', 191).nullable().unique().comment('Xendit-generated Subscriptions plan ID, with prefix repl-xxx')
       table.string('reference_number', 191).nullable().unique
-      table.integer('company_id').unsigned().nullable()
-      table.foreign('company_id').references('companies.id')
+      table.integer('company_id').nullable().unsigned().references('companies.id').onDelete('CASCADE')
       table.string('package_name', 191).nullable
       table.text('package_description').nullable
       table.integer('max_users').nullable()

@@ -1,0 +1,55 @@
+@layout('layouts/app')
+
+
+@section('content')
+<div class="row">
+  <div class="col-lg-10">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-primary font-weight-bold">{{ pluralize(title) }}</h1>
+      <a href="{{ route('companies.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        New {{ title }}
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-bordered" id="user-table" width="100%">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Peran</th>
+              <th>Email</th>
+              <th>No. Telp</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(company in companies)
+            <tr>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>{{ company.company_name }}</td>
+              <td>
+                <a href="{{ route('companies.edit', { id : company.id }) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-sm btn-danger delete" data-url="{{ route('companies.destroy', { id : company.id }) }}"
+                  data-id="{{ company.id }}"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+@end
+
+@section('js')
+<script>
+  $(document).ready(function () {
+    const csrfToken = '{{ csrfToken }}'
+
+    $('#user-table').DataTable()
+  })
+</script>
+@endsection

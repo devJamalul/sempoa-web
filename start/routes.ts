@@ -33,13 +33,19 @@ Route.get('/info', () => {
 })
 
 Route.group(() => {
-  Route.get('/logout', 'AuthController.logout').as('logout')
-}).middleware(['auth'])
+  Route.get('/', 'HomeController.index').as('home')
 
-Route.group(() => {
   Route.get('/register', 'AuthController.registerShow').as('register.show')
 
   Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
   Route.post('/adminustrator', 'AuthController.login').as('login')
-
 }).middleware(['guest'])
+
+Route.group(() => {
+  Route.get('/dashboard', 'DashboardController.index').as('dashboard')
+
+  Route.resource('companies', 'CompaniesController')
+
+  Route.post('/logout', 'AuthController.logout').as('logout')
+}).middleware(['auth'])
+
