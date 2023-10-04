@@ -64,15 +64,9 @@ export default class Company extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => User,{
-    foreignKey:'referral_code',
-    localKey:'referral_code',
-  })
+  @hasMany(() => User)
   public users: HasMany<typeof User>
 
-  @hasMany(() => Subscription,{
-    localKey: 'id',
-    foreignKey: 'company_id',
-  })
+  @hasMany(() => Subscription)
   public subscriptions: HasMany<typeof Subscription>
 }

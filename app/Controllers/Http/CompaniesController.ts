@@ -52,15 +52,6 @@ export default class CompaniesController {
           end_date: now.plus({ months: 1 })
         })
 
-        // const subscription = new Subscription()
-        // subscription.package_name = "Trial"
-        // subscription.package_description = "Trial 30 hari"
-        // subscription.max_users = 1
-        // subscription.price = 0
-        // subscription.start_date = now
-        // subscription.end_date = now.plus({ months: 1 })
-        // subscription.useTransaction(trx)
-        // await company.related('subscriptions').save(subscription)
       })
 
       session.flash('success', 'oke')

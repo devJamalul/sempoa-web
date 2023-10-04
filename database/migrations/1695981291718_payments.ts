@@ -7,8 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('reference_number', 191).nullable().unique
-      table.integer('subscription_id').unsigned().nullable()
-      table.foreign('subscription_id').references('subscriptions.id')
+      table.integer('subscription_id').nullable().unsigned().references('subscriptions.id').onDelete('CASCADE')
       table.integer('price').unsigned().nullable
       table.string('payment_type').nullable().comment('Credit Cards, eWallets, PayLater, QR Codes, Direct Debit, Virtual Accounts')
       table.string('status').nullable().defaultTo('pending').comment('paid, pending, failed, voided')
