@@ -21,8 +21,12 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async ({ view }) => {
-  return view.render('welcome')
+  return view.render('landing-page')
 }).as('home')
+
+Route.get('/about', async ({ view }) => {
+  return view.render('landing-page')
+})
 
 Route.get('/info', () => {
   return 'Hello world'
