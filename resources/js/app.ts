@@ -1,7 +1,7 @@
 import "../css/app.css";
 import { createApp, h } from "vue";
-import App from "./App.vue";
-import App2 from "./App2.vue";
+import Home from "./Home.vue";
+import About from "./About.vue";
 
 const public_config = {
     loginUrl:"https://erp.sempoa.id",
@@ -10,8 +10,8 @@ const public_config = {
 }
 
 const currentPath = window.location.pathname;
-let renderPage = App;
+let renderPage = Home;
 if(currentPath== '/about'){
-    renderPage=  App2 ;
+    renderPage=  About ;
 }
 createApp({ render: () => h(renderPage, { public_config: public_config }) }).mount("#app");
