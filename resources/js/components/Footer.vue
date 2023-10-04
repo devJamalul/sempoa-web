@@ -76,7 +76,7 @@
   
             <!-- Social medias -->
             <li class="space-x-3 flex pt-2">
-              <a  target="_blank" class="flex gap-2 items-center">
+              <a :href="`${public_config.facebook}`"  target="_blank" class="flex gap-2 items-center">
                 <img src="/images/fb.svg" alt="Facebook" class="w-5">
                 <span>Facebook</span>
               </a>
