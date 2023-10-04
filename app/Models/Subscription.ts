@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Company from './Company'
 
 
@@ -54,7 +54,7 @@ export default class Subscription extends BaseModel {
 
   @column()
   public note:string|null
- 
+
   @column()
   public created_by: string|null
 
@@ -68,12 +68,9 @@ export default class Subscription extends BaseModel {
   public updatedAt: DateTime
 
 
-  @hasMany(()=> Company, {
-    foreignKey:'id',
-    localKey:'company_id'
-  })
-  
-  public companies: HasMany<typeof Company>
+  @belongsTo(()=> Company)
+
+  public companies: BelongsTo<typeof Company>
 
 
 }
