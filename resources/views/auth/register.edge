@@ -2,251 +2,319 @@
 <html lang="en" class="h-full bg-cover">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register</title>
-    @entryPointStyles('app')
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Register</title>
+  <link rel="stylesheet" href="/vendor/sweetalert2/sweetalert2.min.css">
+  @entryPointStyles('app')
 </head>
 
 <body class="bg-hero-pattern bg-no-repeat w-full bg-cover  bg-center h-full bg-fixed">
 
-    <div class="container mx-auto md:flex w-full  md:flex-row-reverse p-4">
-        <div class="md:w-2/5 w-full h-fit rounded-xl shadow-lg  bg-[#F6FBF9] h-full p-4">
-            <section class="bg-[#F6FBF9] flex flex-col justify-center items-center py-2">
-                <img src="/images/sempoa-thumb-logo.svg" alt="sempoa logo" class="">
-                <h2 class="font-bold text-xl">Registrasi Akun</h2>
-            </section>
-            <form class="w-full  mt-3">
+  <div class="container mx-auto md:flex w-full  md:flex-row-reverse p-4">
+    <div class="md:w-2/5 w-full h-fit rounded-xl shadow-lg  bg-[#F6FBF9] h-full p-4">
+      <section class="bg-[#F6FBF9] flex flex-col justify-center items-center py-2">
+        <img src="/images/sempoa-thumb-logo.svg" alt="sempoa logo" class="">
+        <h2 class="font-bold text-xl">Registrasi Akun</h2>
+      </section>
+      <form class="w-full mt-3" method="POST" action="{{ route('register') }}">
+        {{ csrfField() }}
+        <!-- Name & Brand -->
+        <div class="flex flex-wrap -mx-3 mb-3">
+          <!-- Name -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_name">
+              Nama Perusahaan
+              <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Nama Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1  {{ flashMessages.has('errors.company_name') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="company_name" id="company_name">
+          </div>
+          <!-- End Name -->
 
-                <!-- Name & Brand -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-                    <!-- Name -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_name">
-                            Nama Perusahaan
-                            <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Nama Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="company_name" id="company_name">
-                    </div>
-                    <!-- End Name -->
-
-                    <!-- Brand -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="brand_name">
-                            Brand
-                        </label>
-                        <input placeholder="Brand Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="brand_name" id="brand_name">
-                    </div>
-                    <!-- End Brand -->
-                </div>
-                <!--End Name & Brand -->
-
-                <!-- Email & No Telp -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-
-                    <!-- Email -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_email">
-                            Email
-                            <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Surel Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="email" name="company_email" id="company_email">
-                    </div>
-                    <!-- End Email -->
-
-                    <!-- No Telpn -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_phone">
-                            No Telepon
-                            <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="No Telepon Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="company_phone" id="company_phone">
-                    </div>
-                    <!-- End No Telpn -->
-                </div>
-                <!-- END Email & No Telp -->
-
-
-                <!-- NPWP & Website -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-
-                    <!-- NPWP -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_npwp">
-                            NPWP
-                        </label>
-                        <input placeholder="Brand Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="company_npwp" id="company_npwp">
-                    </div>
-                    <!-- End NPWP -->
-
-                    <!-- Website -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_website">
-                            Website
-                        </label>
-                        <input placeholder="Website Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="website" id="company_website">
-                    </div>
-                    <!-- End Website -->
-                </div>
-                <!-- END NPWP & Website -->
-
-
-                <!-- Negara & Kota -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-                    <!-- Negara -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_country">
-                            Negara<span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Nama Negara"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="country" id="company_country">
-                    </div>
-                    <!-- End Negara -->
-
-                    <!-- Kota -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_city">
-                            Kota<span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Nama Kota"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="city" id="company_city">
-                    </div>
-
-                    <!-- End Kota -->
-                </div>
-                <!-- End Negara & Kota  -->
-
-
-                <!-- No Fax & Status PPN -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-
-                    <!-- Status PPN -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_ppn_status">
-                            Status PPN<span class="text-sm text-red-500">*</span>
-                        </label>
-                        <div class="flex gap-5 pt-3">
-                            <div class="space-x-2">
-                                <input type="radio" name="company_ppn_status" value="true">
-                                <span>Iya</span>
-                            </div>
-                            <div class=" space-x-2">
-                                <input type="radio" name="company_ppn_status" value="false">
-                                <span>Tidak</span>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- End Status PPN -->
-
-                    <!-- Fax -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_fax_number">
-                            No Fax
-                        </label>
-                        <input placeholder="No Fax Perusahaan"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="fax" id="company_fax_number">
-                    </div>
-                    <!-- End Fax -->
-
-                </div>
-                <!-- End No Fax & Status PPN  -->
-
-                {{-- Tipe Perusahaan --}}
-                <div class="w-full  mb-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_account_type">
-                        Tipe Akun<span class="text-sm text-red-500">*</span>
-                    </label>
-                    <select
-                        class=" w-full bg-slate-200 p-2 px-3 rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
-                        id="company_account_type" name="type" aria-describedby="company_account_type-rule_required">
-                        <option value="">Pilih..</option>
-                        <option value="1">UMKM</option>
-                        <option value="2">Korporasi</option>
-                    </select>
-                </div>
-                {{-- End TIpe Perusahaan --}}
-
-
-                <div class="w-full  mb-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_address">
-                        Alamat<span class="text-sm text-red-500">*</span>
-                    </label>
-                    <textarea placeholder="Alamat Perusahaan" rows="3"
-                        class="f w-full p-2 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                        name="address" id="company_address"></textarea>
-                </div>
-
-                {{-- Tipe Perusahaan --}}
-                <div class="flex flex-wrap -mx-3 mb-3">
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_name">
-                            Nama PIC <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Nama Penanggung Jawab"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="pic_name" id="pic_name">
-                    </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="phone_number">
-                            No Telepon PIC <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="No Telepon Penanggung Jawab"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="phone_number" id="phone_number">
-                    </div>
-                </div>
-                {{-- End Nama Perusahaan, brand --}}
-
-                {{-- START Nama Perusahaan, Brand --}}
-                <div class="flex flex-wrap -mx-3 mb-3">
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_email">
-                            Email PIC <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Surel Penanggung Jawab"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="email" name="pic_email" id="pic_email">
-                    </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="password">
-                            Password PIC <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="Password Penanggung Jawab"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" name="password" id="password">
-                    </div>
-                </div>
-                {{-- End Nama Perusahaan, brand --}}
-
-
-                <div class="text-center mt-5 flex justify-center">
-                    <button type="submit"
-                        class="bg-darkGreen text-white font-semibold py-2 px-10 rounded transition-all flex justify-between items-center space-x-2"><span>Coba
-                            Gratis</span></button>
-                </div>
-            </form>
+          <!-- Brand -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="brand_name">
+              Brand
+            </label>
+            <input placeholder="Brand Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.brand_name') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="brand_name" id="brand_name">
+          </div>
+          <!-- End Brand -->
         </div>
-    </div>
+        <!--End Name & Brand -->
 
-    @entryPointScripts('app')
+        <!-- Email & No Telp -->
+        <div class="flex flex-wrap -mx-3 mb-3">
+
+          <!-- Email -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_email">
+              Email
+              <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Surel Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_email') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="email" name="company_email" id="company_email">
+          </div>
+          <!-- End Email -->
+
+          <!-- No Telpn -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_phone">
+              No Telepon
+              <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="No Telepon Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_phone') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="company_phone" id="company_phone">
+          </div>
+          <!-- End No Telpn -->
+        </div>
+        <!-- END Email & No Telp -->
+
+
+        <!-- NPWP & Website -->
+        <div class="flex flex-wrap -mx-3 mb-3">
+
+          <!-- NPWP -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_npwp">
+              NPWP
+            </label>
+            <input placeholder="Brand Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_npwp') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="company_npwp" id="company_npwp">
+          </div>
+          <!-- End NPWP -->
+
+          <!-- Website -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_website">
+              Website
+            </label>
+            <input placeholder="Website Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_website') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="website" id="company_website">
+          </div>
+          <!-- End Website -->
+        </div>
+        <!-- END NPWP & Website -->
+
+
+        <!-- Negara & Kota -->
+        <div class="flex flex-wrap -mx-3 mb-3">
+          <!-- Negara -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_country">
+              Negara<span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Nama Negara"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.country') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="country" id="company_country">
+          </div>
+          <!-- End Negara -->
+
+          <!-- Kota -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_city">
+              Kota<span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Nama Kota"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.city') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="city" id="company_city">
+          </div>
+
+          <!-- End Kota -->
+        </div>
+        <!-- End Negara & Kota  -->
+
+
+        <!-- No Fax & Status PPN -->
+        <div class="flex flex-wrap -mx-3 mb-3">
+
+          <!-- Status PPN -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_ppn_status">
+              Status PPN<span class="text-sm text-red-500">*</span>
+            </label>
+            <div class="flex gap-5 pt-3">
+              <div class="space-x-2">
+                <input type="radio" name="company_ppn_status" value="true" checked>
+                <span>Iya</span>
+              </div>
+              <div class=" space-x-2">
+                <input type="radio" name="company_ppn_status" value="false">
+                <span>Tidak</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- End Status PPN -->
+
+          <!-- Fax -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_fax_number">
+              No Fax
+            </label>
+            <input placeholder="No Fax Perusahaan"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_fax_number') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="fax" id="company_fax_number">
+          </div>
+          <!-- End Fax -->
+
+        </div>
+        <!-- End No Fax & Status PPN  -->
+
+        {{-- Tipe Perusahaan --}}
+        <div class="w-full  mb-3">
+          <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_account_type">
+            Tipe Akun<span class="text-sm text-red-500">*</span>
+          </label>
+          <select
+            class=" w-full bg-slate-200 p-2 px-3 rounded-xl mt-1.5 focus:ring-2 {{ flashMessages.has('errors.type') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen duration-200"
+            id="company_account_type" name="type" aria-describedby="company_account_type-rule_required">
+            <option value="">Pilih..</option>
+            <option value="1">UMKM</option>
+            <option value="2">Korporasi</option>
+          </select>
+        </div>
+        {{-- End TIpe Perusahaan --}}
+
+
+        <div class="w-full  mb-3">
+          <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_address">
+            Alamat<span class="text-sm text-red-500">*</span>
+          </label>
+          <textarea placeholder="Alamat Perusahaan" rows="3"
+            class="f w-full p-2 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.address') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+            name="address" id="company_address"></textarea>
+        </div>
+
+        {{-- Tipe Perusahaan --}}
+        <div class="flex flex-wrap -mx-3 mb-3">
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_name">
+              Nama PIC <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Nama Penanggung Jawab"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_name') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="pic_name" id="pic_name">
+          </div>
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="phone_number">
+              No Telepon PIC <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="No Telepon Penanggung Jawab"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.phone_number') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="phone_number" id="phone_number">
+          </div>
+        </div>
+        {{-- End Nama Perusahaan, brand --}}
+
+        {{-- START Nama Perusahaan, Brand --}}
+        <div class="flex flex-wrap -mx-3 mb-3">
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_email">
+              Email PIC <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Surel Penanggung Jawab"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_email') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="email" name="pic_email" id="pic_email">
+          </div>
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="password">
+              Password PIC <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="Password Penanggung Jawab"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.password') ? 'ring-red-500' : 'ring-black/20' }} focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
+              type="text" name="password" id="password">
+          </div>
+        </div>
+        {{-- End Nama Perusahaan, brand --}}
+
+
+        <div class="text-center mt-5 flex justify-center">
+          <button type="submit"
+            class="bg-darkGreen text-white font-semibold py-2 px-10 rounded transition-all flex justify-between items-center space-x-2"><span>Coba
+              Gratis</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  @entryPointScripts('app')
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/sweetalert2/sweetalert2.min.js"></script>
+    @if (flashMessages.has('success'))
+    <script>
+      Swal.fire({
+          "title": `{{ flashMessages.get('success') }}`,
+          "text": "",
+          "timer": 5000,
+          "width": "32rem",
+          "padding": "1.25rem",
+          "showConfirmButton": false,
+          "showCloseButton": true,
+          "timerProgressBar": false,
+          "customClass": {
+              "container": null,
+              "popup": null,
+              "header": null,
+              "title": null,
+              "closeButton": null,
+              "icon": null,
+              "image": null,
+              "content": null,
+              "input": null,
+              "actions": null,
+              "confirmButton": null,
+              "cancelButton": null,
+              "footer": null
+          },
+          "toast": true,
+          "icon": 'success',
+          "position": "top-end"
+      })
+    </script>
+    @endif
+
+    @if (flashMessages.has('error'))
+    <script>
+      Swal.fire({
+                "title": `{{ flashMessages.get('error') }}`,
+                "text": "",
+                "timer": 5000,
+                "width": "32rem",
+                "padding": "1.25rem",
+                "showConfirmButton": false,
+                "showCloseButton": true,
+                "timerProgressBar": false,
+                "customClass": {
+                    "container": null,
+                    "popup": null,
+                    "header": null,
+                    "title": null,
+                    "closeButton": null,
+                    "icon": null,
+                    "image": null,
+                    "content": null,
+                    "input": null,
+                    "actions": null,
+                    "confirmButton": null,
+                    "cancelButton": null,
+                    "footer": null
+                },
+                "toast": true,
+                "icon": 'error',
+                "position": "top-end"
+            })
+    </script>
+    @endif
 </body>
 
 </html>

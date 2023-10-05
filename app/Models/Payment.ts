@@ -16,14 +16,12 @@ export default class Payment extends BaseModel {
   @column()
   public price:number
 
-
   @column()
   public payment_type:string|null
 
-
   @column()
   public status:string|null
- 
+
   @column()
   public created_by: string|null
 
