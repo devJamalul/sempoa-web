@@ -15,7 +15,7 @@ export default class Subscription extends BaseModel {
   public reference_number:string
 
   @column()
-  public companyId:number|null
+  public company_id:number|null
 
 
   @column()
@@ -68,7 +68,9 @@ export default class Subscription extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => Company)
+  @belongsTo(() => Company,{
+    foreignKey: 'company_id',
+  })
   public company: BelongsTo<typeof Company>
 
   @hasMany(() => Payment, {

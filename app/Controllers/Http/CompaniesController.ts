@@ -1,11 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Company from 'App/Models/Company';
 import Logger from '@ioc:Adonis/Core/Logger'
-import Subscription from 'App/Models/Subscription';
 import CompanyCreateValidator from 'App/Validators/CompanyCreateValidator';
-import { addMonths } from 'date-fns';
 import { DateTime } from 'luxon';
 import Database from '@ioc:Adonis/Lucid/Database';
+import { inspect } from 'util';
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -23,6 +22,7 @@ export default class CompaniesController {
 
   public async store({ request, response, session, auth }: HttpContextContract) {
     try {
+
       const data = await request.validate(CompanyCreateValidator)
       const user = auth.user
       const now = DateTime.now()
@@ -31,8 +31,8 @@ export default class CompaniesController {
         const company = new Company()
         company.company_name = data.company_name
         company.address = data.company_address
-        company.city = data.city
-        company.country = data.country
+        company.city = data.company_city
+        company.country = data.company_country
         company.email = data.company_email
         company.phone_number = data.company_phone
         company.pic_name = data.pic_name
@@ -43,7 +43,7 @@ export default class CompaniesController {
         company.useTransaction(trx)
         await company.save()
 
-        await company.related('subscriptions').create({
+        await company.related('Subscriptions').create({
           package_name: "Trial",
           package_description: "Trial 30 hari",
           max_users: 1,
@@ -52,13 +52,17 @@ export default class CompaniesController {
           end_date: now.plus({ months: 1 })
         })
 
+        await trx.commit()
       })
-
       session.flash('success', 'oke')
       return response.redirect().toRoute('companies.index')
     } catch (error) {
+      console.log(error)
+      return response.json(error)
+      inspect(error)
+      
       Logger.warn('Error store company', { data: error.message })
-      session.flash('error', error.message)
+      session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
       return response.redirect().toRoute('companies.create')
     }
   }

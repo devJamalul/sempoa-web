@@ -4,7 +4,6 @@ import User from './User'
 import Subscription from './Subscription'
 
 export default class Company extends BaseModel {
-  public static selfAssignPrimaryKey = true
 
   @column({ isPrimary: true })
   public id: number
@@ -67,6 +66,8 @@ export default class Company extends BaseModel {
   @belongsTo(() => User)
   public users: BelongsTo<typeof User>
 
-  @hasMany(() => Subscription)
-  public subscriptions: HasMany<typeof Subscription>
+  @hasMany(() => Subscription,{
+    foreignKey:"company_id",
+  })
+  public Subscriptions: HasMany<typeof Subscription>
 }
