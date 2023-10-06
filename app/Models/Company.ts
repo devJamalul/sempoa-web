@@ -44,6 +44,9 @@ export default class Company extends BaseModel {
   public referral_code: number | null
 
   @column()
+  public token: string | null
+
+  @column()
   public created_by: string | null
 
   @column()

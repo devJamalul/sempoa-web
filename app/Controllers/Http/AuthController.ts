@@ -9,6 +9,7 @@ import { DateTime } from 'luxon';
 import RegisterValidator from 'App/Validators/RegisterValidator';
 import Subscription from 'App/Models/Subscription';
 import axios from 'axios';
+import sempoa from 'Config/sempoa';
 
 export default class AuthController {
   public async registerShow({ view }: HttpContextContract) {
@@ -71,24 +72,26 @@ export default class AuthController {
           phone_number: data.phone_number,
         }
 
-        await axios.post('http://erp.test/api/v1/auth/register/signup', prepareData)
+        await axios.post(`${sempoa.api}/v1/auth/register/signup`, prepareData)
         .then(function (response) {
           // handle success
+          var responseData = response.data
+          company.token = responseData.token
+          company.save()
+          session.flash('success', responseData.pesan)
         })
         .catch (function (error) {
           // handle error
           throw new Error('Error register to ERP: ' + error.message)
-          // console.log(error);
         })
         .finally(function () {
           // always executed
         });
       })
 
-      session.flash('success', 'Berhasil register')
       return response.redirect().toRoute('register.show')
     } catch (error) {
-      Logger.warn('Error register: ' + error.message)
+      Logger.warn(error.message)
       session.flash('error', error.message)
       return response.redirect().toRoute('register.show')
     }

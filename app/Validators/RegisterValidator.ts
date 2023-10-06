@@ -24,7 +24,7 @@ export default class RegisterValidator {
    *    ```
    */
   public schema = schema.create({
-    company_name: schema.string.nullable([
+    company_name: schema.string([
       rules.unique({ table: 'companies', column: 'company_name' }),
       rules.minLength(4),
       rules.maxLength(191),
@@ -33,14 +33,14 @@ export default class RegisterValidator {
       rules.minLength(4),
       rules.maxLength(191),
     ]),
-    company_email: schema.string.nullable([
+    company_email: schema.string([
       rules.unique({ table: 'companies', column: 'email' }),
       rules.minLength(4),
       rules.maxLength(191),
     ]),
-    company_phone: schema.string.nullable([
+    company_phone: schema.string([
       rules.unique({ table: 'companies', column: 'phone_number' }),
-      rules.minLength(9),
+      rules.minLength(8),
       rules.maxLength(30),
     ]),
     company_npwp: schema.string.nullable([
@@ -51,39 +51,39 @@ export default class RegisterValidator {
       rules.minLength(4),
       rules.maxLength(191),
     ]),
-    country: schema.string.nullable([
-      rules.minLength(9),
+    country: schema.string([
+      rules.minLength(3),
       rules.maxLength(191),
     ]),
-    city: schema.string.nullable([
-      rules.minLength(9),
+    city: schema.string([
+      rules.minLength(3),
       rules.maxLength(191),
     ]),
-    company_ppn_status: schema.string.nullable(),
+    company_ppn_status: schema.string(),
     fax: schema.string.nullable([
       rules.minLength(9),
       rules.maxLength(30),
     ]),
     type: schema.string(),
-    address: schema.string.nullable([
+    address: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
     ]),
     // PIC
-    pic_name: schema.string.nullable([
+    pic_name: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
     ]),
-    phone_number: schema.string.nullable([
+    phone_number: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
     ]),
-    pic_email: schema.string.nullable([
+    pic_email: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
     ]),
-    password: schema.string.nullable([
-      rules.minLength(9),
+    password: schema.string([
+      rules.minLength(8),
       rules.maxLength(191),
     ]),
   })
