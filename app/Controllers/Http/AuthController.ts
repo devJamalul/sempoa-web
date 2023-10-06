@@ -8,6 +8,7 @@ import Company from 'App/Models/Company';
 import { DateTime } from 'luxon';
 import RegisterValidator from 'App/Validators/RegisterValidator';
 import Subscription from 'App/Models/Subscription';
+import axios from 'axios';
 
 export default class AuthController {
   public async registerShow({ view }: HttpContextContract) {
@@ -49,11 +50,45 @@ export default class AuthController {
           status: Subscription.STATUS_ONGOING
         })
 
-        session.flash('success', 'Berhasil register')
-        return response.redirect().toRoute('register.show')
+        // send to ERP
+        const prepareData = {
+          company_name: data.company_name,
+          brand_name: data.brand_name,
+          address: data.address,
+          city: data.city,
+          country: data.country,
+          company_number: data.company_phone,
+          email: data.company_email,
+          fax: data.fax,
+          tax_id_number: data.company_npwp,
+          website: data.website,
+          vat_enabled: data.company_ppn_status,
+          type: data.type,
+
+          pic_name: data.pic_name,
+          pic_email: data.pic_email,
+          password: data.password,
+          phone_number: data.phone_number,
+        }
+
+        await axios.post('http://erp.test/api/v1/auth/register/signup', prepareData)
+        .then(function (response) {
+          // handle success
+        })
+        .catch (function (error) {
+          // handle error
+          throw new Error('Error register to ERP: ' + error.message)
+          // console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
       })
+
+      session.flash('success', 'Berhasil register')
+      return response.redirect().toRoute('register.show')
     } catch (error) {
-      Logger.warn('Error login', { desc: error.message })
+      Logger.warn('Error register: ' + error.message)
       session.flash('error', error.message)
       return response.redirect().toRoute('register.show')
     }
@@ -86,7 +121,7 @@ export default class AuthController {
       await auth.use('web').login(user)
       return response.redirect().toRoute('dashboard')
     } catch (error) {
-      Logger.warn('Error login' , { desc: error.message})
+      Logger.warn('Error login: ' + error.message)
       session.flash('error', 'Your credentials is incorrect')
       return response.redirect().toRoute('login.show')
     }
@@ -98,7 +133,8 @@ export default class AuthController {
       session.flash('success', 'You\'ve logged out successfully')
       return response.redirect().toRoute('home')
     } catch (error) {
-      session.flash('error', 'Gagal logout!')
+      Logger.warn('Error logout: ' + error.message)
+      session.flash('error', 'Logging out failed')
       return response.redirect().back()
     }
   }
