@@ -28,6 +28,10 @@ Route.get('/about', async ({ view }) => {
   return view.render('landing-page')
 })
 
+Route.get('/plans',async({view})=>{
+  return view.render('pages/plans/index')
+})
+
 Route.get('/info', () => {
   return 'Hello world'
 })
