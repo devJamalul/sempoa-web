@@ -4,10 +4,6 @@ import User from './User'
 import Subscription from './Subscription'
 
 export default class Company extends BaseModel {
-<<<<<<< HEAD
-
-=======
->>>>>>> 820396622c716b85b58bcd2d785643add527d1a2
   @column({ isPrimary: true })
   public id: number
 
