@@ -1,7 +1,7 @@
 import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CompanyCreateValidator {
+export default class CompanyUpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -25,20 +25,14 @@ export default class CompanyCreateValidator {
    */
   public schema = schema.create({
     company_name: schema.string(),
-    brand_name: schema.string(),
     company_email: schema.string(),
     company_phone: schema.string(),
-    website: schema.string(),
-    is_taxable: schema.string(),
-    company_fax_number: schema.string(),
     company_country: schema.string(),
     company_city: schema.string(),
-    account_type: schema.string(),
     company_address: schema.string(),
     pic_name: schema.string(),
     pic_phone: schema.string(),
     pic_email: schema.string(),
-    pic_password: schema.string(),
   })
 
   /**

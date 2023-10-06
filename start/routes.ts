@@ -24,6 +24,10 @@ Route.get('/', 'HomeController.index').as('home')
 
 Route.get('/about', 'HomeController.about').as('home.about')
 
+Route.get('/plans',async({view})=>{
+  return view.render('pages/plans/index')
+})
+
 Route.get('/info', () => {
   return 'Hello world'
 })
@@ -40,6 +44,7 @@ Route.group(() => {
   Route.get('/dashboard', 'DashboardController.index').as('dashboard')
 
   Route.resource('companies', 'CompaniesController')
+  Route.put('companies/update-status/:id','CompaniesController.statusUpdate').as('companies.update.status')
 
   Route.post('/logout', 'AuthController.logout').as('logout')
 }).middleware(['auth'])

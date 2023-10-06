@@ -2,127 +2,292 @@
 
 
 @section('content')
-<div class="row">
-  <div class="col-lg-10">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-primary font-weight-bold">{{ title }}</h1>
-      <a href="{{ route('companies.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        Back
-      </a>
+
+@component('component/container/form',{ title:title, routeBack:'companies.index'})
+@slot('form')
+<form action="{{ route('companies.store') }}" method="post">
+  {{ csrfField() }}
+  <div class="row">
+    <!-- company -->
+    <div class="form-group col-6 ">
+      <label for="company_name-input">Company Name<span class="text-small text-danger">*</span></label>
+      <input type="text" class="form-control {{ flashMessages.has('errors.company_name') ? 'is-invalid' : '' }}"
+        name="company_name" id="company_name-input" autocomplete="off"
+        value="{{ flashMessages.get('request.company_name') || '' }}">
+      @if (flashMessages.has('errors.company_name'))
+      <div class="invalid-feedback">
+        {{ flashMessages.get('errors.company_name') }}
+      </div>
+      @endif
     </div>
-    <div class="card">
-      <div class="card-body">
-        <form action="{{ route('companies.store') }}" method="post">
-          {{ csrfField() }}
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="company_name">Company Name</label>
-                <input type="text" class="form-control" name="company_name" aria-describedby="company_nameHelp" autofocus>
-                {{-- <small id="company_nameHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_email">Company Email</label>
-                <input type="email" class="form-control" name="company_email" aria-describedby="company_emailHelp">
-                {{-- <small id="company_emailHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_tax_number">Company Tax Number</label>
-                <input type="text" class="form-control" name="company_tax_number"
-                  aria-describedby="company_tax_numberHelp">
-                {{-- <small id="company_tax_numberHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="is_taxable">Tax</label>
-                <input type="text" class="form-control" name="is_taxable" aria-describedby="is_taxableHelp">
-                {{-- <small id="is_taxableHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="country">Country</label>
-                <input type="text" class="form-control" name="country" aria-describedby="countryHelp">
-                {{-- <small id="countryHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="company_brand">Company Brand</label>
-                <input type="text" class="form-control" name="company_brand" aria-describedby="company_brandHelp">
-                {{-- <small id="company_brandHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_phone">Company Phone</label>
-                <input type="text" class="form-control" name="company_phone" aria-describedby="company_phoneHelp">
-                {{-- <small id="company_phoneHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_website">Company Website</label>
-                <input type="text" class="form-control" name="company_website" aria-describedby="company_websiteHelp">
-                {{-- <small id="company_websiteHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_fax">Company Fax</label>
-                <input type="text" class="form-control" name="company_fax" aria-describedby="company_faxHelp">
-                {{-- <small id="company_faxHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" class="form-control" name="city" aria-describedby="cityHelp">
-                {{-- <small id="cityHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="account_type">Account Type</label>
-                <input type="text" class="form-control" name="account_type" aria-describedby="account_typeHelp">
-                {{-- <small id="account_typeHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="company_address">Company Address</label>
-                <textarea class="form-control" name="company_address" rows="3"
-                  aria-describedby="company_addressHelp"></textarea>
-                {{-- <input type="text" class="form-control" name="company_address"
-                  aria-describedby="company_addressHelp"> --}}
-                {{-- <small id="company_addressHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="pic_name">PIC Name</label>
-                <input type="text" class="form-control" name="pic_name" aria-describedby="pic_nameHelp">
-                {{-- <small id="pic_nameHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="pic_email">PIC Email</label>
-                <input type="email" class="form-control" name="pic_email" aria-describedby="pic_emailHelp">
-                {{-- <small id="pic_emailHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="pic_phone">PIC Phone</label>
-                <input type="text" class="form-control" name="pic_phone" aria-describedby="pic_phoneHelp">
-                {{-- <small id="pic_phoneHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <div class="form-group">
-                <label for="pic_password">PIC Password</label>
-                <input type="password" class="form-control" name="pic_password" aria-describedby="pic_passwordHelp">
-                {{-- <small id="pic_passwordHelp" class="form-text text-muted">note.</small> --}}
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+    <!-- End Company -->
+
+    <!-- Brand -->
+    <div class="form-group col-6 ">
+      <label for="brand_name-input">Brand</label>
+      <input type="text" class="form-control {{ flashMessages.has('errors.brand_name') ? 'is-invalid' : '' }}"
+        name="brand_name" id="brand_name-input" autocomplete="off"
+        value="{{ flashMessages.get('request.brand_name') || '' }}">
+      @if (flashMessages.has('errors.brand_name'))
+      <div class="invalid-feedback">
+        {{ flashMessages.get('errors.brand_name') }}
+      </div>
+      @endif
+    </div>
+    <!-- End Brand -->
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+
+
+      <!-- Company Email -->
+      <div class="form-group ">
+        <label for="company_email-input">Company Email<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.company_email') ? 'is-invalid' : '' }}"
+          name="company_email" id="company_email-input" autocomplete="off"
+          value="{{ flashMessages.get('request.company_email') || '' }}">
+        @if (flashMessages.has('errors.company_email'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_email') }}
+        </div>
+        @endif
+      </div>
+      <!-- End Company Email -->
+
+
+      <!-- Company NPWP -->
+      <div class="form-group ">
+        <label for="company_npwp-input">NPWP</label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.company_npwp') ? 'is-invalid' : '' }}"
+          name="company_npwp" id="company_npwp-input" autocomplete="off"
+          value="{{ flashMessages.get('request.company_npwp') || '' }}">
+        @if (flashMessages.has('errors.company_npwp'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_npwp') }}
+        </div>
+        @endif
+      </div>
+      <!-- End Company NPWP -->
+
+      <!-- Company Negara -->
+      <div class="form-group ">
+        <label for="company_country-input">Country<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.company_country') ? 'is-invalid' : '' }}"
+          name="company_country" id="company_country-input" autocomplete="off"
+          value="{{ flashMessages.get('request.company_country') || '' }}">
+        @if (flashMessages.has('errors.company_country'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_country') }}
+        </div>
+        @endif
+      </div>
+      <!-- End Company Negara -->
+
+
+    </div>
+
+    <div class="col-lg-6">
+
+
+
+
+
+
+      <!-- Company Phone -->
+      <div class="form-group ">
+        <label for="company_phone-input">Company Phone<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.company_phone') ? 'is-invalid' : '' }}"
+          name="company_phone" id="company_phone-input" autocomplete="off"
+          value="{{ flashMessages.get('request.company_phone') || '' }}">
+        @if (flashMessages.has('errors.company_phone'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_phone') }}
+        </div>
+        @endif
+      </div>
+      <!-- End Company Phone -->
+
+      <!-- Website -->
+      <div class="form-group ">
+        <label for="website-input">Website</label>
+        <input type="link" class="form-control {{ flashMessages.has('errors.website') ? 'is-invalid' : '' }}"
+          name="website" id="website-input" autocomplete="off" value="{{ flashMessages.get('request.website') || '' }}">
+        @if (flashMessages.has('errors.website'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.website') }}
+        </div>
+        @endif
+      </div>
+      <!-- End Website -->
+
+
+      <!-- City -->
+      <div class="form-group ">
+        <label for="company_city-input">City<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.company_city') ? 'is-invalid' : '' }}"
+          name="company_city" id="company_city-input" autocomplete="off"
+          value="{{ flashMessages.get('request.company_city') || '' }}">
+        @if (flashMessages.has('errors.company_city'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_city') }}
+        </div>
+        @endif
+      </div>
+      <!-- End City -->
+
+    </div>
+
+    <div class="col-12">
+      <div class="row">
+
+
+        <!-- Company fax -->
+        <div class="form-group col-4">
+          <label for="company_fax_number-input">No Fax</label>
+          <input type="text"
+            class="form-control {{ flashMessages.has('errors.company_fax_number') ? 'is-invalid' : '' }}"
+            name="company_fax_number" id="company_fax_number-input" autocomplete="off"
+            value="{{ flashMessages.get('request.company_fax_number') || '' }}">
+          @if (flashMessages.has('errors.company_fax_number'))
+          <div class="invalid-feedback">
+            {{ flashMessages.get('errors.company_fax_number') }}
           </div>
-        </form>
+          @endif
+        </div>
+        <!-- End Company fax -->
+
+        <!-- Company fax -->
+        <div class="form-group col-4">
+          <label for="is_taxable-input">Status PPN</label>
+          <select class="form-control {{ flashMessages.has('errors.is_taxable') ? 'is-invalid' : '' }}"
+            name="is_taxable" aria-label="Default select example">
+            <option value="" selected>--Choice--</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          @if (flashMessages.has('errors.is_taxable'))
+          <div class="invalid-feedback">
+            {{ flashMessages.get('errors.is_taxable') }}
+          </div>
+          @endif
+        </div>
+        <!-- End Company fax -->
+
+
+
+        <!-- Company fax -->
+        <div class="form-group col-4">
+          <label for="account_type-input">Type Account</label>
+          <select class="form-control {{ flashMessages.has('errors.account_type') ? 'is-invalid' : '' }}"
+            name="account_type" aria-label="Default select example">
+            <option value="" selected>--Choice--</option>
+            <option value="1">UMKM</option>
+            <option value="2">Korporasi</option>
+          </select>
+          @if (flashMessages.has('errors.account_type'))
+          <div class="invalid-feedback">
+            {{ flashMessages.get('errors.account_type') }}
+          </div>
+          @endif
+        </div>
+        <!-- End Company fax -->
+
       </div>
     </div>
-  </div>
-</div>
-@end
+    <div class="col-lg-12">
+
+      <div class="form-group">
+        <label for="company_address">Company Address</label>
+        <textarea class="form-control {{ flashMessages.has('errors.company_address') ? 'is-invalid' : '' }}"
+          name="company_address" rows="3" aria-describedby="company_addressHelp"></textarea>
+
+        @if (flashMessages.has('errors.company_address'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.company_address') }}
+        </div>
+        @endif
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-6">
+
+      <!-- PIC Name -->
+      <div class="form-group ">
+        <label for="pic_name-input">City<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.pic_name') ? 'is-invalid' : '' }}"
+          name="pic_name" id="pic_name-input" autocomplete="off"
+          value="{{ flashMessages.get('request.pic_name') || '' }}">
+        @if (flashMessages.has('errors.pic_name'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.pic_name') }}
+        </div>
+        @endif
+      </div>
+      <!-- End PIC Name -->
+
+      <!-- PIC Email -->
+      <div class="form-group ">
+        <label for="pic_email-input">PIC Email<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.pic_email') ? 'is-invalid' : '' }}"
+          name="pic_email" id="pic_email-input" autocomplete="off"
+          value="{{ flashMessages.get('request.pic_email') || '' }}">
+        @if (flashMessages.has('errors.pic_email'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.pic_email') }}
+        </div>
+        @endif
+      </div>
+      <!-- End PIC Email -->
+
+
+    </div>
+    <div class="col-lg-6">
+
+      <!-- PIC Phone -->
+      <div class="form-group ">
+        <label for="pic_phone-input">PIC Phone<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.pic_phone') ? 'is-invalid' : '' }}"
+          name="pic_phone" id="pic_phone-input" autocomplete="off"
+          value="{{ flashMessages.get('request.pic_phone') || '' }}">
+        @if (flashMessages.has('errors.pic_phone'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.pic_phone') }}
+        </div>
+        @endif
+      </div>
+      <!-- End PIC Phone -->
+
+
+
+      <!-- PIC Password -->
+      <div class="form-group ">
+        <label for="pic_password-input">PIC Password<span class="text-small text-danger">*</span></label>
+        <input type="text" class="form-control {{ flashMessages.has('errors.pic_password') ? 'is-invalid' : '' }}"
+          name="pic_password" id="pic_password-input" autocomplete="off"
+          value="{{ flashMessages.get('request.pic_password') || '' }}">
+        @if (flashMessages.has('errors.pic_password'))
+        <div class="invalid-feedback">
+          {{ flashMessages.get('errors.pic_password') }}
+        </div>
+        @endif
+      </div>
+      <!-- End PIC Password -->
+    </div>
+    <div class="col-12">
+
+      <button type="submit" class="btn btn-primary float-right">Submit</button>
+    </div>
+</form>
+@endslot
+@endcomponent
+@endsection
 
 @section('js')
 <script>
   $(document).ready(function () {
-    const csrfToken = '{{ csrfToken }}'
-
     $('#user-table').DataTable()
   })
 </script>

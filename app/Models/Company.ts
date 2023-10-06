@@ -55,6 +55,9 @@ export default class Company extends BaseModel {
   @column()
   public is_verified: boolean
 
+  @column()
+  public is_active:boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
