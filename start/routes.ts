@@ -45,6 +45,7 @@ Route.group(() => {
   Route.get('/dashboard', 'DashboardController.index').as('dashboard')
 
   Route.resource('companies', 'CompaniesController')
+  Route.put('companies/update-status/:id','CompaniesController.statusUpdate').as('companies.update.status')
 
   Route.post('/logout', 'AuthController.logout').as('logout')
 }).middleware(['auth'])

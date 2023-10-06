@@ -4,7 +4,8 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import CompanyCreateValidator from 'App/Validators/CompanyCreateValidator';
 import { DateTime } from 'luxon';
 import Database from '@ioc:Adonis/Lucid/Database';
-import { inspect } from 'util';
+import { bind } from '@adonisjs/route-model-binding'
+import CompanyUpdateValidator from 'App/Validators/CompanyUpdateValidator';
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -54,16 +55,77 @@ export default class CompaniesController {
 
         await trx.commit()
       })
-      session.flash('success', 'oke')
+
+
+      session.flash('success', 'Success Created Company')
       return response.redirect().toRoute('companies.index')
     } catch (error) {
-      console.log(error)
-      return response.json(error)
-      inspect(error)
-      
       Logger.warn('Error store company', { data: error.message })
       session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
       return response.redirect().toRoute('companies.create')
     }
   }
+
+  @bind()
+  public async edit({ view },company:Company){
+    const title = 'Update ' + this.title
+    return  view.render('pages/company/edit',{title,company})
+  }
+
+  @bind()
+  public async update({request, response, session,auth},company:Company){
+    try {
+      const user = auth.user
+      const data = await request.validate(CompanyUpdateValidator)
+      await Database.transaction(async (trx) => {
+        company.company_name = data.company_name
+        company.address = data.company_address
+        company.city = data.company_city
+        company.country = data.company_country
+        company.email = data.company_email
+        company.phone_number = data.company_phone
+        company.pic_name = data.pic_name
+        company.pic_email = data.pic_email
+        company.pic_phone_number = data.pic_phone
+        company.updated_by = user?.name ?? "Sistem"
+        company.useTransaction(trx)
+        await company.save()
+        await trx.commit()
+      })
+      session.flash('success', 'Success Update')
+      return response.redirect().toRoute('companies.index')
+    } catch (error) {
+      Logger.warn('Error Update company', { data: error.message })
+      session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
+      return response.redirect().toRoute('companies.edit',{id:company.id})
+    }
+  }
+
+
+  @bind()
+  public async statusUpdate({response, session,auth},company:Company){
+    try {
+      var message: string = '';
+      
+      await Database.transaction(async (trx) => {
+        const user = auth.user;
+        const isStatusActive = company.is_active ? false : true;
+        message = isStatusActive ? "Success active Company" : "Success inactive Company"  
+
+        company.is_active = isStatusActive;
+        company.updated_by = user?.name ?? "Sistem"
+        company.useTransaction(trx)
+        await company.save()
+        await trx.commit()
+      })
+      session.flash('success', message)
+      return response.redirect().toRoute('companies.index')
+    } catch (error) {
+      Logger.warn('Error Update company', { data: error.message })
+      session.flash({ error: 'Opss! , Failed Updated Status'})
+      return response.redirect().toRoute('companies.edit',{id:company.id})
+    }
+  }
+
+
 }
