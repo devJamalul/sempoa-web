@@ -43,10 +43,6 @@
     "@adonisjs/view": "^6.2.0",
     "@headlessui/vue": "^1.7.16",
     "@vue/compiler-sfc": "^3.3.4",
-<<<<<<< HEAD
-=======
-    "axios": "^1.5.1",
->>>>>>> 820396622c716b85b58bcd2d785643add527d1a2
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "luxon": "^3.4.3",
