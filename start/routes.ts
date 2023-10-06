@@ -20,22 +20,17 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async ({ view }) => {
-  return view.render('landing-page')
-}).as('home')
+Route.get('/', 'HomeController.index').as('home')
 
-Route.get('/about', async ({ view }) => {
-  return view.render('landing-page')
-})
+Route.get('/about', 'HomeController.about').as('home.about')
 
 Route.get('/info', () => {
   return 'Hello world'
 })
 
 Route.group(() => {
-  // Route.get('/', 'HomeController.index').as('home')
-
   Route.get('/register', 'AuthController.registerShow').as('register.show')
+  Route.post('/register', 'AuthController.register').as('register')
 
   Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
   Route.post('/adminustrator', 'AuthController.login').as('login')
