@@ -36,7 +36,7 @@ export default class CompanyCreateValidator {
     company_country: schema.string(),
     company_city: schema.string(),
     account_type: schema.string(),
-    company_address: schema.string.nullable(),
+    company_address: schema.string(),
     pic_name: schema.string(),
     pic_phone: schema.string(),
     pic_email: schema.string([

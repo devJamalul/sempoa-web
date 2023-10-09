@@ -31,7 +31,7 @@ export default class CompanyUpdateValidator {
     company_phone: schema.string(),
     company_country: schema.string(),
     company_city: schema.string(),
-    company_address: schema.string.nullable(),
+    company_address: schema.string(),
     pic_name: schema.string(),
     pic_phone: schema.string(),
     pic_email: schema.string([

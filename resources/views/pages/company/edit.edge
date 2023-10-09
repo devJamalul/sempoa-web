@@ -88,10 +88,9 @@
 
     <div class="col-lg-12">
       <div class="form-group">
-        <label for="company_address">Company Address</label>
+        <label for="company_address">Company Address<span class="text-small text-danger">*</span></label>
         <textarea class="form-control {{ flashMessages.has('errors.company_address') ? 'is-invalid' : '' }}"
-          name="company_address" rows="3" aria-describedby="company_addressHelp">{{ company.address }}
-        </textarea>
+          name="company_address" rows="3" aria-describedby="company_addressHelp">{{ company.address }}</textarea>
 
         @if (flashMessages.has('errors.company_address'))
         <div class="invalid-feedback">
