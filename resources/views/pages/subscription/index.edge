@@ -1,0 +1,54 @@
+@layout('layouts/app')
+
+
+@section('content')
+<div class="row">
+  <div class="col-lg-10">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-primary font-weight-bold">{{ pluralize(title) }}</h1>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-bordered" id="user-table" width="100%">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Package</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(subscription in subscriptions)
+            <tr>
+              <td>
+                <a href="{{ route('subscriptions.show', { company : subscription.company_id }) }}" title="Subscriptions">
+                  {{ subscription.company.company_name }}
+                </a>
+              </td>
+              <td>{{ subscription.package_name }}</td>
+              <td>{{ titleCase(subscription.status) }}</td>
+              <td>
+                <a href="{{ route('subscriptions.edit', { company : subscription.id }) }}" class="btn btn-sm btn-primary" title="Detail">
+                  <i class="fas fa-eye"></i>
+                </a>
+              </td>
+            </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+@end
+
+@section('js')
+<script>
+  $(document).ready(function () {
+    const csrfToken = '{{ csrfToken }}'
+
+    $('#user-table').DataTable()
+  })
+</script>
+@endsection
