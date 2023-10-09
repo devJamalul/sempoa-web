@@ -15,20 +15,20 @@
         <table class="table table-bordered" id="user-table" width="100%">
           <thead>
             <tr>
-              <th>Nama</th>
-              <th>Peran</th>
-              <th>Email</th>
-              <th>No. Telp</th>
-              <th>Aksi</th>
+              <th>Company</th>
+              <th>Location</th>
+              <th>PIC</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @each(company in companies)
             <tr>
               <td>{{ company.company_name }}</td>
-              <td>{{ company.company_name }}</td>
-              <td>{{ company.company_name }}</td>
-              <td>{{ company.company_name }}</td>
+              <td>{{ company.city }}, {{ company.country }}</td>
+              <td>{{ company.pic_name }}</td>
+              <td>{{ company.is_active ? 'Active' : 'Inactive' }}</td>
               <td>
 
 
@@ -36,15 +36,15 @@
                     {id:company.id},
                     {
                       qs: {
-                        _method: 'PUT' 
+                        _method: 'PUT'
                       }
                     })
               }}" method="post">
                   {{ csrfField() }}
-                  <a href="{{ route('companies.edit', { id : company.id }) }}" class="btn btn-sm btn-primary"><i
+                  <a href="{{ route('companies.edit', { id : company.id }) }}" class="btn btn-sm btn-primary" title="Edit"><i
                       class="fas fa-edit"></i></a>
-                  <button type="submit" class="btn btn-sm btn-success delete"
-                    data-url="{{ route('companies.destroy', { id : company.id }) }}" data-id="{{ company.id }}">
+                  <button type="submit" class="btn btn-sm btn-{{ company.is_active ? 'danger' : 'success' }} delete"
+                    data-url="{{ route('companies.destroy', { id : company.id }) }}" data-id="{{ company.id }}" title="{{ company.is_active ? 'Deactivate' : 'Activate' }}">
                     <i class="fas fa-eye{{ company.is_active ? '' : '-slash' }}"></i>
                   </button>
                 </form>

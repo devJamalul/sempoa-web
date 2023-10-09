@@ -159,7 +159,7 @@
 
         <!-- Company fax -->
         <div class="form-group col-4">
-          <label for="is_taxable-input">Status PPN</label>
+          <label for="is_taxable-input">Status PPN<span class="text-small text-danger">*</span></label>
           <select class="form-control {{ flashMessages.has('errors.is_taxable') ? 'is-invalid' : '' }}"
             name="is_taxable" aria-label="Default select example">
             <option value="" selected>--Choice--</option>
@@ -178,7 +178,7 @@
 
         <!-- Company fax -->
         <div class="form-group col-4">
-          <label for="account_type-input">Type Account</label>
+          <label for="account_type-input">Tipe Akun<span class="text-small text-danger">*</span></label>
           <select class="form-control {{ flashMessages.has('errors.account_type') ? 'is-invalid' : '' }}"
             name="account_type" aria-label="Default select example">
             <option value="" selected>--Choice--</option>
@@ -216,7 +216,7 @@
 
       <!-- PIC Name -->
       <div class="form-group ">
-        <label for="pic_name-input">City<span class="text-small text-danger">*</span></label>
+        <label for="pic_name-input">PIC Name<span class="text-small text-danger">*</span></label>
         <input type="text" class="form-control {{ flashMessages.has('errors.pic_name') ? 'is-invalid' : '' }}"
           name="pic_name" id="pic_name-input" autocomplete="off"
           value="{{ flashMessages.get('request.pic_name') || '' }}">
