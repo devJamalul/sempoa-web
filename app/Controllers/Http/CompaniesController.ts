@@ -44,7 +44,7 @@ export default class CompaniesController {
         company.useTransaction(trx)
         await company.save()
 
-        await company.related('Subscriptions').create({
+        await company.related('subscriptions').create({
           package_name: "Trial",
           package_description: "Trial 30 hari",
           max_users: 1,
@@ -106,11 +106,11 @@ export default class CompaniesController {
   public async statusUpdate({response, session,auth},company:Company){
     try {
       var message: string = '';
-      
+
       await Database.transaction(async (trx) => {
         const user = auth.user;
         const isStatusActive = company.is_active ? false : true;
-        message = isStatusActive ? "Success active Company" : "Success inactive Company"  
+        message = isStatusActive ? "Success active Company" : "Success inactive Company"
 
         company.is_active = isStatusActive;
         company.updated_by = user?.name ?? "Sistem"
