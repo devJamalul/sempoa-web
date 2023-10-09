@@ -44,7 +44,7 @@ export default class CompaniesController {
         company.useTransaction(trx)
         await company.save()
 
-        await company.related('Subscriptions').create({
+        await company.related('subscriptions').create({
           package_name: "Trial",
           package_description: "Trial 30 hari",
           max_users: 1,

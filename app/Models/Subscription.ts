@@ -16,6 +16,7 @@ export default class Subscription extends BaseModel {
   public static readonly PACKAGE_TRIAL = 'Trial'
   public static readonly PACKAGE_MINIMALIST = 'Minimalist'
   public static readonly PACKAGE_BASIC = 'Basic'
+  public static readonly PACKAGE_MEDIUM = 'Medium'
   public static readonly PACKAGE_ENTERPRISE = 'Enterprise'
 
   @column({ isPrimary: true })
