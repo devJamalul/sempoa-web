@@ -1,6 +1,5 @@
 @layout('layouts/app')
 
-
 @section('content')
 
 @component('component/container/form',{ title:title, routeBack:'companies.index'})
@@ -9,7 +8,7 @@
       {id:company.id},
       {
         qs: {
-          _method: 'PUT' 
+          _method: 'PUT'
         }
       })
 }}" method="post">
@@ -27,17 +26,12 @@
       @endif
     </div>
     <!-- End Company -->
-
-
   </div>
 
   <div class="row">
     <div class="col-lg-6">
-
-
       <!-- Company Email -->
       <div class="form-group ">
-
         <label for="company_email-input">Company Email<span class="text-small text-danger">*</span></label>
         <input type="text" class="form-control {{ flashMessages.has('errors.company_email') ? 'is-invalid' : '' }}"
           name="company_email" id="company_email-input" autocomplete="off" value="{{ company.email }}">
@@ -48,9 +42,6 @@
         @endif
       </div>
       <!-- End Company Email -->
-
-
-
 
       <!-- Company Negara -->
       <div class="form-group ">
@@ -64,17 +55,9 @@
         @endif
       </div>
       <!-- End Company Negara -->
-
-
     </div>
 
     <div class="col-lg-6">
-
-
-
-
-
-
       <!-- Company Phone -->
       <div class="form-group ">
         <label for="company_phone-input">Company Phone<span class="text-small text-danger">*</span></label>
@@ -101,16 +84,13 @@
         @endif
       </div>
       <!-- End City -->
-
     </div>
 
     <div class="col-lg-12">
-
       <div class="form-group">
-        <label for="company_address">Company Address</label>
+        <label for="company_address">Company Address<span class="text-small text-danger">*</span></label>
         <textarea class="form-control {{ flashMessages.has('errors.company_address') ? 'is-invalid' : '' }}"
-          name="company_address" rows="3" aria-describedby="company_addressHelp">{{ company.address }}
-        </textarea>
+          name="company_address" rows="3" aria-describedby="company_addressHelp">{{ company.address }}</textarea>
 
         @if (flashMessages.has('errors.company_address'))
         <div class="invalid-feedback">
@@ -118,17 +98,16 @@
         </div>
         @endif
       </div>
-
     </div>
 
 
-    <div class="col-lg-6">
+    <div class="col-lg-4">
 
       <!-- PIC Name -->
       <div class="form-group ">
-        <label for="pic_name-input">City<span class="text-small text-danger">*</span></label>
+        <label for="pic_name-input">PIC Name<span class="text-small text-danger">*</span></label>
         <input type="text" class="form-control {{ flashMessages.has('errors.pic_name') ? 'is-invalid' : '' }}"
-          name="pic_name" id="pic_name-input" autocomplete="off" value="{{ company.city}}">
+          name="pic_name" id="pic_name-input" autocomplete="off" value="{{ company.pic_name}}">
         @if (flashMessages.has('errors.pic_name'))
         <div class="invalid-feedback">
           {{ flashMessages.get('errors.pic_name') }}
@@ -136,7 +115,9 @@
         @endif
       </div>
       <!-- End PIC Name -->
+    </div>
 
+    <div class="col-lg-4">
       <!-- PIC Email -->
       <div class="form-group ">
         <label for="pic_email-input">PIC Email<span class="text-small text-danger">*</span></label>
@@ -149,11 +130,9 @@
         @endif
       </div>
       <!-- End PIC Email -->
-
-
     </div>
-    <div class="col-lg-6">
 
+    <div class="col-lg-4">
       <!-- PIC Phone -->
       <div class="form-group ">
         <label for="pic_phone-input">PIC Phone<span class="text-small text-danger">*</span></label>
@@ -169,7 +148,6 @@
 
     </div>
     <div class="col-12">
-
       <button type="submit" class="btn btn-primary float-right">Submit</button>
     </div>
 </form>
