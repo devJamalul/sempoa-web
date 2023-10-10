@@ -32,9 +32,8 @@ Route.get("/checkout/:plan/:id",function(){
 }).as('checkout.index');
 
 
-Route.get("contact-us",function(){
-  return  "contact-us Page";
- }).as('contact-us.index');
+Route.get("contact-us",'ContactUsController.index').as('contact-us.index');
+Route.post('contact-us','ContactUsController.sendContact').as('contact-us.send')
 Route.get('/info', () => {
   return 'Hello world'
 })
