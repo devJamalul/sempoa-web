@@ -5,16 +5,6 @@ import Subscription from './Subscription'
 
 export default class Company extends BaseModel {
 
-public static packageActive =async (company:Company) => { 
-    const subscriptionActive = await
-    Subscription.
-    query()
-    .where('company_id',company.id)
-    .where('status',Subscription.STATUS_ONGOING)
-    .first();
-    return subscriptionActive ? subscriptionActive.package_name : Subscription.PACKAGE_TRIAL
-  }
-
   @column({ isPrimary: true })
   public id: number
 

@@ -19,6 +19,18 @@ export default class Subscription extends BaseModel {
   public static readonly PACKAGE_MEDIUM = 'Medium'
   public static readonly PACKAGE_ENTERPRISE = 'Enterprise'
 
+
+  public static packageActive =async (company:Company) => { 
+    const subscriptionActive = await
+    Subscription.
+    query()
+    .where('company_id',company.id)
+    .where('status',Subscription.STATUS_ONGOING)
+    .first();
+    return subscriptionActive ? subscriptionActive.package_name : Subscription.PACKAGE_TRIAL
+  }
+
+
   @column({ isPrimary: true })
   public id: number
 
