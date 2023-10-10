@@ -5,7 +5,13 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-primary font-weight-bold">{{ pluralize(title) }}</h1>
+      <h1 class="h3 mb-0 text-primary font-weight-bold">
+        {{ pluralize(title) }}
+        <small class="text-muted">all subscriptions</small>
+      </h1>
+      <a href="{{ route('subscriptions.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        Back
+      </a>
     </div>
     <div class="card">
       <div class="card-body">
@@ -13,25 +19,20 @@
           <thead>
             <tr>
               <th>Status</th>
-              <th>Company</th>
               <th>Package</th>
-              <th>Start</th>
-              <th>End</th>
+              <th class="text-center">Max Users</th>
+              <th class="text-center">Start</th>
+              <th class="text-center">End</th>
               <th class="text-center">Billing Cycle</th>
-              <th>Action</th>
+              <th class="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             @each(subscription in subscriptions)
             <tr>
               <td>{{ titleCase(subscription.status) }}</td>
-              <td>
-                <a href="{{ route('subscriptions.show', { company : subscription.company_id }) }}"
-                  title="Subscriptions">
-                  {{ subscription.company.company_name }}
-                </a>
-              </td>
               <td>{{ subscription.package_name }}</td>
+              <td class="text-center">{{ subscription.max_users }}</td>
               <td class="text-center">{{ subscription.start_date.toFormat('dd LLL yyyy') }}</td>
               <td class="text-center">{{ subscription.end_date.toFormat('dd LLL yyyy') }}</td>
               <td class="text-center">
@@ -41,10 +42,10 @@
                 once
                 @endif
               </td>
-              <td>
-                <a href="{{ route('subscriptions.edit', { company : subscription.id }) }}"
-                  class="btn btn-sm btn-primary" title="Detail">
-                  <i class="fas fa-eye"></i>
+              <td class="text-center">
+                <a href="#"
+                  class="btn btn-sm btn-primary" title="Payment Detail">
+                  <i class="fas fa-dollar-sign"></i> Detail
                 </a>
               </td>
             </tr>

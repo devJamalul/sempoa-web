@@ -9,22 +9,31 @@ export default class SubscriptionsController {
 
   public async index({ view }: HttpContextContract) {
     const title = this.title
-    const subscriptions = await Subscription.query().select('id', 'company_id', 'package_name', 'status').preload('company').orderBy('status', 'asc')
+    const subscriptions = await Subscription.query().preload('company').orderBy('status', 'asc')
     return view.render('pages/subscription/index', { title, subscriptions });
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create({ }: HttpContextContract) { }
 
-  public async store({}: HttpContextContract) {}
+  public async store({ }: HttpContextContract) { }
 
   @bind()
   public async show({ view }, company: Company) {
-    return inspect(company)
+    const title = company.company_name
+    const subscriptions = await Subscription.query()
+      .where('company_id', company.id)
+      .orderBy('status', 'asc')
+    return view.render('pages.subscription.view', { title, subscriptions })
   }
 
-  public async edit({}: HttpContextContract) {}
+  @bind()
+  public async edit({ view }, company: Subscription) {
+    const title = company.package_name
+    const subscriptions = company.preload('company')
+    return view.render('pages.subscription.edit', { title, subscriptions })
+   }
 
-  public async update({}: HttpContextContract) {}
+  public async update({ }: HttpContextContract) { }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ }: HttpContextContract) { }
 }

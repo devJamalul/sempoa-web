@@ -100,7 +100,7 @@ export default class CompaniesController {
       session.flash('success', 'Success Created Company')
       return response.redirect().toRoute('companies.index')
     } catch (error) {
-      Logger.warn('Error store company', { data: error.message })
+      Logger.warn('Error store company', { data: error.messages })
       session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
       return response.redirect().toRoute('companies.create')
     }
