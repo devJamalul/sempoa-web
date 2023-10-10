@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .is-invalid {
+      @apply border-2 border-rose-600;
+    }
+    .message-error{
+        @apply text-rose-600 dark:text-rose-500 text-sm
+    }
+  }
+  
