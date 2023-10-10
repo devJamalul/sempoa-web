@@ -8,6 +8,7 @@ import { bind } from '@adonisjs/route-model-binding'
 import CompanyUpdateValidator from 'App/Validators/CompanyUpdateValidator';
 import axios from 'axios';
 import sempoa from 'Config/sempoa';
+import Subscription from 'App/Models/Subscription';
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -51,6 +52,7 @@ export default class CompaniesController {
           package_description: "Trial 30 hari",
           max_users: 1,
           price: 0,
+          status:Subscription.STATUS_ONGOING,
           start_date: now,
           end_date: now.plus({ months: 1 })
         })
@@ -75,7 +77,6 @@ export default class CompaniesController {
           phone_number: data.pic_phone,
         }
 
-        console.table(prepareData)
 
         await axios.post(`${sempoa.api}/v1/auth/register/signup`, prepareData)
           .then(function (response) {

@@ -20,14 +20,21 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+
 Route.get('/', 'HomeController.index').as('home')
 
 Route.get('/about', 'HomeController.about').as('home.about')
 
-Route.get('/plans',async({view})=>{
-  return view.render('pages/plans/index')
-})
+Route.get('/plans/:id(token)','PlansController.index').as('plan.index')
 
+Route.get("/checkout/:plan/:id",function(){
+ return  "Checkout Page";
+}).as('checkout.index');
+
+
+Route.get("contact-us",function(){
+  return  "contact-us Page";
+ }).as('contact-us.index');
 Route.get('/info', () => {
   return 'Hello world'
 })

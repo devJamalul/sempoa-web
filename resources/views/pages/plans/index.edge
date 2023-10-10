@@ -10,8 +10,8 @@
 
 <body class="bg-neutral-100">
     <div class="container mx-auto">
-        <img src="images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
-        <p class="text-center mt-10  mx-auto text-2xl text-darkGreen"> " Biar Sempoa yang menghitung, biar bisnismu
+        <img src="/images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
+        <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2"> " Biar Sempoa yang menghitung, biar bisnismu
             yang sukses.
             Segera
             langganan
@@ -21,194 +21,211 @@
         </p>
 
         {{-- PLans Subscription --}}
-        <div class="flex flex-wrap items-center justify-center mt-14 py-4 pt-0">
+        <div class="flex flex-wrap items-center justify-center mt-14 p-4 pt-0">
 
 
+            @if(configPlans.minimalist.isShow)
             {{-- Start Minimalist --}}
             <div class="w-full p-4 md:w-1/2 lg:w-1/4  ">
                 <label
-                    class="flex flex-col rounded-lg shadow-lg group relative bg-white cursor-pointer hover:shadow-2xl">
+                    class="flex flex-col rounded-lg shadow-lg group relative {{ configPlans.minimalist.isActive ? 'bg-green-50  border-2 border-green-800':'bg-white' }} cursor-pointer hover:shadow-2xl">
                     <div class="w-full px-4 py-6 rounded-t-lg card-section-1">
                         <h3 class="mx-auto text-base font-semibold text-center  text-green-800 ">
                             Minimalist
                         </h3>
+                        <p class="text-center text-md text-gray-500 line-through ">Rp 200.000</p>
                         <p class="text-5xl font-bold text-center  my-3 text-green-800">
-                            400<span class="text-3xl">Ribu</span>
+                            {{ configPlans.minimalist.prefixPrice.price }}<span class="text-3xl">{{
+                                configPlans.minimalist.prefixPrice.unit }}</span>
                         </p>
                         <p class="text-sm text-center uppercase  text-green-800">
-                            2 User
+                            {{ configPlans.minimalist.maxUser }} User
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Chart of Accounts
+                        </p>
+
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Invoice
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Cash & Bank
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Receivable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Payable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            General Ledger
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Income Statement
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Trial Balance
                         </p>
                     </div>
                     <div class="flex flex-col items-center justify-center w-full h-full py-6 rounded-b-lg bg-green-800">
-                        <button
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800">
+                        <a href="{{ route('checkout.index',{
+                            'plan' : 'Minimalist',
+                            'id':company.token
+                        })}}"
+                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            data-plan="{{ configPlans.minimalist.price  }}">
                             Mulai
-                        </button>
+                        </a>
                     </div>
                 </label>
             </div>
             {{-- End Minimalist --}}
+            @endif
 
+            @if(configPlans.basic.isShow)
             {{-- Start Basic --}}
             <div class="w-full p-4 md:w-1/2 lg:w-1/4 ">
                 <label
-                    class="flex flex-col rounded-lg shadow-lg group bg-white relative cursor-pointer hover:shadow-2xl">
+                    class="flex flex-col rounded-lg shadow-lg group {{ configPlans.basic.isActive ? 'bg-green-50  border-2 border-green-800':'bg-white' }} relative cursor-pointer hover:shadow-2xl">
                     <div class="w-full px-4 py-6 rounded-t-lg card-section-1">
                         <h3 class="mx-auto text-base font-semibold text-center  text-green-800 ">
                             Basic
                         </h3>
+                        <p class="text-center text-md text-gray-500 line-through ">Rp 400.000</p>
                         <p class="text-5xl font-bold text-center  my-3 text-green-800">
-                            1<span class="text-3xl">Juta</span>
+                            {{ configPlans.basic.prefixPrice.price }}<span class="text-3xl">{{
+                                configPlans.basic.prefixPrice.unit }}</span>
                         </p>
                         <p class="text-sm text-center uppercase  text-green-800">
-                            5 User
+                            {{ configPlans.basic.maxUser }} User
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Chart of Accounts
+                        </p>
+
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Invoice
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Cash & Bank
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Receivable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Payable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            General Ledger
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Income Statement
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Trial Balance
                         </p>
                     </div>
                     <div class="flex flex-col items-center justify-center w-full h-full py-6 rounded-b-lg bg-green-800">
-                        <button
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800">
+                        <a href="{{ route('checkout.index',{
+                            'plan' : 'Basic',
+                            'id':company.token
+                        })}}"
+                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            data-plan="{{ configPlans.basic.price }}">
                             Mulai
-                        </button>
+                        </a>
                     </div>
                 </label>
             </div>
             {{-- End Basic --}}
+            @endif
 
-
+            @if(configPlans.medium.isShow)
             {{-- Start Medium --}}
             <div class="w-full p-4 md:w-1/2 lg:w-1/4 ">
-                <label
-                    class="flex flex-col rounded-lg shadow-lg bg-white group relative cursor-pointer hover:shadow-2xl">
+                <label class="flex flex-col rounded-lg shadow-lg {{ configPlans.medium.isActive ? 'bg-green-50  border-2 border-green-800'
+                    :'bg-white' }} group relative cursor-pointer hover:shadow-2xl">
                     <div class="w-full px-4 py-6 rounded-t-lg card-section-1">
                         <h3 class="mx-auto text-base font-semibold text-center  text-green-800 ">
                             Medium
                         </h3>
+                        <p class="text-center text-md text-gray-500 line-through ">Rp 600.000</p>
                         <p class="text-5xl font-bold text-center  my-3 text-green-800">
-                            2<span class="text-3xl">Juta</span>
+                        <p class="text-5xl font-bold text-center  my-3 text-green-800">
+                            {{ configPlans.medium.prefixPrice.price }}<span class="text-3xl">{{
+                                configPlans.medium.prefixPrice.unit }}</span>
                         </p>
                         <p class="text-sm text-center uppercase  text-green-800">
-                            10 User
+                            {{ configPlans.medium.maxUser }} User
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Chart of Accounts
+                        </p>
+
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Invoice
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Cash & Bank
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Receivable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Account Payable
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            General Ledger
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Income Statement
+                        </p>
+                        <p class="text-sm text-center uppercase  text-green-800">
+                            Trial Balance
                         </p>
                     </div>
                     <div class="flex flex-col items-center justify-center w-full h-full py-6 rounded-b-lg bg-green-800">
-                        <button
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800">
+                        <a href="{{ route('checkout.index',{
+                            'plan' : 'Medium',
+                            'id':company.token
+                        })}}"
+                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            data-plan="{{ configPlans.medium.price }}">
                             Mulai
-                        </button>
+                        </a>
+
                     </div>
                 </label>
             </div>
             {{-- End Medium --}}
-
+            @endif
 
             {{-- Start Enterprise --}}
-            <div class="w-full p-4 md:w-1/2 lg:w-1/4 ">
-                <label
-                    class="flex flex-col rounded-lg shadow-lg group  bg-white relative cursor-pointer hover:shadow-2xl">
-                    <div class="w-full px-4 py-6 rounded-t-lg card-section-1">
-                        <h3 class="mx-auto text-base font-semibold text-center  text-green-800 ">
+            <div class=" w-full p-4 md:w-1/2 lg:w-1/4 ">
+                <label class=" flex flex-col rounded-lg shadow-lg group {{ configPlans.enterprise.isActive ? 'bg-green-50  border-2 border-green-800'
+                :'bg-white' }} relative cursor-pointer
+                            hover:shadow-2xl ">
+                    <div class="w-full px-4 py-4 rounded-t-lg card-section-1 flex-1">
+                        <h3 class="mx-auto text-base font-semibold text-center  text-green-800  ">
                             Enterprise
                         </h3>
-
-                        <p class="text-2xl  text-center my-4 text-green-800">
+                        <p class="text-2xl  text-center my-28 text-green-800">
                             Paket khusus yang sesuai dengan bisnis Anda
                         </p>
                     </div>
                     <div class="flex flex-col items-center justify-center w-full h-full py-6 rounded-b-lg bg-green-800">
-                        <button
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800">
+                        <a href="{{ route('contact-us.index')}}"
+                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 "
+                            id="btn-contact-us">
                             Kontak Kami
-                        </button>
+                        </a>
                     </div>
                 </label>
             </div>
             {{-- End Enterprise --}}
         </div>
         {{-- ENd Plans --}}
-
-        {{-- Payments --}}
-        <div class="flex flex-col w-full md:w-1/3  rounded-md mx-auto w-full bg-white my-5 hover:shadow-2xl">
-            <div class="flex   justify-between ">
-                <div class="p-3 text-lg">Total Pembayaran</div>
-                <div class="p-3 text-darkGreen text-xl font-bold">Rp. 400.000</div>
-            </div>
-
-
-            <div class="p-3">
-
-                {{-- Tipe Perusahaan --}}
-                <div class="w-full  mb-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_account_type">
-                        Masa Langganan<span class="text-sm text-red-500">*</span>
-                    </label>
-                    <select
-                        class=" w-full bg-slate-200 p-2 px-3 rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
-                        id="company_account_type" name="type" aria-describedby="company_account_type-rule_required">
-                        <option value="">Pilih..</option>
-                        <option value="1">1 Bulan</option>
-                        <option value="3">3 Bulan</option>
-                        <option value="6">6 Bulan</option>
-                        <option value="12">12 Bulan</option>
-                    </select>
-                </div>
-                {{-- End TIpe Perusahaan --}}
-
-                <div class="w-full my-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_fax_number">
-                        No Kartu Kredit <span class="text-sm text-red-500">*</span>
-                    </label>
-                    <input placeholder="5555 4444 4444 4444"
-                        class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                        type="text" name="fax" id="company_fax_number">
-                </div>
-
-                <!-- Name & Brand -->
-                <div class="flex flex-wrap -mx-3 mb-3">
-                    <!-- Name -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_name">
-                            Expired
-                            <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="tel" autocomplete="cc-exp" autocorrect="off" autocapitalize="none" spellcheck="false"
-                            name="expiration" id="expiration" maxlength="9" placeholder="MM/YY"
-                            aria-describedby="field-description-expirationDate">
-                    </div>
-                    <!-- End Name -->
-                    <!-- Brand -->
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="brand_name">
-                            Secure Code <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="123"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="number" name="brand_name" id="brand_name">
-                    </div>
-                    <!-- End Brand -->
-                </div>
-                <!--End Name & Brand -->
-
-                <div class=" mt-5 flex  flex-col justify-center">
-
-                    <button type="submit"
-                        class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2">
-                        <span class="text-center">Bayar
-                            Sekarang</span></button>
-
-                    <p class="text-xs mt-5">Dengan memulai langganan di Sempoa, Anda setuju dengan Ketentuan Layanan
-                        Keanggotaan kami. Metode
-                        pembayaran Anda akan dikenai biaya berulang sebesar {dinamis}, kecuali Anda memutuskan untuk
-                        membatalkannya. Kami tidak memberikan pengembalian dana untuk langganan yang dibatalkan di
-                        antara siklus penagihan. Sempoa akan membantu Anda mengelola bisnis Anda dengan lebih efisien.
-                        Bergabunglah sekarang!</p>
-                </div>
-            </div>
-        </div>
-        {{-- ENd Payments --}}
     </div>
-
 </body>
 
 </html>
