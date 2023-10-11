@@ -27,9 +27,11 @@ Route.get('/about', 'HomeController.about').as('home.about')
 
 Route.get('/plans/:id(token)','PlansController.index').as('plan.index')
 
-Route.get("/checkout/:plan/:id",function(){
- return  "Checkout Page";
-}).as('checkout.index');
+Route.get("/checkout/:plan/:id(token)",'PlansController.checkoutPlanShow')
+.where('plan',/Minimalist|Basic|Medium/)
+.as('checkout.index');
+
+Route.post('checkout/:id(token)','PlansController.checkoutPlan').as('checkout.store');
 
 
 Route.get("contact-us",'ContactUsController.index').as('contact-us.index');
