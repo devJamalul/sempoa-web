@@ -3,16 +3,60 @@
 
 @section('content')
 <div class="row">
-  <div class="col-lg-12">
+  <div class="col-lg-9">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-primary font-weight-bold">{{ pluralize(title) }}</h1>
+      <h1 class="h3 mb-0 text-primary font-weight-bold">Subscription #{{ title }}</h1>
       <a href="{{ route('subscriptions.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         Back
       </a>
     </div>
     <div class="card">
       <div class="card-body">
-        //
+        <div class="row">
+          <div class="col-lg-9">
+            Nama: <span class="text-primary font-weight-bold">{{ perusahaan.company_name }}</span> <br />
+            Telepon: {{ perusahaan.phone_number }} <br />
+            Email: {{ perusahaan.email }} <br />
+            Alamat: {{ perusahaan.address }}, <br />
+            {{ perusahaan.city }}-{{ perusahaan.country }}
+          </div>
+          <div class="col-lg-3">
+            <p class="text-primary font-weight-bold">Tanggal {{ subscription.created_at.toFormat('dd LLL yyyy') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h3 class="text-muted font-weight-bold">Informasi Order</h3>
+        <div class="row">
+          <div class="col-lg-9">
+            Paket: <span class="text-primary font-weight-bold">{{ subscription.package_name }}</span> <br />
+            {{ subscription.package_description }} <br />
+            Maks. Pengguna: {{ subscription.max_users }} <br />
+            Harga: {{ subscription.end_date.toFormat('dd LLL yyyy') }} <br />
+
+          </div>
+          <div class="col-lg-3">
+            <span class="text-primary font-weight-bold">{{ titleCase(subscription.status) }}</span> <br />
+            Mulai: {{ subscription.start_date.toFormat('dd LLL yyyy') }} <br />
+            Selesai: {{ subscription.end_date.toFormat('dd LLL yyyy') }} <br />
+            Siklus:
+            @if(subscription.interval)
+            {{ subscription.interval_count }} {{ subscription.interval }}
+            @else
+            once
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h3 class="text-muted font-weight-bold">Histori Pembayaran</h3>
+        // cont... //
       </div>
     </div>
   </div>

@@ -8,6 +8,7 @@ import { bind } from '@adonisjs/route-model-binding'
 import CompanyUpdateValidator from 'App/Validators/CompanyUpdateValidator';
 import axios from 'axios';
 import sempoa from 'Config/sempoa';
+import Subscription from 'App/Models/Subscription';
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -47,12 +48,14 @@ export default class CompaniesController {
         await company.save()
 
         await company.related('subscriptions').create({
+          reference_number: await Subscription.generateReferenceNumber(company.id),
           package_name: "Trial",
           package_description: "Trial 30 hari",
-          max_users: 1,
+          max_users: 2,
           price: 0,
           start_date: now,
-          end_date: now.plus({ months: 1 })
+          end_date: now.plus({ months: 1 }),
+          status: Subscription.STATUS_ONGOING
         })
 
         // send to ERP

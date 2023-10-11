@@ -36,7 +36,7 @@
               <td class="text-center">{{ subscription.end_date.toFormat('dd LLL yyyy') }}</td>
               <td class="text-center">
                 @if(subscription.interval)
-                per {{ subscription.interval_count }} {{ subscription.interval }}
+                {{ subscription.interval_count }} {{ subscription.interval }}
                 @else
                 once
                 @endif

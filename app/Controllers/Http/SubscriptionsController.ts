@@ -28,9 +28,10 @@ export default class SubscriptionsController {
 
   @bind()
   public async edit({ view }, company: Subscription) {
-    const title = company.package_name
-    const subscriptions = company.preload('company')
-    return view.render('pages.subscription.edit', { title, subscriptions })
+    const title = company.reference_number
+    const subscription = company
+    const perusahaan = await Company.find(company.company_id)
+    return view.render('pages.subscription.edit', { title, subscription, perusahaan })
    }
 
   public async update({ }: HttpContextContract) { }
