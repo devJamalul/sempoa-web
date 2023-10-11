@@ -43,6 +43,7 @@
             <div class="flex   flex-col text-center my-3 ">
                 <div class="px-3 text-darkGreen text-xl font-bold">KONTAK KAMI</div>
             </div>
+            {{ inspect(flashMessages) }}
             <form action="{{ route('contact-us.send') }}" method="post">
                 {{ csrfField() }}
                 <div class="p-3">

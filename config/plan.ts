@@ -1,4 +1,4 @@
-const config ={
+export const configPlan ={
     minimalist:{
         price:400000,
         slashPrice:200000,
@@ -38,56 +38,56 @@ const config ={
 }
 
 export const setConfigByPackageActive = function(packageActive,Subscription){
-    config.minimalist.isShow = true;
-    config.basic.isShow = true;
-    config.medium.isShow = true;
+    configPlan.minimalist.isShow = true;
+    configPlan.basic.isShow = true;
+    configPlan.medium.isShow = true;
     
-    config.minimalist.isActive = false;
-    config.enterprise.isActive = false;
-    config.medium.isActive = false;
-    config.basic.isActive = false;
+    configPlan.minimalist.isActive = false;
+    configPlan.enterprise.isActive = false;
+    configPlan.medium.isActive = false;
+    configPlan.basic.isActive = false;
 
     if(Subscription.PACKAGE_MEDIUM == packageActive){
-        config.enterprise.isActive = false;
-        config.minimalist.isActive = false;
-        config.basic.isActive = false;
-        config.medium.isActive = true;
+        configPlan.enterprise.isActive = false;
+        configPlan.minimalist.isActive = false;
+        configPlan.basic.isActive = false;
+        configPlan.medium.isActive = true;
         
-        config.minimalist.isShow = false;
-        config.basic.isShow = false;
+        configPlan.minimalist.isShow = false;
+        configPlan.basic.isShow = false;
     }
 
     if(Subscription.PACKAGE_BASIC == packageActive){
-        config.enterprise.isActive = false;
-        config.medium.isActive = false;
-        config.minimalist.isActive = false;
-        config.basic.isActive = true;
+        configPlan.enterprise.isActive = false;
+        configPlan.medium.isActive = false;
+        configPlan.minimalist.isActive = false;
+        configPlan.basic.isActive = true;
 
 
-        config.basic.isShow = true;
-        config.minimalist.isShow = false;
-        config.medium.isShow = true;
+        configPlan.basic.isShow = true;
+        configPlan.minimalist.isShow = false;
+        configPlan.medium.isShow = true;
     }
 
     if(Subscription.PACKAGE_ENTERPRISE == packageActive){
-        config.enterprise.isActive = true;
-        config.medium.isActive = false;
-        config.basic.isActive = false;
-        config.minimalist.isActive = false;
+        configPlan.enterprise.isActive = true;
+        configPlan.medium.isActive = false;
+        configPlan.basic.isActive = false;
+        configPlan.minimalist.isActive = false;
         
-        config.minimalist.isShow = false;
-        config.basic.isShow = false;
-        config.medium.isShow = false;
+        configPlan.minimalist.isShow = false;
+        configPlan.basic.isShow = false;
+        configPlan.medium.isShow = false;
     }
 
     if(Subscription.PACKAGE_MINIMALIST == packageActive){
-        config.minimalist.isActive = true;
-        config.enterprise.isActive = false;
-        config.medium.isActive = false;
-        config.basic.isActive = false;
-        config.minimalist.isShow = true;
-        config.basic.isShow = true;
-        config.medium.isShow = true;
+        configPlan.minimalist.isActive = true;
+        configPlan.enterprise.isActive = false;
+        configPlan.medium.isActive = false;
+        configPlan.basic.isActive = false;
+        configPlan.minimalist.isShow = true;
+        configPlan.basic.isShow = true;
+        configPlan.medium.isShow = true;
     }
-    return config;
+    return configPlan;
 }
