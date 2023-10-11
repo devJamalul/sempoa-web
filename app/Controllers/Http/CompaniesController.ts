@@ -48,13 +48,15 @@ export default class CompaniesController {
         await company.save()
 
         await company.related('subscriptions').create({
+          reference_number: await Subscription.generateReferenceNumber(company.id),
           package_name: "Trial",
           package_description: "Trial 30 hari",
-          max_users: 1,
+          max_users: 2,
           price: 0,
           status:Subscription.STATUS_ONGOING,
           start_date: now,
-          end_date: now.plus({ months: 1 })
+          end_date: now.plus({ months: 1 }),
+          status: Subscription.STATUS_ONGOING
         })
 
         // send to ERP
@@ -101,7 +103,7 @@ export default class CompaniesController {
       session.flash('success', 'Success Created Company')
       return response.redirect().toRoute('companies.index')
     } catch (error) {
-      Logger.warn('Error store company', { data: error.message })
+      Logger.warn('Error store company', { data: error.messages })
       session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
       return response.redirect().toRoute('companies.create')
     }
