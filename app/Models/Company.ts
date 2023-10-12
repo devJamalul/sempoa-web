@@ -9,7 +9,19 @@ export default class Company extends BaseModel {
   public id: number
 
   @column()
-  public xendit_customer_id: string | null
+  public user_id: number | null
+
+//   @column()
+//   public xendit_customer_id: string | null
+
+  @column()
+  public masked_card_number: string | null
+
+  @column()
+  public token_id: string | null
+
+  @column()
+  public token_auth_id: string | null
 
   @column()
   public company_id: string | null
@@ -60,13 +72,15 @@ export default class Company extends BaseModel {
   public is_active:boolean
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  public created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  public updated_at: DateTime
 
-  @belongsTo(() => User)
-  public users: BelongsTo<typeof User>
+  @belongsTo(() => User, {
+    foreignKey: 'user_id'
+  })
+  public user: BelongsTo<typeof User>
 
   @hasMany(() => Subscription, {
     foreignKey: 'company_id'

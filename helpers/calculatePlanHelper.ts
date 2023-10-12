@@ -49,6 +49,14 @@ export const pricePlan = function(typePlan):number{
     if(Subscription.PACKAGE_BASIC == typePlan ) feePlan = configPlan.basic.price
     if(Subscription.PACKAGE_MEDIUM == typePlan ) feePlan = configPlan.medium.price
     if(Subscription.PACKAGE_MINIMALIST == typePlan ) feePlan = configPlan.minimalist.price
-
     return feePlan
+}
+
+
+export const calculateMaxUsers = function(typePlan):number{
+    let maxUser:number =0;
+    if(Subscription.PACKAGE_BASIC == typePlan ) maxUser = configPlan.basic.maxUser
+    if(Subscription.PACKAGE_MEDIUM == typePlan ) maxUser = configPlan.medium.maxUser
+    if(Subscription.PACKAGE_MINIMALIST == typePlan ) maxUser = configPlan.minimalist.maxUser
+    return maxUser;
 }

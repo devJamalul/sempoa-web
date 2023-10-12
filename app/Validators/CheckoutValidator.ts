@@ -28,7 +28,13 @@ export default class CheckoutValidator {
     interval_subscription: schema.number(),
     credit_card_number: schema.number(),
     expiration: schema.string(),
-    secure_code: schema.number()
+    token_id: schema.string(),
+    masked_card_number: schema.string(),
+    monthNumber: schema.string(),
+    yearNumber: schema.string(),
+    secure_code: schema.number(),
+    payload: schema.string(),
+    response: schema.string(),
   })
 
   /**
