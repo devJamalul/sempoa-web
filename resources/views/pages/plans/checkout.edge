@@ -18,6 +18,31 @@
         <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2 font-bold"> Pembayaran Layanan
         </p>
 
+        <div id="success" style="display:none;" class="text-center mt-10">
+            <p>Success! Use the token id below to charge the credit card.</p>
+            <div class="request">
+                <span>REQUEST DATA</span>
+                <pre class="request-data"></pre>
+            </div>
+            <span>RESPONSE</span>
+            <pre class="result"></pre>
+        </div>
+
+        <div id="error" style="display:none;" class="text-center mt-10">
+            <p>Whoops! There was an error while processing your request.</p>
+            <div class="request">
+                <span>REQUEST DATA</span>
+                <pre class="request-data"></pre>
+            </div>
+            <span>RESPONSE</span>
+            <pre class="result"></pre>
+        </div>
+
+        <div class="overlay" style="display: none;"></div>
+        <div id="three-ds-container" style="display: none;" class="text-center mt-10">
+            <iframe height="450" width="550" id="sample-inline-frame" name="sample-inline-frame"> </iframe>
+        </div>
+
         {{-- Payments --}}
         <div class="flex flex-col w-full md:w-1/3 shadow-lg rounded-md mx-auto w-full bg-white my-5 hover:shadow-2xl"
             id="payments-container">
@@ -32,6 +57,7 @@
                     <span class="line-through text-gray-500 ">Rp. <span class="total-pay pr-1"
                             id="fee-slash">0</span></span>
                     <span class="text-xl font-bold">Rp. <span class="total-pay" id="fee-total">0</span></span>
+                    <input type="hidden" id="fee-total-raw">
                 </div>
             </div>
 
@@ -43,7 +69,7 @@
 
                 <form action="{{ route('checkout.store',{
                     'id(token)':company.token
-                }) }}" method="post">
+                }) }}" method="post" id="payment-form">
                     {{ csrfField() }}
                     {{-- Tipe Langganan --}}
                     <div class="w-full  mb-3">
@@ -164,11 +190,15 @@
                     <!--End Expired Date, Secure Code -->
 
                     <div class=" mt-5 flex  flex-col justify-center">
+                        <input type="hidden" id="monthNumber" name="monthNumber">
+                        <input type="hidden" id="yearNumber" name="yearNumber">
+                        {{--  <input type="hidden" id="payload" name="payload">
+                        <input type="hidden" id="response" name="response">  --}}
 
                         <button type="submit"
-                            class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2">
-                            <span class="text-center">Bayar
-                                Sekarang</span></button>
+                            class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2 submit">
+                            <span class="text-center">Bayar Sekarang</span></button>
+                        {{-- <button class="submit">Bayar</button> --}}
 
                         <p class="text-xs mt-5">Dengan memulai langganan di Sempoa, Anda setuju dengan Ketentuan Layanan
                             Keanggotaan kami. Metode
@@ -192,6 +222,68 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/vendor/jquery/jquery.min.js"></script>
 
+    <script type="text/javascript" src="https://js.xendit.co/v1/xendit.min.js"></script>
+    <script type="text/javascript">
+        Xendit.setPublishableKey('{{ publicKey }}');
+        var $form = $('#payment-form');
+        $(".submit").on("click", function(event) {
+            $form.submit(function(e) {
+                e.preventDefault();
+                // Disable the submit button to prevent repeated clicks:
+                $form.find('.submit').prop('disabled', true);
+                // Request a token from Xendit:
+                const payload = {
+                    amount: $('#fee-total-raw').val(),
+                    card_number: $form.find('#credit_card_number').val(),
+                    card_exp_month: $form.find('#monthNumber').val(),
+                    card_exp_year: $form.find('#yearNumber').val(),
+                    card_cvn: $form.find('#secure_code').val(),
+                    is_multiple_use: true,
+                    should_authenticate: true
+                }
+                var payloads = JSON.stringify(payload)
+                $form.append($('<input type="hidden" name="payload" />').val(payloads));
+                Xendit.card.createToken(payload, xenditResponseHandler);
+                // Prevent the form from being submitted:
+                return false;
+            });
+        });
+
+        function xenditResponseHandler (err, creditCardToken) {
+            if (err) {
+                console.error(err.message)
+                // Show the errors on the form
+                $('#error pre').text(err.message);
+                $('#error').show();
+                $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+                return;
+            }
+
+            if (creditCardToken.status === 'VERIFIED') {
+                // Get the token ID:
+                var token = creditCardToken.id;
+                var masked_card_number = creditCardToken.masked_card_number;
+                var response = JSON.stringify(creditCardToken)
+
+                // Insert the token into the form so it gets submitted to the server:
+                $form.append($('<input type="hidden" name="token_id" />').val(token));
+                $form.append($('<input type="hidden" name="masked_card_number" />').val(masked_card_number));
+                $form.append($('<input type="hidden" name="response" />').val(response));
+
+                // Submit the form to your server:
+                $form.get(0).submit();
+            } else if (creditCardToken.status === 'IN_REVIEW') {
+                window.open(creditCardToken.payer_authentication_url, 'sample-inline-frame');
+                $('#three-ds-container').show();
+            } else if (creditCardToken.status === 'FAILED') {
+                $('#error pre').text(creditCardToken.failure_reason);
+                $('#error').show();
+                $form.find('.submit').prop('disabled', false); // Re-enable submission
+            }
+        }
+    </script>
+
     <script>
         setPlan();
 
@@ -206,6 +298,7 @@
             $("#label-subscription").html(typeSubscription.val())
             $("#fee-subscription").html(toFormatPrice(planPrice.feeCalculateByMonth))
             $("#fee-total").html(toFormatPrice(planPrice.totalPay))
+            $("#fee-total-raw").val(planPrice.totalPay)
             $("#fee-slash").parent().hide();
             if(planPrice.slashPay > 0){
                 $("#fee-slash").parent().show();
@@ -214,7 +307,7 @@
         }
 
         function getDaysDateByMonth(month){
-            month = month - 1 
+            month = month - 1
             const now =  moment();
             const startDateOfmonth = moment().startOf('month');
             const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')
@@ -225,33 +318,56 @@
         function calculatePlan(monthSubscription,feePlan){
             const daysSubscription = getDaysDateByMonth(monthSubscription)
             const feeCalculateByMonth = feePlan * monthSubscription;
-            const totalPay = Math.ceil(daysSubscription.activeDayOfMonth/daysSubscription.packageDayOfMonth*feeCalculateByMonth/1000)*1000;  
+            const totalPay = Math.ceil(daysSubscription.activeDayOfMonth/daysSubscription.packageDayOfMonth*feeCalculateByMonth/1000)*1000;
             const slashPay = feeCalculateByMonth - totalPay;
             return {totalPay,slashPay,feeCalculateByMonth};
         }
 
         function toFormatPrice(price){
-                return  new Intl.NumberFormat().format(price)
+            return  new Intl.NumberFormat().format(price)
         }
 
         $('#expiration').on('keyup', function() {
-        var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-        if (input.length > 2) {
-          input = input.substring(0, 2) + '/' + input.substring(2);
-        }
-        $(this).val(input);
-      });
+            var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+            if (input.length > 2) {
+            input = input.substring(0, 2) + '/' + input.substring(2);
+            }
 
-      $('#secure_code').on('keyup', function() {
-        var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-        $(this).val(input);
-      });
+            // parsing
+            const [month, year] = input.split('/');
 
-      $('#credit_card_number').on('keyup', function() {
-        var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-        $(this).val(input);
-      });
+            // Parse the values as integers
+            const monthNumber = parseInt(month, 10);
+            let yearNumber = parseInt(year, 10);
+
+            // Adjust the year value based on a threshold (e.g., 50)
+            const currentYear = new Date().getFullYear();
+            const threshold = 50;
+            if (yearNumber <= threshold) {
+                yearNumber +=2000; // Adjust to the 21st century
+            } else {
+                yearNumber +=1900; // Adjust to the 20th century
+            }
+            // parsing
+
+            $(this).val(input);
+            $('#monthNumber').val(monthNumber.toString());
+            $('#yearNumber').val(yearNumber.toString());
+        });
+
+        $('#secure_code').on('keyup', function() {
+            var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+            $(this).val(input);
+        });
+
+        $('#credit_card_number').on('keyup', function() {
+            var input = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+            const card = Xendit.card.validateCardNumber(input);
+            console.error(card)
+            $(this).val(input);
+        });
     </script>
+
 </body>
 
 </html>

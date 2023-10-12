@@ -6,7 +6,6 @@ export default class extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('xendit_customer_id', 191).nullable
       table.string('company_id', 191).nullable
       table.string('company_name', 191).index().unique()
       table.text('address').nullable()
@@ -21,6 +20,11 @@ export default class extends BaseSchema {
       table.string('token', 191).nullable()
       table.integer('user_id').nullable().unsigned().references('users.id').onDelete('CASCADE')
       table.integer('is_verified').nullable().comment('0 - false, 1 - true').defaultTo(0)
+      // xendit
+      // table.string('xendit_customer_id', 191).nullable()
+      table.string('masked_card_number', 191).nullable()
+      table.string('token_id', 191).nullable()
+      table.string('token_auth_id', 191).nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

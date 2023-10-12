@@ -41,3 +41,12 @@ export const calculatePlan = function(monthSubscription,typePlan):number{
     const totalPay:number = Math.ceil(daysSubscription.activeDayOfMonth/daysSubscription.packageDayOfMonth*feeCalculateByMonth/1000)*1000;
    return totalPay;
 }
+
+
+export const calculateMaxUsers = function(typePlan):number{
+    let maxUser:number =0;
+    if(Subscription.PACKAGE_BASIC == typePlan ) maxUser = configPlan.basic.maxUser
+    if(Subscription.PACKAGE_MEDIUM == typePlan ) maxUser = configPlan.medium.maxUser
+    if(Subscription.PACKAGE_MINIMALIST == typePlan ) maxUser = configPlan.minimalist.maxUser
+    return maxUser;
+}

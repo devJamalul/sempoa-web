@@ -42,6 +42,7 @@ export default class CompaniesController {
         company.pic_name = data.pic_name
         company.pic_email = data.pic_email
         company.pic_phone_number = data.pic_phone
+        // company.user_id = user?.id ?? null
         company.created_by = user?.name ?? "Sistem"
         company.updated_by = user?.name ?? "Sistem"
         company.useTransaction(trx)
@@ -53,10 +54,9 @@ export default class CompaniesController {
           package_description: "Trial 30 hari",
           max_users: 2,
           price: 0,
-          status:Subscription.STATUS_ONGOING,
+          status: Subscription.STATUS_ONGOING,
           start_date: now,
-          end_date: now.plus({ months: 1 }),
-          status: Subscription.STATUS_ONGOING
+          end_date: now.plus({ months: 1 })
         })
 
         // send to ERP
@@ -85,11 +85,14 @@ export default class CompaniesController {
             // handle success
             var responseData = response.data
             company.token = responseData.token
+            company.company_id = responseData.company_id
             company.save()
+            Logger.info('Success register to ERP')
             session.flash('success', responseData.pesan)
           })
           .catch(function (error) {
             // handle error
+            Logger.warn('Error ERP: ' + error.message)
             throw new Error('Error register to ERP: ' + error.message)
           })
           .finally(function () {
@@ -104,19 +107,20 @@ export default class CompaniesController {
       return response.redirect().toRoute('companies.index')
     } catch (error) {
       Logger.warn('Error store company', { data: error.messages })
-      session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
+      Logger.warn(error)
+      session.flash({ error: 'Opss! , Failed Create Company', errors: error.messages, request: request.all() })
       return response.redirect().toRoute('companies.create')
     }
   }
 
   @bind()
-  public async edit({ view },company:Company){
+  public async edit({ view }, company: Company) {
     const title = 'Update ' + this.title
-    return  view.render('pages/company/edit',{title,company})
+    return view.render('pages/company/edit', { title, company })
   }
 
   @bind()
-  public async update({request, response, session,auth},company:Company){
+  public async update({ request, response, session, auth }, company: Company) {
     try {
       const user = auth.user
       const data = await request.validate(CompanyUpdateValidator)
@@ -139,14 +143,14 @@ export default class CompaniesController {
       return response.redirect().toRoute('companies.index')
     } catch (error) {
       Logger.warn('Error Update company', { data: error.message })
-      session.flash({ error: 'Opss! , Failed Create Company', errors : error.messages, request: request.all()})
-      return response.redirect().toRoute('companies.edit',{id:company.id})
+      session.flash({ error: 'Opss! , Failed Create Company', errors: error.messages, request: request.all() })
+      return response.redirect().toRoute('companies.edit', { id: company.id })
     }
   }
 
 
   @bind()
-  public async statusUpdate({response, session,auth},company:Company){
+  public async statusUpdate({ response, session, auth }, company: Company) {
     try {
       var message: string = '';
 
@@ -165,8 +169,8 @@ export default class CompaniesController {
       return response.redirect().toRoute('companies.index')
     } catch (error) {
       Logger.warn('Error Update company', { data: error.message })
-      session.flash({ error: 'Opss! , Failed Updated Status'})
-      return response.redirect().toRoute('companies.edit',{id:company.id})
+      session.flash({ error: 'Opss! , Failed Updated Status' })
+      return response.redirect().toRoute('companies.edit', { id: company.id })
     }
   }
 
