@@ -91,7 +91,6 @@ export default class AuthController {
 
       return response.redirect().toRoute('register.show')
     } catch (error) {
-      console.log(error.message)
       Logger.warn(error.message)
       session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
       return response.redirect().toRoute('register.show')
