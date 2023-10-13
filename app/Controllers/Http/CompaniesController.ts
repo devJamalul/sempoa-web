@@ -92,6 +92,7 @@ export default class CompaniesController {
           })
           .catch(function (error) {
             // handle error
+            console.log(error)
             Logger.warn('Error ERP: ' + error.message)
             throw new Error('Error register to ERP: ' + error.message)
           })

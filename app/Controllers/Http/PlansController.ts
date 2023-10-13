@@ -5,8 +5,7 @@ import { bind } from '@adonisjs/route-model-binding'
 import Subscription from 'App/Models/Subscription';
 import Logger from '@ioc:Adonis/Core/Logger'
 import CheckoutValidator from 'App/Validators/CheckoutValidator';
-import { calculateMaxUsers, calculatePlan } from 'Helpers/calculatePlanHelper';
-import { warn } from 'console';
+import { calculateMaxUsers, calculatePlan,  pricePlan} from 'Helpers/calculatePlanHelper';
 import sempoa from 'Config/sempoa';
 import { DateTime } from 'luxon';
 import Payload from 'App/Models/Payload';
@@ -23,8 +22,9 @@ export default class PlansController {
         const packageActive = await Subscription.packageActive(company);
         const configPlans = setConfigByPackageActive(packageActive,Subscription)
         const publicKey = sempoa.xendit.public_key
+        const priceActivePlan = pricePlan(packageActive)
 
-      return view.render('pages/plans/checkout', { company, configPlans, plan, publicKey })
+      return view.render('pages/plans/checkout', { company, configPlans, plan, publicKey ,priceActivePlan})
     }
 
     @bind()
@@ -32,7 +32,8 @@ export default class PlansController {
         const bodyRequest = request.body();
         try {
             const data = await request.validate(CheckoutValidator)
-            const feePayByCustomer:number = calculatePlan(data.interval_subscription,data.type_subscription)
+            const packageActive = await Subscription.packageActive(company);
+            const feePayByCustomer:number = calculatePlan(data.interval_subscription,data.type_subscription,packageActive)
             const maxUser:number = calculateMaxUsers(data.type_subscription)
             const user = auth.user
             const now = DateTime.now()
@@ -76,21 +77,7 @@ export default class PlansController {
             myResponse.updated_by = user?.name ?? null
             await myResponse.save()
 
-            // const secret_key = sempoa.xendit.secret_key
-            // const public_key = sempoa.xendit.public_key
-            // console.table(data)
-            // Logger.info(feePayByCustomer.toString())
-            // Logger.warn(secret_key)
-            // Logger.warn(public_key)
-
-            // TODO: ERP update subscription
-
-            session.flash('success', 'Success Created Company')
-            return response.ok({
-                data: data,
-                fee: feePayByCustomer.toString(),
-                hello:"Hllo"
-            })
+            return response.redirect().toRoute('checkout.message');
           } catch (error) {
             Logger.warn('Error store company', { data: error.message })
             Logger.warn(error)

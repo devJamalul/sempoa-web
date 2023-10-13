@@ -1,7 +1,7 @@
 export const configPlan ={
     minimalist:{
         price:400000,
-        slashPrice:200000,
+        slashPrice:'600.000',
         maxUser:2,
         isShow:true,
         isActive:false,
@@ -12,7 +12,7 @@ export const configPlan ={
     },
     basic:{
         price:1000000,
-        slashPrice:200000,
+        slashPrice:'2.500.000',
         maxUser:5,
         isShow:true,
         isActive:false,
@@ -23,7 +23,7 @@ export const configPlan ={
     },
     medium:{
         price:2000000,
-        slashPrice:200000,
+        slashPrice:'3.000.000',
         maxUser:10,
         isShow:true,
         isActive:false,

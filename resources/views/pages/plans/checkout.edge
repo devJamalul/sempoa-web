@@ -9,6 +9,14 @@
 </head>
 
 <body class="bg-neutral-100">
+    <div style="display: none" id="loading"
+        class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4">
+        </div>
+        <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+        <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+    </div>
+
     <div class="container mx-auto">
         <a href="{{ route('home') }}">
             <img src="/images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
@@ -18,30 +26,27 @@
         <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2 font-bold"> Pembayaran Layanan
         </p>
 
-        <div id="success" style="display:none;" class="text-center mt-10">
-            <p>Success! Use the token id below to charge the credit card.</p>
-            <div class="request">
-                <span>REQUEST DATA</span>
-                <pre class="request-data"></pre>
+        <div id="error" style="{{ flashMessages.get('error') ? '' : 'display:none'}}"
+            class="rounded-md bg-red-50 p-4 w-full md:w-1/3 mx-auto">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-5 w-5 text-red-400">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Gagal Melakukan Pembayaran</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <p>Mohon Maaf Anda Gagal Melakukan Pembayaran , Anda Dapat Mencoba Lagi.</p>
+                    </div>
+                </div>
             </div>
-            <span>RESPONSE</span>
-            <pre class="result"></pre>
         </div>
 
-        <div id="error" style="display:none;" class="text-center mt-10">
-            <p>Whoops! There was an error while processing your request.</p>
-            <div class="request">
-                <span>REQUEST DATA</span>
-                <pre class="request-data"></pre>
-            </div>
-            <span>RESPONSE</span>
-            <pre class="result"></pre>
-        </div>
 
-        <div class="overlay" style="display: none;"></div>
-        <div id="three-ds-container" style="display: none;" class="text-center mt-10">
-            <iframe height="450" width="550" id="sample-inline-frame" name="sample-inline-frame"> </iframe>
-        </div>
+
 
         {{-- Payments --}}
         <div class="flex flex-col w-full md:w-1/3 shadow-lg rounded-md mx-auto w-full bg-white my-5 hover:shadow-2xl"
@@ -54,8 +59,6 @@
             <div class="flex   justify-between my-3 ">
                 <div class="px-3 text-lg ">Total Pembayaran</div>
                 <div class="px-3 text-darkGreen  ">
-                    <span class="line-through text-gray-500 ">Rp. <span class="total-pay pr-1"
-                            id="fee-slash">0</span></span>
                     <span class="text-xl font-bold">Rp. <span class="total-pay" id="fee-total">0</span></span>
                     <input type="hidden" id="fee-total-raw">
                 </div>
@@ -82,16 +85,17 @@
                             aria-describedby="type_subscription-rule_required">
                             @if(configPlans.minimalist.isShow)
                             <option value="Minimalist" data-price="{{ configPlans.minimalist.price }}" {{
-                                plan=='Minimalist' ? 'selected' :'' }}>Minimalist
+                                plan=='Minimalist' ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">
+                                Minimalist
                             </option>
                             @endif
                             @if(configPlans.basic.isShow)
                             <option value="Basic" data-price="{{ configPlans.basic.price  }}" {{ plan=='Basic'
-                                ? 'selected' :'' }}>Basic</option>
+                                ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">Basic</option>
                             @endif
                             @if(configPlans.medium.isShow)
                             <option value="Medium" data-price="{{ configPlans.medium.price }}" {{ plan=='Medium'
-                                ? 'selected' :'' }}>Medium</option>
+                                ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">Medium</option>
                             @endif
                         </select>
                         @if (flashMessages.has('errors.type_subscription'))
@@ -192,8 +196,7 @@
                     <div class=" mt-5 flex  flex-col justify-center">
                         <input type="hidden" id="monthNumber" name="monthNumber">
                         <input type="hidden" id="yearNumber" name="yearNumber">
-                        {{--  <input type="hidden" id="payload" name="payload">
-                        <input type="hidden" id="response" name="response">  --}}
+                        <div id="payload"></div>
 
                         <button type="submit"
                             class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2 submit">
@@ -227,6 +230,8 @@
         Xendit.setPublishableKey('{{ publicKey }}');
         var $form = $('#payment-form');
         $(".submit").on("click", function(event) {
+            $('#error').hide();
+            $("#loading").show();
             $form.submit(function(e) {
                 e.preventDefault();
                 // Disable the submit button to prevent repeated clicks:
@@ -242,7 +247,7 @@
                     should_authenticate: true
                 }
                 var payloads = JSON.stringify(payload)
-                $form.append($('<input type="hidden" name="payload" />').val(payloads));
+                $("#payload").html(`<input type="hidden"  name="payload" value="${payloads}" />`);
                 Xendit.card.createToken(payload, xenditResponseHandler);
                 // Prevent the form from being submitted:
                 return false;
@@ -251,12 +256,11 @@
 
         function xenditResponseHandler (err, creditCardToken) {
             if (err) {
-                console.error(err.message)
                 // Show the errors on the form
                 $('#error pre').text(err.message);
                 $('#error').show();
+                $("#loading").hide();
                 $form.find('.submit').prop('disabled', false); // Re-enable submission
-
                 return;
             }
 
@@ -267,15 +271,12 @@
                 var response = JSON.stringify(creditCardToken)
 
                 // Insert the token into the form so it gets submitted to the server:
-                $form.append($('<input type="hidden" name="token_id" />').val(token));
+                $form.append($('<input type="hidden"  name="token_id" />').val(token));
                 $form.append($('<input type="hidden" name="masked_card_number" />').val(masked_card_number));
                 $form.append($('<input type="hidden" name="response" />').val(response));
-
-                // Submit the form to your server:
-                $form.get(0).submit();
+                setTimeout($form.get(0).submit(),10000)
             } else if (creditCardToken.status === 'IN_REVIEW') {
-                window.open(creditCardToken.payer_authentication_url, 'sample-inline-frame');
-                $('#three-ds-container').show();
+                window.open(creditCardToken.payer_authentication_url, "MsgWindow", "width=550,height=450");
             } else if (creditCardToken.status === 'FAILED') {
                 $('#error pre').text(creditCardToken.failure_reason);
                 $('#error').show();
@@ -293,32 +294,36 @@
         function setPlan(){
             const typeSubscription = $("#type_subscription").find(':selected')
             const feePlan = typeSubscription.data('price');
+            const feePlanActive =  typeSubscription.data('priceActive');
             const monthSubscription = $("#interval_subscription").find(':selected').val();
-            const planPrice = calculatePlan(monthSubscription,feePlan)
+            const isUpgrade = feePlan != feePlanActive && feePlanActive != 0  
+            const planPrice = calculatePlan(monthSubscription,feePlan,isUpgrade,feePlanActive)
             $("#label-subscription").html(typeSubscription.val())
             $("#fee-subscription").html(toFormatPrice(planPrice.feeCalculateByMonth))
             $("#fee-total").html(toFormatPrice(planPrice.totalPay))
-            $("#fee-total-raw").val(planPrice.totalPay)
             $("#fee-slash").parent().hide();
             if(planPrice.slashPay > 0){
-                $("#fee-slash").parent().show();
-                $("#fee-slash").html(toFormatPrice(planPrice.slashPay))
+                $("#fee-subscription").parent().addClass('line-through')
             }
         }
 
         function getDaysDateByMonth(month){
             month = month - 1
-            const now =  moment();
+            const now =  moment()
             const startDateOfmonth = moment().startOf('month');
-            const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')
-            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')
+            const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')+1
+            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')+1 
             return {activeDayOfMonth:activeDayOfMonth,packageDayOfMonth:packageDayOfMonth}
         }
 
-        function calculatePlan(monthSubscription,feePlan){
+        function calculatePlan(monthSubscription,feePlan,isUpgrade,feePlanActive){
+            let totalPay =0;
             const daysSubscription = getDaysDateByMonth(monthSubscription)
             const feeCalculateByMonth = feePlan * monthSubscription;
-            const totalPay = Math.ceil(daysSubscription.activeDayOfMonth/daysSubscription.packageDayOfMonth*feeCalculateByMonth/1000)*1000;
+            totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);  
+            if(isUpgrade) totalPay = totalPay - (feePlanActive/daysSubscription.packageDayOfMonth)*daysSubscription.activeDayOfMonth;
+            totalPay =Math.ceil(totalPay/1000)*1000
+            totalPay = totalPay > feeCalculateByMonth ? feeCalculateByMonth : totalPay;
             const slashPay = feeCalculateByMonth - totalPay;
             return {totalPay,slashPay,feeCalculateByMonth};
         }

@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import sempoa from 'Config/sempoa';
 
 
 Route.get('/', 'HomeController.index').as('home')
@@ -31,6 +32,9 @@ Route.get("/checkout/:plan/:id(token)",'PlansController.checkoutPlanShow')
 .where('plan',/Minimalist|Basic|Medium/)
 .as('checkout.index');
 
+Route.get('checkout/message',function({view}){
+    return view.render('pages/plans/message-checkout',{ urlSempoa:sempoa.url});
+}).as('checkout.message')
 Route.post('checkout/:id(token)','PlansController.checkoutPlan').as('checkout.store');
 
 
