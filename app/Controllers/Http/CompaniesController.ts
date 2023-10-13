@@ -92,7 +92,6 @@ export default class CompaniesController {
           })
           .catch(function (error) {
             // handle error
-            console.log(error)
             Logger.warn('Error ERP: ' + error.message)
             throw new Error('Error register to ERP: ' + error.message)
           })
@@ -109,7 +108,7 @@ export default class CompaniesController {
     } catch (error) {
       Logger.warn('Error store company', { data: error.messages })
       Logger.warn(error)
-      session.flash({ error: 'Opss! , Failed Create Company', errors: error.messages, request: request.all() })
+      session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
       return response.redirect().toRoute('companies.create')
     }
   }

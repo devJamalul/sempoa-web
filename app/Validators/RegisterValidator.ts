@@ -37,9 +37,13 @@ export default class RegisterValidator {
       rules.unique({ table: 'companies', column: 'email' }),
       rules.minLength(4),
       rules.maxLength(191),
+      rules.email()
     ]),
     company_phone: schema.string([
       rules.unique({ table: 'companies', column: 'phone_number' }),
+      rules.mobile({
+        locale:['id-ID']
+      }),
       rules.minLength(8),
       rules.maxLength(30),
     ]),
@@ -61,6 +65,7 @@ export default class RegisterValidator {
     ]),
     company_ppn_status: schema.string(),
     fax: schema.string.nullable([
+      rules.regex(/^[0-9,\(\)\#\*]+$/i),
       rules.minLength(9),
       rules.maxLength(30),
     ]),
@@ -77,10 +82,14 @@ export default class RegisterValidator {
     phone_number: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
+      rules.mobile({
+        locale:['id-ID']
+      })
     ]),
     pic_email: schema.string([
       rules.minLength(9),
       rules.maxLength(191),
+      rules.email(),
     ]),
     password: schema.string([
       rules.minLength(8),

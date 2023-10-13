@@ -163,8 +163,8 @@
           <select class="form-control {{ flashMessages.has('errors.is_taxable') ? 'is-invalid' : '' }}"
             name="is_taxable" aria-label="Default select example">
             <option value="" selected>--Choice--</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
+            <option value="true" {{ flashMessages.get('request.is_taxable')=='true' ? 'selected' :'' }}>Yes</option>
+            <option value="false" {{ flashMessages.get('request.is_taxable')=='false' ? 'selected' :'' }}>No</option>
           </select>
           @if (flashMessages.has('errors.is_taxable'))
           <div class="invalid-feedback">
@@ -182,8 +182,8 @@
           <select class="form-control {{ flashMessages.has('errors.account_type') ? 'is-invalid' : '' }}"
             name="account_type" aria-label="Default select example">
             <option value="" selected>--Choice--</option>
-            <option value="1">UMKM</option>
-            <option value="2">Korporasi</option>
+            <option value="1" {{ flashMessages.get('request.account_type')=='1' ? 'selected' :'' }}>UMKM</option>
+            <option value="2" {{ flashMessages.get('request.account_type')=='2' ? 'selected' :'' }}>Korporasi</option>
           </select>
           @if (flashMessages.has('errors.account_type'))
           <div class="invalid-feedback">
@@ -200,7 +200,8 @@
       <div class="form-group">
         <label for="company_address">Company Address<span class="text-small text-danger">*</span></label>
         <textarea class="form-control {{ flashMessages.has('errors.company_address') ? 'is-invalid' : '' }}"
-          name="company_address" rows="3" aria-describedby="company_addressHelp"></textarea>
+          name="company_address" rows="3" aria-describedby="company_addressHelp">{{ flashMessages.get('request.company_address')|| "" }}
+        </textarea>
 
         @if (flashMessages.has('errors.company_address'))
         <div class="invalid-feedback">
@@ -265,7 +266,7 @@
       <!-- PIC Password -->
       <div class="form-group ">
         <label for="pic_password-input">PIC Password<span class="text-small text-danger">*</span></label>
-        <input type="text" class="form-control {{ flashMessages.has('errors.pic_password') ? 'is-invalid' : '' }}"
+        <input type="password" class="form-control {{ flashMessages.has('errors.pic_password') ? 'is-invalid' : '' }}"
           name="pic_password" id="pic_password-input" autocomplete="off"
           value="{{ flashMessages.get('request.pic_password') || '' }}">
         @if (flashMessages.has('errors.pic_password'))

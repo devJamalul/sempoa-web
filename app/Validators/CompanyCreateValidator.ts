@@ -25,24 +25,52 @@ export default class CompanyCreateValidator {
    */
   public schema = schema.create({
     company_name: schema.string(),
-    brand_name: schema.string.nullable(),
+    brand_name: schema.string.nullable(
+      [
+        rules.minLength(4),
+        rules.maxLength(191),
+      ]
+    ),
     company_email: schema.string([
+      rules.unique({ table: 'companies', column: 'email' }),
       rules.email()
     ]),
-    company_phone: schema.string(),
-    website: schema.string.nullable(),
+    company_phone: schema.string([
+      rules.mobile({
+        locale:['id-ID']
+      })
+    ]),
+    website: schema.string.nullable(
+      [
+        rules.minLength(4),
+        rules.maxLength(191),
+      ]
+    ),
     is_taxable: schema.string(),
-    company_fax_number: schema.string.nullable(),
-    company_country: schema.string(),
-    company_city: schema.string(),
-    account_type: schema.string(),
-    company_address: schema.string(),
-    pic_name: schema.string(),
-    pic_phone: schema.string(),
-    pic_email: schema.string([
-      rules.email()
+    company_fax_number: schema.string.nullable([
+      rules.regex(/^[0-9,\(\)\#\*]+$/i)
     ]),
-    pic_password: schema.string(),
+    company_country: schema.string([
+      rules.maxLength(150),
+    ]),
+    company_city: schema.string([
+      rules.maxLength(150),
+    ]),
+    account_type: schema.string(),
+    company_address: schema.string.nullable(),
+    pic_name: schema.string(),
+    pic_phone: schema.string([
+      rules.mobile({
+        locale:['id-ID']
+      })
+    ]),
+    pic_email: schema.string([
+      rules.email(),
+      rules.maxLength(255)
+    ]),
+    pic_password: schema.string([
+      rules.minLength(8)
+    ]),
   })
 
   /**
