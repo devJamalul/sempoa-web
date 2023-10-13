@@ -10,8 +10,8 @@
      "allowJs": true,
      "sourceMap": true,
      "baseUrl": ".",
-     "paths": {
-       "@/*": ["resources/js/*"]
+     "paths": { 
+      "@/*": ["resources/js/*"]
      },
      "lib": ["dom", "dom.iterable", "esnext"],
      

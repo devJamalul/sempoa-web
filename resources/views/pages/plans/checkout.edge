@@ -9,6 +9,14 @@
 </head>
 
 <body class="bg-neutral-100">
+    <div style="display: none" id="loading"
+        class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4">
+        </div>
+        <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+        <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+    </div>
+
     <div class="container mx-auto">
         <a href="{{ route('home') }}">
             <img src="/images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
@@ -18,7 +26,8 @@
         <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2 font-bold"> Pembayaran Layanan
         </p>
 
-        <div id="error" style="display:none;" class="rounded-md bg-red-50 p-4 w-full md:w-1/3 mx-auto">
+        <div id="error" style="{{ flashMessages.get('error') ? '' : 'display:none'}}"
+            class="rounded-md bg-red-50 p-4 w-full md:w-1/3 mx-auto">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -189,8 +198,7 @@
                     <div class=" mt-5 flex  flex-col justify-center">
                         <input type="hidden" id="monthNumber" name="monthNumber">
                         <input type="hidden" id="yearNumber" name="yearNumber">
-                        {{-- <input type="hidden" id="payload" name="payload">
-                        <input type="hidden" id="response" name="response"> --}}
+                        <div id="payload"></div>
 
                         <button type="submit"
                             class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2 submit">
@@ -224,6 +232,8 @@
         Xendit.setPublishableKey('{{ publicKey }}');
         var $form = $('#payment-form');
         $(".submit").on("click", function(event) {
+            $('#error').hide();
+            $("#loading").show();
             $form.submit(function(e) {
                 e.preventDefault();
                 // Disable the submit button to prevent repeated clicks:
@@ -239,7 +249,7 @@
                     should_authenticate: true
                 }
                 var payloads = JSON.stringify(payload)
-                $form.append($('<input type="hidden" name="payload" />').val(payloads));
+                $("#payload").html(`<input type="hidden"  name="payload" value="${payloads}" />`);
                 Xendit.card.createToken(payload, xenditResponseHandler);
                 // Prevent the form from being submitted:
                 return false;
@@ -251,8 +261,8 @@
                 // Show the errors on the form
                 $('#error pre').text(err.message);
                 $('#error').show();
+                $("#loading").hide();
                 $form.find('.submit').prop('disabled', false); // Re-enable submission
-
                 return;
             }
 
@@ -263,12 +273,10 @@
                 var response = JSON.stringify(creditCardToken)
 
                 // Insert the token into the form so it gets submitted to the server:
-                $form.append($('<input type="hidden" name="token_id" />').val(token));
+                $form.append($('<input type="hidden"  name="token_id" />').val(token));
                 $form.append($('<input type="hidden" name="masked_card_number" />').val(masked_card_number));
                 $form.append($('<input type="hidden" name="response" />').val(response));
-
-                // Submit the form to your server:
-                $form.get(0).submit();
+                setTimeout($form.get(0).submit(),10000)
             } else if (creditCardToken.status === 'IN_REVIEW') {
                 window.open(creditCardToken.payer_authentication_url, "MsgWindow", "width=550,height=450");
             } else if (creditCardToken.status === 'FAILED') {
