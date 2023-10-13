@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sempoa.id</title>
-    @entryPointStyles('app')
-</head>
+
+@set('title', 'Checkout Plan')
+@include('layouts/head-tail')
 
 <body class="bg-neutral-100">
     <div style="display: none" id="loading"
@@ -258,8 +255,12 @@
             if (err) {
                 // Show the errors on the form
                 $('#error pre').text(err.message);
-                $('#error').show();
-                $("#loading").hide();
+                $("#loading").show();
+                setTimeout(function(){
+                    $("#loading").hide()
+                    $('#error').show();
+                },1000)
+                setTimeout(()=>$("#error").slideUp(1000),5000)
                 $form.find('.submit').prop('disabled', false); // Re-enable submission
                 return;
             }
