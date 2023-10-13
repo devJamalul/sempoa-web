@@ -24,7 +24,7 @@ const getDaysDateByMonth = function(month){
     })
 
     const transformDate = {
-        activeDayOfMonth : parseInt(activeDayOfMonth.days.toString()),
+        activeDayOfMonth : parseInt(activeDayOfMonth.days.toString()) + 1,
         packageDayOfMonth : parseInt(packageDayOfMonth.days.toString()) + 1
     }
     return transformDate
@@ -38,9 +38,10 @@ export const calculatePlan = function(monthSubscription: number,typePlan: string
     let totalPay:number =0;
     const daysSubscription = getDaysDateByMonth(monthSubscription)
     const feeCalculateByMonth:number = feePlan * monthSubscription;
-    totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);  
+    totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);
     if(isUpgrade) totalPay = totalPay - (feePlanActive/daysSubscription.packageDayOfMonth)*daysSubscription.activeDayOfMonth;
     totalPay =Math.ceil(totalPay/1000)*1000
+    totalPay = totalPay > feeCalculateByMonth ? feeCalculateByMonth : totalPay;  
    return totalPay;
 }
 

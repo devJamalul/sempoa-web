@@ -59,8 +59,6 @@
             <div class="flex   justify-between my-3 ">
                 <div class="px-3 text-lg ">Total Pembayaran</div>
                 <div class="px-3 text-darkGreen  ">
-                    <span class="line-through text-gray-500 ">Rp. <span class="total-pay pr-1"
-                            id="fee-slash">0</span></span>
                     <span class="text-xl font-bold">Rp. <span class="total-pay" id="fee-total">0</span></span>
                     <input type="hidden" id="fee-total-raw">
                 </div>
@@ -305,17 +303,16 @@
             $("#fee-total").html(toFormatPrice(planPrice.totalPay))
             $("#fee-slash").parent().hide();
             if(planPrice.slashPay > 0){
-                $("#fee-slash").parent().show();
-                $("#fee-slash").html(toFormatPrice(planPrice.slashPay))
+                $("#fee-subscription").parent().addClass('line-through')
             }
         }
 
         function getDaysDateByMonth(month){
             month = month - 1
-            const now =  moment();
+            const now =  moment()
             const startDateOfmonth = moment().startOf('month');
-            const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')
-            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days') + 1
+            const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')+1
+            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')+1 
             return {activeDayOfMonth:activeDayOfMonth,packageDayOfMonth:packageDayOfMonth}
         }
 
@@ -326,6 +323,7 @@
             totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);  
             if(isUpgrade) totalPay = totalPay - (feePlanActive/daysSubscription.packageDayOfMonth)*daysSubscription.activeDayOfMonth;
             totalPay =Math.ceil(totalPay/1000)*1000
+            totalPay = totalPay > feeCalculateByMonth ? feeCalculateByMonth : totalPay;
             const slashPay = feeCalculateByMonth - totalPay;
             return {totalPay,slashPay,feeCalculateByMonth};
         }
