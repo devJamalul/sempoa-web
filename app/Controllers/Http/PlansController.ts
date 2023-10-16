@@ -145,8 +145,8 @@ export default class PlansController {
           myResponse2.status = 'response'
           myResponse2.url = 'Update Subscription to Sempoa ERP: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
           myResponse2.payload = JSON.stringify(responseERP)
-          myResponse2.created_by = 'Xendit'
-          myResponse2.updated_by = 'Xendit'
+          myResponse2.created_by = 'Sempoa ERP'
+          myResponse2.updated_by = 'Sempoa ERP'
           myResponse2.save()
 
           Logger.info('Success update subscription to Sempoa ERP')
@@ -162,7 +162,7 @@ export default class PlansController {
 
       // insert to payments table
       const payment = new Payment
-      payment.reference_number = await Payment.generateReferenceNumber(subscription.id)
+      payment.reference_number = await Payment.generateReferenceNumber()
       payment.subscription_id = subscription.id
       payment.amount = subscription.price
       payment.status = Payment.STATUS_PENDING
