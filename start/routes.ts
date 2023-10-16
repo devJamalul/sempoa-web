@@ -65,3 +65,7 @@ Route.group(() => {
   Route.post('/logout', 'AuthController.logout').as('logout')
 }).middleware(['auth'])
 
+
+Route.group(()=>{
+  Route.get('unsubscribe/:company(token)','PlansController.inActivePlan').as('plan.inactive');
+}).prefix('api').as('api');
