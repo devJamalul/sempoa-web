@@ -35,7 +35,8 @@
             Paket: <span class="text-primary font-weight-bold">{{ subscription.package_name }}</span> <br />
             {{ subscription.package_description }} <br />
             Maks. Pengguna: {{ subscription.max_users }} <br />
-            Harga: {{ subscription.end_date.toFormat('dd LLL yyyy') }} <br />
+            Harga: Rp {{ price }} <br />
+            {{--  Harga: {{ fmt.formatNumber(subscription.price, { style: 'decimal', minimumFractionDigits: 0 }) }} <br />  --}}
 
           </div>
           <div class="col-lg-3">
@@ -53,12 +54,6 @@
       </div>
     </div>
 
-    <div class="card mt-3">
-      <div class="card-body">
-        <h3 class="text-muted font-weight-bold">Histori Pembayaran</h3>
-        // cont... //
-      </div>
-    </div>
   </div>
 </div>
 @end

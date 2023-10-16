@@ -8,9 +8,9 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('reference_number', 191).nullable().unique
       table.integer('subscription_id').nullable().unsigned().references('subscriptions.id').onDelete('CASCADE')
-      table.integer('price').unsigned().nullable
-      table.string('payment_type').nullable().comment('Credit Cards, eWallets, PayLater, QR Codes, Direct Debit, Virtual Accounts')
-      table.string('status').nullable().defaultTo('pending').comment('paid, pending, failed, voided')
+      table.integer('amount')
+      table.string('status').nullable().comment('PENDING, CAPTURED, AUTHORIZED, REVERSED, FAILED').defaultTo('PENDING')
+      table.text('note').nullable
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

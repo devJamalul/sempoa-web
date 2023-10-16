@@ -30,8 +30,9 @@ export default class SubscriptionsController {
   public async edit({ view }, company: Subscription) {
     const title = company.reference_number
     const subscription = company
+    const price = company.price.toLocaleString('id-ID')
     const perusahaan = await Company.find(company.company_id)
-    return view.render('pages.subscription.edit', { title, subscription, perusahaan })
+    return view.render('pages.subscription.edit', { title, subscription, perusahaan, price })
    }
 
   public async update({ }: HttpContextContract) { }

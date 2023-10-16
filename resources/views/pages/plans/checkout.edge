@@ -1,293 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 @set('title', 'Checkout Plan')
 @include('layouts/head-tail')
 
 <body class="bg-neutral-100">
-    <div style="display: none" id="loading"
-        class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4">
+  <div style="display: none" id="loading"
+    class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4">
+    </div>
+    <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+    <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+  </div>
+
+  <div class="container mx-auto">
+    <a href="{{ route('home') }}">
+      <img src="/images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
+    </a>
+
+
+    <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2 font-bold"> Pembayaran Layanan
+    </p>
+
+    <div id="error" style="{{ flashMessages.get('error') ? '' : 'display:none'}}"
+      class="rounded-md bg-red-50 p-4 w-full md:w-1/3 mx-auto">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-5 w-5 text-red-400">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
-        <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
-        <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">Gagal Melakukan Pembayaran</h3>
+          <div class="mt-2 text-sm text-red-700">
+            <p>Mohon Maaf Anda Gagal Melakukan Pembayaran , Anda Dapat Mencoba Lagi.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="container mx-auto">
-        <a href="{{ route('home') }}">
-            <img src="/images/sempoa-logo.svg" class="w-40 mx-auto mt-5" alt="" set="">
-        </a>
 
 
-        <p class="text-center mt-10  mx-auto text-2xl text-darkGreen p-2 font-bold"> Pembayaran Layanan
-        </p>
 
-        <div id="error" style="{{ flashMessages.get('error') ? '' : 'display:none'}}"
-            class="rounded-md bg-red-50 p-4 w-full md:w-1/3 mx-auto">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="h-5 w-5 text-red-400">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium text-red-800">Gagal Melakukan Pembayaran</h3>
-                    <div class="mt-2 text-sm text-red-700">
-                        <p>Mohon Maaf Anda Gagal Melakukan Pembayaran , Anda Dapat Mencoba Lagi.</p>
-                    </div>
-                </div>
-            </div>
+    {{-- Payments --}}
+    <div class="flex flex-col w-full md:w-1/3 shadow-lg rounded-md mx-auto w-full bg-white my-5 hover:shadow-2xl"
+      id="payments-container">
+      <div class="flex justify-between mt-3 ">
+        <div class="px-3 text-base text-gray-900" id="label-subscription"></div>
+        <div class="px-3 text-gray-900 text-lg ">Rp. <span id="fee-subscription">0</span></div>
+      </div>
+
+      <div class="flex   justify-between my-3 ">
+        <div class="px-3 text-lg ">Total Pembayaran</div>
+        <div class="px-3 text-darkGreen  ">
+          <span class="text-xl font-bold">Rp. <span class="total-pay" id="fee-total">0</span></span>
+          <input type="hidden" id="fee-total-raw">
         </div>
+      </div>
+
+      <hr class="h-1 w-full bg-gray-500">
 
 
+      <div class="p-3">
 
 
-        {{-- Payments --}}
-        <div class="flex flex-col w-full md:w-1/3 shadow-lg rounded-md mx-auto w-full bg-white my-5 hover:shadow-2xl"
-            id="payments-container">
-            <div class="flex justify-between mt-3 ">
-                <div class="px-3 text-base text-gray-900" id="label-subscription"></div>
-                <div class="px-3 text-gray-900 text-lg ">Rp. <span id="fee-subscription">0</span></div>
-            </div>
-
-            <div class="flex   justify-between my-3 ">
-                <div class="px-3 text-lg ">Total Pembayaran</div>
-                <div class="px-3 text-darkGreen  ">
-                    <span class="text-xl font-bold">Rp. <span class="total-pay" id="fee-total">0</span></span>
-                    <input type="hidden" id="fee-total-raw">
-                </div>
-            </div>
-
-            <hr class="h-1 w-full bg-gray-500">
-
-
-            <div class="p-3">
-
-
-                <form action="{{ route('checkout.store',{
+        <form action="{{ route('checkout.store',{
                     'id(token)':company.token
                 }) }}" method="post" id="payment-form">
-                    {{ csrfField() }}
-                    {{-- Tipe Langganan --}}
-                    <div class="w-full  mb-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="type_subscription">
-                            Tipe Langganan<span class="text-sm text-red-500">*</span>
-                        </label>
-                        <select
-                            class="plan-fee w-full {{ flashMessages.has('errors.type_subscription') ? 'is-invalid' : '' }} bg-slate-200 p-2 px-3 rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
-                            id="type_subscription" name="type_subscription"
-                            aria-describedby="type_subscription-rule_required">
-                            @if(configPlans.minimalist.isShow)
-                            <option value="Minimalist" data-price="{{ configPlans.minimalist.price }}" {{
-                                plan=='Minimalist' ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">
-                                Minimalist
-                            </option>
-                            @endif
-                            @if(configPlans.basic.isShow)
-                            <option value="Basic" data-price="{{ configPlans.basic.price  }}" {{ plan=='Basic'
-                                ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">Basic</option>
-                            @endif
-                            @if(configPlans.medium.isShow)
-                            <option value="Medium" data-price="{{ configPlans.medium.price }}" {{ plan=='Medium'
-                                ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">Medium</option>
-                            @endif
-                        </select>
-                        @if (flashMessages.has('errors.type_subscription'))
-                        <div class="message-error">
-                            {{ flashMessages.get('errors.type_subscription') }}
-                        </div>
-                        @endif
-                    </div>
-                    {{-- End Tipe Langganan --}}
-
-                    {{-- Masa Langganan --}}
-                    <div class="w-full  mb-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="interval_subscription">
-                            Masa Langganan<span class="text-sm text-red-500">*</span>
-                        </label>
-                        <select
-                            class="plan-fee w-full bg-slate-200 p-2 px-3 {{ flashMessages.has('errors.interval_subscription') ? 'is-invalid' : '' }} rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
-                            id="interval_subscription" name="interval_subscription"
-                            aria-describedby="interval_subscription-rule_required">
-                            <option value="1" {{ flashMessages.get('request.interval_subscription')=='1' ? 'selected'
-                                :'' }}>1
-                                Bulan</option>
-                            <option value="3" {{ flashMessages.get('request.interval_subscription')=='3' ? 'selected'
-                                :'' }}>3
-                                Bulan</option>
-                            <option value="6" {{ flashMessages.get('request.interval_subscription')=='6' ? 'selected'
-                                :'' }}>6
-                                Bulan</option>
-                            <option value="12" {{ flashMessages.get('request.interval_subscription')=='12' ? 'selected'
-                                :'' }}>12
-                                Bulan</option>
-                        </select>
-                        @if (flashMessages.has('errors.interval_subscription'))
-                        <div class="message-error">
-                            {{ flashMessages.get('errors.interval_subscription') }}
-                        </div>
-                        @endif
-                    </div>
-                    {{-- Masa Langganan--}}
-
-                    <!-- No kartu kredit -->
-                    <div class="w-full my-3">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold " for="credit_card_number">
-                            No Kartu Kredit <span class="text-sm text-red-500">*</span>
-                        </label>
-                        <input placeholder="5555 4444 4444 4444"
-                            class="w-full p-1 px-3 rounded-xl mt-1.5 {{ flashMessages.has('errors.credit_card_number') ? 'is-invalid' : '' }} ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                            type="text" value="{{ flashMessages.get('request.credit_card_number') || '' }}"
-                            name="credit_card_number" maxlength="16" id="credit_card_number">
-                        @if (flashMessages.has('errors.credit_card_number'))
-                        <div class="message-error">
-                            {{ flashMessages.get('errors.credit_card_number') }}
-                        </div>
-                        @endif
-                    </div>
-                    <!--End No kartu kredit -->
-
-                    <!-- Expired Date, Secure Code -->
-                    <div class="flex flex-wrap -mx-3 mb-3">
-                        <!-- expired -->
-                        <div class="w-full md:w-1/2 px-3">
-                            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_name">
-                                Expired
-                                <span class="text-sm text-red-500">*</span>
-                            </label>
-                            <input
-                                class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.expiration') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                                type="text" autocomplete="cc-exp" autocorrect="off" autocapitalize="none"
-                                spellcheck="false" value="{{ flashMessages.get('request.expiration') || '' }}"
-                                name="expiration" id="expiration" placeholder="MM/YY"
-                                aria-describedby="field-description-expirationDate" maxlength="5">
-                            @if (flashMessages.has('errors.expiration'))
-                            <div class="message-error">
-                                {{ flashMessages.get('errors.expiration') }}
-                            </div>
-                            @endif
-                        </div>
-                        <!-- End expired -->
-                        <!-- secure_code-->
-                        <div class="w-full md:w-1/2 px-3">
-                            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="secure_code">
-                                Secure Code <span class="text-sm text-red-500">*</span>
-                            </label>
-                            <input placeholder="123"
-                                class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.secure_code') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
-                                type="text" value="{{ flashMessages.get('request.secure_code') || '' }}"
-                                name="secure_code" maxlength="3" id="secure_code">
-                            @if (flashMessages.has('errors.secure_code'))
-                            <div class="message-error">
-                                {{ flashMessages.get('errors.secure_code') }}
-                            </div>
-                            @endif
-                        </div>
-                        <!-- End secure_code-->
-                    </div>
-                    <!--End Expired Date, Secure Code -->
-
-                    <div class=" mt-5 flex  flex-col justify-center">
-                        <input type="hidden" id="monthNumber" name="monthNumber">
-                        <input type="hidden" id="yearNumber" name="yearNumber">
-                        <div id="payload"></div>
-
-                        <button type="submit"
-                            class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2 submit">
-                            <span class="text-center">Bayar Sekarang</span></button>
-                        {{-- <button class="submit">Bayar</button> --}}
-
-                        <p class="text-xs mt-5">Dengan memulai langganan di Sempoa, Anda setuju dengan Ketentuan Layanan
-                            Keanggotaan kami. Metode
-                            pembayaran Anda akan dikenai biaya berulang,
-                            kecuali Anda memutuskan untuk
-                            membatalkannya. Kami tidak memberikan pengembalian dana untuk langganan yang dibatalkan di
-                            antara siklus penagihan. Sempoa akan membantu Anda mengelola bisnis Anda dengan lebih
-                            efisien.
-                            Bergabunglah sekarang!</p>
-                    </div>
-                </form>
+          {{ csrfField() }}
+          {{-- Tipe Langganan --}}
+          <div class="w-full  mb-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="type_subscription">
+              Tipe Langganan<span class="text-sm text-red-500">*</span>
+            </label>
+            <select
+              class="plan-fee w-full {{ flashMessages.has('errors.type_subscription') ? 'is-invalid' : '' }} bg-slate-200 p-2 px-3 rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
+              id="type_subscription" name="type_subscription" aria-describedby="type_subscription-rule_required">
+              @if(configPlans.minimalist.isShow)
+              <option value="Minimalist" data-price="{{ configPlans.minimalist.price }}" {{ plan=='Minimalist'
+                ? 'selected' :'' }} data-price-active="{{ priceActivePlan }}">
+                Minimalist
+              </option>
+              @endif
+              @if(configPlans.basic.isShow)
+              <option value="Basic" data-price="{{ configPlans.basic.price  }}" {{ plan=='Basic' ? 'selected' :'' }}
+                data-price-active="{{ priceActivePlan }}">Basic</option>
+              @endif
+              @if(configPlans.medium.isShow)
+              <option value="Medium" data-price="{{ configPlans.medium.price }}" {{ plan=='Medium' ? 'selected' :'' }}
+                data-price-active="{{ priceActivePlan }}">Medium</option>
+              @endif
+            </select>
+            @if (flashMessages.has('errors.type_subscription'))
+            <div class="message-error">
+              {{ flashMessages.get('errors.type_subscription') }}
             </div>
-        </div>
-        {{-- ENd Payments --}}
+            @endif
+          </div>
+          {{-- End Tipe Langganan --}}
 
+          {{-- Masa Langganan --}}
+          <div class="w-full  mb-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="interval_subscription">
+              Masa Langganan<span class="text-sm text-red-500">*</span>
+            </label>
+            <select
+              class="plan-fee w-full bg-slate-200 p-2 px-3 {{ flashMessages.has('errors.interval_subscription') ? 'is-invalid' : '' }} rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
+              id="interval_subscription" name="interval_subscription"
+              aria-describedby="interval_subscription-rule_required">
+              <option value="1" {{ flashMessages.get('request.interval_subscription')=='1' ? 'selected' :'' }}>1
+                Bulan</option>
+              <option value="3" {{ flashMessages.get('request.interval_subscription')=='3' ? 'selected' :'' }}>3
+                Bulan</option>
+              <option value="6" {{ flashMessages.get('request.interval_subscription')=='6' ? 'selected' :'' }}>6
+                Bulan</option>
+              <option value="12" {{ flashMessages.get('request.interval_subscription')=='12' ? 'selected' :'' }}>12
+                Bulan</option>
+            </select>
+            @if (flashMessages.has('errors.interval_subscription'))
+            <div class="message-error">
+              {{ flashMessages.get('errors.interval_subscription') }}
+            </div>
+            @endif
+          </div>
+          {{-- Masa Langganan--}}
 
+          <!-- No kartu kredit -->
+          <div class="w-full my-3">
+            <label class="block tracking-wide text-gray-700 text-xs font-bold " for="credit_card_number">
+              No Kartu Kredit <span class="text-sm text-red-500">*</span>
+            </label>
+            <input placeholder="5555 4444 4444 4444"
+              class="w-full p-1 px-3 rounded-xl mt-1.5 {{ flashMessages.has('errors.credit_card_number') ? 'is-invalid' : '' }} ring-1 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
+              type="text" value="{{ flashMessages.get('request.credit_card_number') || '' }}" name="credit_card_number"
+              maxlength="16" id="credit_card_number">
+            @if (flashMessages.has('errors.credit_card_number'))
+            <div class="message-error">
+              {{ flashMessages.get('errors.credit_card_number') }}
+            </div>
+            @endif
+          </div>
+          <!--End No kartu kredit -->
+
+          <!-- Expired Date, Secure Code -->
+          <div class="flex flex-wrap -mx-3 mb-3">
+            <!-- expired -->
+            <div class="w-full md:w-1/2 px-3">
+              <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_name">
+                Expired
+                <span class="text-sm text-red-500">*</span>
+              </label>
+              <input
+                class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.expiration') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
+                type="text" autocomplete="cc-exp" autocorrect="off" autocapitalize="none" spellcheck="false"
+                value="{{ flashMessages.get('request.expiration') || '' }}" name="expiration" id="expiration"
+                placeholder="MM/YY" aria-describedby="field-description-expirationDate" maxlength="5">
+              @if (flashMessages.has('errors.expiration'))
+              <div class="message-error">
+                {{ flashMessages.get('errors.expiration') }}
+              </div>
+              @endif
+            </div>
+            <!-- End expired -->
+            <!-- secure_code-->
+            <div class="w-full md:w-1/2 px-3">
+              <label class="block tracking-wide text-gray-700 text-xs font-bold " for="secure_code">
+                Secure Code <span class="text-sm text-red-500">*</span>
+              </label>
+              <input placeholder="123"
+                class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.secure_code') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen ring-2 duration-200"
+                type="text" value="{{ flashMessages.get('request.secure_code') || '' }}" name="secure_code"
+                maxlength="3" id="secure_code">
+              @if (flashMessages.has('errors.secure_code'))
+              <div class="message-error">
+                {{ flashMessages.get('errors.secure_code') }}
+              </div>
+              @endif
+            </div>
+            <!-- End secure_code-->
+          </div>
+          <!--End Expired Date, Secure Code -->
+
+          <div class=" mt-5 flex  flex-col justify-center">
+            <input type="hidden" id="monthNumber" name="monthNumber">
+            <input type="hidden" id="yearNumber" name="yearNumber">
+            <input type="hidden" id="payload" name="payload">
+            <input type="hidden" id="payload_auth" name="payload_auth">
+            <input type="hidden" id="token_id" name="token_id">
+            <input type="hidden" id="token_auth_id" name="token_auth_id">
+            <input type="hidden" id="masked_card_number" name="masked_card_number">
+            <input type="hidden" id="response" name="response">
+            <input type="hidden" id="response_auth" name="response_auth">
+            <input type="hidden" id="externalId" name="externalId" value="{{ externalId }}">
+
+            <button type="submit"
+              class="bg-darkGreen text-white w-full font-semibold py-2 px-10 rounded   transition-all text-center space-x-2 submit">
+              <span class="text-center">Bayar Sekarang</span></button>
+
+            <p class="text-xs mt-5">Dengan memulai langganan di Sempoa, Anda setuju dengan Ketentuan Layanan
+              Keanggotaan kami. Metode
+              pembayaran Anda akan dikenai biaya berulang,
+              kecuali Anda memutuskan untuk
+              membatalkannya. Kami tidak memberikan pengembalian dana untuk langganan yang dibatalkan di
+              antara siklus penagihan. Sempoa akan membantu Anda mengelola bisnis Anda dengan lebih
+              efisien.
+              Bergabunglah sekarang!</p>
+          </div>
+        </form>
+      </div>
+    </div>
+    {{-- ENd Payments --}}
+
+    <div class="overlay" style="display: none;"></div>
+    <div id="three-ds-container" style="display: none;">
+      <iframe height="450" width="550" id="sample-inline-frame" name="sample-inline-frame"> </iframe>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
-        integrity="sha512-Dz4zO7p6MrF+VcOD6PUbA08hK1rv0hDv/wGuxSUjImaUYxRyK2gLC6eQWVqyDN9IM1X/kUA8zkykJS/gEVOd3w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/vendor/jquery/jquery.min.js"></script>
+  </div>
 
-    <script type="text/javascript" src="https://js.xendit.co/v1/xendit.min.js"></script>
-    <script type="text/javascript">
-        Xendit.setPublishableKey('{{ publicKey }}');
-        var $form = $('#payment-form');
-        $(".submit").on("click", function(event) {
-            $('#error').hide();
-            $("#loading").show();
-            $form.submit(function(e) {
-                e.preventDefault();
-                // Disable the submit button to prevent repeated clicks:
-                $form.find('.submit').prop('disabled', true);
-                // Request a token from Xendit:
-                const payload = {
-                    amount: $('#fee-total-raw').val(),
-                    card_number: $form.find('#credit_card_number').val(),
-                    card_exp_month: $form.find('#monthNumber').val(),
-                    card_exp_year: $form.find('#yearNumber').val(),
-                    card_cvn: $form.find('#secure_code').val(),
-                    is_multiple_use: true,
-                    should_authenticate: true
-                }
-                var payloads = JSON.stringify(payload)
-                $("#payload").html(`<input type="hidden"  name="payload" value="${payloads}" />`);
-                Xendit.card.createToken(payload, xenditResponseHandler);
-                // Prevent the form from being submitted:
-                return false;
-            });
-        });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
+    integrity="sha512-Dz4zO7p6MrF+VcOD6PUbA08hK1rv0hDv/wGuxSUjImaUYxRyK2gLC6eQWVqyDN9IM1X/kUA8zkykJS/gEVOd3w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
 
-        function xenditResponseHandler (err, creditCardToken) {
-            if (err) {
-                // Show the errors on the form
-                $('#error pre').text(err.message);
-                $("#loading").show();
-                setTimeout(function(){
-                    $("#loading").hide()
-                    $('#error').show();
-                },1000)
-                setTimeout(()=>$("#error").slideUp(1000),5000)
-                $form.find('.submit').prop('disabled', false); // Re-enable submission
-                return;
-            }
-
-            if (creditCardToken.status === 'VERIFIED') {
-                // Get the token ID:
-                var token = creditCardToken.id;
-                var masked_card_number = creditCardToken.masked_card_number;
-                var response = JSON.stringify(creditCardToken)
-
-                // Insert the token into the form so it gets submitted to the server:
-                $form.append($('<input type="hidden"  name="token_id" />').val(token));
-                $form.append($('<input type="hidden" name="masked_card_number" />').val(masked_card_number));
-                $form.append($('<input type="hidden" name="response" />').val(response));
-                setTimeout($form.get(0).submit(),10000)
-            } else if (creditCardToken.status === 'IN_REVIEW') {
-                window.open(creditCardToken.payer_authentication_url, "MsgWindow", "width=550,height=450");
-            } else if (creditCardToken.status === 'FAILED') {
-                $('#error pre').text(creditCardToken.failure_reason);
-                $('#error').show();
-                $form.find('.submit').prop('disabled', false); // Re-enable submission
-            }
+  <script type="text/javascript" src="https://js.xendit.co/v1/xendit.min.js"></script>
+  <script type="text/javascript">
+    Xendit.setPublishableKey('{{ publicKey }}');
+  </script>
+  <script type="text/javascript">
+    var $form = $('#payment-form');
+    $(".submit").on("click", function(event) {
+      $('#error').hide();
+      // $("#loading").show();
+      $form.submit(function(e) {
+        e.preventDefault();
+        // Disable the submit button to prevent repeated clicks:
+        $form.find('.submit').prop('disabled', true);
+        // Request a token from Xendit:
+        const payload = {
+          // amount: $('#fee-total-raw').val(),
+          card_number: $form.find('#credit_card_number').val(),
+          card_exp_month: $form.find('#monthNumber').val(),
+          card_exp_year: $form.find('#yearNumber').val(),
+          card_cvn: $form.find('#secure_code').val(),
+          currency: 'IDR',
+          is_multiple_use: true,
+          should_authenticate: true
         }
-    </script>
+        var payloads = JSON.stringify(payload)
+        $("#payload").val('')
+        $("#payload").val(payloads.toString())
+        Xendit.card.createToken(payload, xenditTokenResponseHandler);
 
-    <script>
-        setPlan();
+        // Prevent the form from being submitted:
+        return false;
+      });
+    });
+
+    function xenditTokenResponseHandler (err, creditCardToken) {
+      if (err) {
+        // Show the errors on the form
+        $('#error pre').text(err.message);
+        $('#error').show();
+        $("#loading").hide();
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+        return;
+      }
+
+      if (creditCardToken.status === 'VERIFIED') {
+        // Get the token ID:
+        var token = creditCardToken.id;
+        $("#token_id").val('')
+        $("#token_id").val(token)
+
+        var masked_card_number = creditCardToken.masked_card_number;
+        $("#masked_card_number").val('')
+        $("#masked_card_number").val(masked_card_number)
+
+        var response = JSON.stringify(creditCardToken)
+        $("#response").val('')
+        $("#response").val(response)
+
+        // submit to the server:
+        // setTimeout($form.get(0).submit(),10000)
+        // Request authentication from Xendit:
+        const payloadAuthentication = getAuthenticationData();
+        var payloads_auth = JSON.stringify(payload)
+        $("#payload_auth").val('')
+        $("#payload_auth").val(payloads_auth.toString())
+        Xendit.card.createAuthentication(payloadAuthentication, xenditAuthenticationResponseHandler);
+
+      } else if (creditCardToken.status === 'IN_REVIEW') {
+        window.open(creditCardToken.payer_authentication_url, "MsgWindow", "width=550,height=450");
+      } else if (creditCardToken.status === 'FAILED') {
+        $('#error pre').text(creditCardToken.failure_reason);
+        $('#error').show();
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+      }
+    }
+
+    function xenditAuthenticationResponseHandler (err, authentication) {
+      if (err) {
+        // Show the errors on the form
+        $('#error pre').text(err.message);
+        $('#error').show();
+        $("#loading").hide();
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+        return;
+      }
+
+      if (authentication.status === 'APPROVED' || authentication.status === 'VERIFIED') {
+        displaySuccess(authentication);
+
+      } else if (authentication.status === 'IN_REVIEW' || authentication.status === 'CARD_ENROLLED') {
+        console.log('IN_REVIEW')
+        console.warn(authentication)
+        // window.open(authentication.payer_authentication_url, "MsgWindow", "width=550,height=450");
+        window.open(authentication.payer_authentication_url, 'sample-inline-frame');
+        $('.overlay').show();
+        $('#three-ds-container').show();
+      } else if (authentication.status === 'FAILED') {
+        console.log('FAILED')
+        console.error(authentication)
+        $('#error pre').text(authentication.failure_reason);
+        $('#error').show();
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+      } else if (authentication.status === 'FRAUD') {
+        console.log('FRAUD')
+        console.error(authentication)
+        $('#error pre').text(authentication.failure_reason);
+        $('#error').show();
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+      }
+    }
+
+    function getAuthenticationData () {
+      const payloadAuthentication = {
+        amount: $('#fee-total-raw').val(),
+        external_id: $('#externalId').val(),
+        currency: "IDR",
+        token_id: $("#token_id").val(),
+        card_cvn: $form.find('#secure_code').val()
+      }
+
+      return payloadAuthentication;
+    }
+
+    function displaySuccess (authentication) {
+      $('#three-ds-container').hide();
+      $('.overlay').hide();
+      // $('#success .result').text(JSON.stringify(authentication, null, 4));
+      // $('#success').show();
+
+      var requestData = {};
+      $.extend(requestData, getAuthenticationData());
+      console.log('requestData')
+      console.table(requestData)
+      $('#success .request-data').text(JSON.stringify(requestData, null, 4));
+
+      console.table(authentication)
+      // Get the token ID:
+      var token = authentication.id;
+      $("#token_auth_id").val('')
+      $("#token_auth_id").val(token)
+
+      var response_auth = JSON.stringify(authentication)
+      $("#response_auth").val('')
+      $("#response_auth").val(response_auth)
+
+      // submit to the server:
+      var $form = $('#payment-form');
+      setTimeout($form.get(0).submit(),10000)
+    }
+  </script>
+  <script>
+    setPlan();
 
         $(".plan-fee").change(function(){
             setPlan();
@@ -297,11 +386,12 @@
             const feePlan = typeSubscription.data('price');
             const feePlanActive =  typeSubscription.data('priceActive');
             const monthSubscription = $("#interval_subscription").find(':selected').val();
-            const isUpgrade = feePlan != feePlanActive && feePlanActive != 0  
+            const isUpgrade = feePlan != feePlanActive && feePlanActive != 0
             const planPrice = calculatePlan(monthSubscription,feePlan,isUpgrade,feePlanActive)
             $("#label-subscription").html(typeSubscription.val())
             $("#fee-subscription").html(toFormatPrice(planPrice.feeCalculateByMonth))
             $("#fee-total").html(toFormatPrice(planPrice.totalPay))
+            $("#fee-total-raw").val(planPrice.totalPay)
             $("#fee-slash").parent().hide();
             if(planPrice.slashPay > 0){
                 $("#fee-subscription").parent().addClass('line-through')
@@ -313,7 +403,7 @@
             const now =  moment()
             const startDateOfmonth = moment().startOf('month');
             const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')+1
-            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')+1 
+            const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')+1
             return {activeDayOfMonth:activeDayOfMonth,packageDayOfMonth:packageDayOfMonth}
         }
 
@@ -321,7 +411,7 @@
             let totalPay =0;
             const daysSubscription = getDaysDateByMonth(monthSubscription)
             const feeCalculateByMonth = feePlan * monthSubscription;
-            totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);  
+            totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);
             if(isUpgrade) totalPay = totalPay - (feePlanActive/daysSubscription.packageDayOfMonth)*daysSubscription.activeDayOfMonth;
             totalPay =Math.ceil(totalPay/1000)*1000
             totalPay = totalPay > feeCalculateByMonth ? feeCalculateByMonth : totalPay;
@@ -372,7 +462,7 @@
             console.error(card)
             $(this).val(input);
         });
-    </script>
+  </script>
 
 </body>
 

@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Company from './Company'
-import Payment from './Payment'
 
 
 export default class Subscription extends BaseModel {
@@ -20,7 +19,7 @@ export default class Subscription extends BaseModel {
   public static readonly PACKAGE_ENTERPRISE = 'Enterprise'
 
 
-  public static packageActive =async (company:Company) => { 
+  public static packageActive =async (company:Company) => {
     const subscriptionActive = await
     Subscription.
     query()
@@ -53,7 +52,7 @@ export default class Subscription extends BaseModel {
   public max_users: number | null
 
   @column()
-  public price: number | null
+  public price: number
 
   @column.date()
   public start_date: DateTime | null
@@ -93,38 +92,21 @@ export default class Subscription extends BaseModel {
   })
   public company: BelongsTo<typeof Company>
 
-  @hasMany(() => Payment, {
-    localKey: 'id',
-    foreignKey: 'subscription_id',
-  })
-  public payments: HasMany<typeof Payment>
-
   // Define a static method to generate the reference number
   public static async generateReferenceNumber(companyId: number): Promise<string> {
-    const lastSubscription = await this.query()
+    const companyIdStr = companyId.toString().padStart(4, '0')
+    const currentYear = DateTime.now().toFormat('yyyy')
+
+    // Check if there are any subscriptions for the current year
+    const lastSubscriptionForYear = await this.query()
       .where('company_id', companyId)
+      .whereRaw('YEAR(created_at) = ?', [currentYear])
       .orderBy('id', 'desc')
       .first()
 
-    const companyIdStr = companyId.toString().padStart(4, '0')
-
-    let incrementId: string
-    const currentYear = DateTime.now().toFormat('yyyy')
-
-    if (lastSubscription) {
-      const lastYear = DateTime.fromSQL(lastSubscription.created_at.toString()).toFormat('yyyy')
-
-      // If the last subscription is from the current year, increment the ID
-      if (lastYear === currentYear) {
-        incrementId = (parseInt(lastSubscription.reference_number.split('/')[3]) + 1).toString().padStart(4, '0')
-      } else {
-        // If it's a new year, start the increment ID from 1
-        incrementId = '0001'
-      }
-    } else {
-      // If there are no previous subscriptions, start the increment ID from 1
-      incrementId = '0001'
-    }
+    const incrementId = lastSubscriptionForYear
+      ? (lastSubscriptionForYear.id + 1).toString().padStart(4, '0')
+      : '0001'
 
     return `SUB/${companyIdStr}/${currentYear}/${incrementId}`
   }
