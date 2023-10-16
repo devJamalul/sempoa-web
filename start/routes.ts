@@ -40,13 +40,14 @@ Route.post('checkout/:id(token)','PlansController.checkoutPlan').as('checkout.st
 
 Route.get("contact-us",'ContactUsController.index').as('contact-us.index');
 Route.post('contact-us','ContactUsController.sendContact').as('contact-us.send')
-Route.get('/info', () => {
-  return 'Hello world'
-})
 
 Route.group(() => {
   Route.get('/register', 'AuthController.registerShow').as('register.show')
   Route.post('/register', 'AuthController.register').as('register')
+
+  Route.get('/register/success',function({view}){
+    return view.render('auth/message',{ urlSempoa:sempoa.url});
+}).as('register.message')
 
   Route.get('/adminustrator', 'AuthController.loginShow').as('login.show')
   Route.post('/adminustrator', 'AuthController.login').as('login')

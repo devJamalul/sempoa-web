@@ -27,14 +27,14 @@ export default class AuthController {
 
         const company = new Company()
         company.company_name = data.company_name;
-        company.address = data.company_name;
-        company.city = data.company_name;
-        company.country = data.company_name;
-        company.email = data.company_name;
-        company.phone_number = data.company_name;
-        company.pic_name = data.company_name;
-        company.pic_email = data.company_name;
-        company.pic_phone_number = data.company_name;
+        company.address = data.address;
+        company.city = data.city;
+        company.country = data.country;
+        company.email = data.company_email;
+        company.phone_number = data.company_phone;
+        company.pic_name = data.pic_name;
+        company.pic_email = data.pic_email;
+        company.pic_phone_number = data.phone_number;
         company.created_by = user?.name ?? 'Sistem';
         company.updated_by = user?.name ?? 'Sistem';
 
@@ -88,8 +88,8 @@ export default class AuthController {
           // always executed
         });
       })
-
-      return response.redirect().toRoute('register.show')
+      
+      return response.redirect().toRoute('register.message')
     } catch (error) {
       Logger.warn(error.message)
       session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
