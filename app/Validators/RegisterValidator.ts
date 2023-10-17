@@ -40,10 +40,7 @@ export default class RegisterValidator {
       rules.email()
     ]),
     company_phone: schema.string([
-      rules.unique({ table: 'companies', column: 'phone_number' }),
-      rules.mobile({
-        locale:['id-ID']
-      }),
+      rules.unique({ table: 'companies', column: 'phone_number' }), 
       rules.minLength(8),
       rules.maxLength(30),
     ]),

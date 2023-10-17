@@ -2,7 +2,8 @@ import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class CompanyUpdateValidator {
-  constructor(protected ctx: HttpContextContract) {}
+  constructor(protected ctx: HttpContextContract) {
+  }
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -23,17 +24,45 @@ export default class CompanyUpdateValidator {
    *     ])
    *    ```
    */
+  
+
+
+
+
+
+
   public schema = schema.create({
-    company_name: schema.string(),
+    company_name: schema.string([
+      rules.unique({ table: 'companies', column: 'company_name',whereNot:this.ctx.params}),
+      rules.minLength(4),
+      rules.maxLength(191),
+    ]),
     company_email: schema.string([
+      rules.unique({ table: 'companies', column: 'email' , whereNot:this.ctx.params }),
+      rules.minLength(4),
+      rules.maxLength(191),
       rules.email()
     ]),
-    company_phone: schema.string(),
-    company_country: schema.string(),
-    company_city: schema.string(),
-    company_address: schema.string(),
+    company_phone: schema.string([ 
+      rules.unique({ table: 'companies', column: 'phone_number',whereNot:this.ctx.params }), 
+      rules.minLength(8),
+      rules.maxLength(30),]
+    ),
+    company_country: schema.string([
+        rules.minLength(3),
+        rules.maxLength(191),
+      ]),
+    company_city: schema.string([
+      rules.minLength(3),
+      rules.maxLength(191),
+    ]),
+    company_address: schema.string.nullable(),
     pic_name: schema.string(),
-    pic_phone: schema.string(),
+    pic_phone: schema.string([
+      rules.mobile({
+        locale:['id-ID']
+      })
+    ]),
     pic_email: schema.string([
       rules.email()
     ]),
