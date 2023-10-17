@@ -3,11 +3,11 @@
 
 @section('content')
 
-@component('component/container/form',{ title:title, routeBack:'companies.index'})
+@component('component/container/form',{ title:title, routeBack:'companies.index',classContain:'col-lg-10 mb-4'})
 @slot('form')
 <form action="{{ route('companies.store') }}" method="post">
   {{ csrfField() }}
-  <div class="row">
+  <div class="row ">
     <!-- company -->
     <div class="form-group col-6 ">
       <label for="company_name-input">Company Name<span class="text-small text-danger">*</span></label>
@@ -276,6 +276,12 @@
         @endif
       </div>
       <!-- End PIC Password -->
+    </div>
+    <div class="col-12">
+      <div class="custom-control custom-checkbox ">
+        <input type="checkbox" name="is_enterprise" class="custom-control-input" id="customCheck">
+        <label class="custom-control-label" for="customCheck">Enterprise</label>
+      </div>
     </div>
     <div class="col-12">
 

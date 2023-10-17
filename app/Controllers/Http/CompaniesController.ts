@@ -27,11 +27,12 @@ export default class CompaniesController {
   public async store({ request, response, session, auth }: HttpContextContract) {
     try {
 
-      const data = await request.validate(CompanyCreateValidator)
-      const user = auth.user
-      const now = DateTime.now()
+     const data = await request.validate(CompanyCreateValidator)
+     const user = auth.user
+     const now = DateTime.now()
+     const isEnterprise = request.body().is_enterprise == 'on';
 
-      await Database.transaction(async (trx) => {
+     const company = await Database.transaction(async (trx) => {
         const company = new Company()
         company.company_name = data.company_name
         company.address = data.company_address
@@ -48,16 +49,20 @@ export default class CompaniesController {
         company.useTransaction(trx)
         await company.save()
 
-        await company.related('subscriptions').create({
-          reference_number: await Subscription.generateReferenceNumber(company.id),
-          package_name: "Trial",
-          package_description: "Trial 30 hari",
-          max_users: 2,
-          price: 0,
-          status: Subscription.STATUS_ONGOING,
-          start_date: now,
-          end_date: now.plus({ months: 1 })
-        })
+        if(isEnterprise == false){
+        
+          await company.related('subscriptions').create({
+            reference_number: await Subscription.generateReferenceNumber(company.id),
+            package_name: "Trial",
+            package_description: "Trial 30 hari",
+            max_users: 2,
+            price: 0,
+            status: Subscription.STATUS_ONGOING,
+            start_date: now,
+            end_date: now.plus({ months: 1 })
+          })
+
+        }
 
         // send to ERP
         const prepareData = {
@@ -100,11 +105,16 @@ export default class CompaniesController {
           });
 
         await trx.commit()
+        return company;
       })
 
-
-      session.flash('success', 'Success Created Company')
-      return response.redirect().toRoute('companies.index')
+      if(isEnterprise){
+        return response.redirect().withQs({id:company.token}).toRoute('subscriptions.create')
+      }else{
+        session.flash('success', 'Success Created Company')
+        return response.redirect().toRoute('companies.index')
+      }
+      
     } catch (error) {
       Logger.warn('Error store company', { data: error.messages })
       Logger.warn(error)

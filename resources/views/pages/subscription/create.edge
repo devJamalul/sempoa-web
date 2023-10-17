@@ -1,0 +1,80 @@
+@layout('layouts/app')
+
+
+@section('content')
+
+@component('component/container/form',{ title:title, routeBack:'companies.index',classContain:'col-lg-4 mb-4'})
+@slot('form')
+<form action="{{ route('subscriptions.store') }}" method="post">
+  {{ csrfField() }}
+
+  <input type="hidden" name="company_id" value="{{ company.id }}">
+  <!-- max user -->
+  <div class="form-group ">
+    <label for="max_user-input">Max User<span class="text-small text-danger">*</span></label>
+    <input type="number" class="form-control {{ flashMessages.has('errors.max_user') ? 'is-invalid' : '' }}"
+      name="max_user" id="max_user-input" autocomplete="off" value="{{ flashMessages.get('request.max_user') || '' }}"
+      required>
+    @if (flashMessages.has('errors.max_user'))
+    <div class="invalid-feedback">
+      {{ flashMessages.get('errors.max_user') }}
+    </div>
+    @endif
+  </div>
+  <!-- End max user -->
+
+  <!-- Period -->
+  <div class="form-group">
+    <label for="interval_subscription-input">Subscription period<span class="text-small text-danger">*</span></label>
+    <select class="form-control {{ flashMessages.has('errors.interval_subscription') ? 'is-invalid' : '' }}"
+      name="interval_subscription" aria-label="Default select example" required>
+      <option value="" selected>--Choice--</option>
+      <option value="1" {{ flashMessages.get('request.interval_subscription')=='1' ? 'selected' :'' }}>1 Bulan</option>
+      <option value="3" {{ flashMessages.get('request.interval_subscription')=='3' ? 'selected' :'' }}>3 Bulan</option>
+      <option value="6" {{ flashMessages.get('request.interval_subscription')=='6' ? 'selected' :'' }}>6 Bulan</option>
+      <option value="12" {{ flashMessages.get('request.interval_subscription')=='12' ? 'selected' :'' }}>12 Bulan
+      </option>
+
+    </select>
+    @if (flashMessages.has('errors.interval_subscription'))
+    <div class="invalid-feedback">
+      {{ flashMessages.get('errors.interval_subscription') }}
+    </div>
+    @endif
+  </div>
+  <!-- End Period -->
+  <!-- Total Payment -->
+  <div class="form-group ">
+    <label for="total_payment-input">Total Payment <span class="text-small text-danger">*</span></label>
+    <input type="text" class="form-control {{ flashMessages.has('errors.total_payment') ? 'is-invalid' : '' }}"
+      id="price" name="total_payment" id="total_payment-input" autocomplete="off"
+      value="{{ flashMessages.get('request.total_payment') || '' }}" required>
+    @if (flashMessages.has('errors.total_payment'))
+    <div class="invalid-feedback">
+      {{ flashMessages.get('errors.total_payment') }}
+    </div>
+    @endif
+  </div>
+  <!-- End Total Payment -->
+
+
+
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary float-right mx-4 mb-2">Submit</button>
+
+  </div>
+
+</form>
+@endslot
+@endcomponent
+@endsection
+
+@section('js')
+<script>
+  $(document).ready(function () {
+    $('#user-table').DataTable()
+    formatAngka('#price')
+  }) 
+</script>
+@endsection
