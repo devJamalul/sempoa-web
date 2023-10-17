@@ -263,19 +263,20 @@ export default class PlansController {
 
 
   @bind()
-  public async inActivePlan({ request, response, session, auth}: HttpContextContract,company: Company){
+  public async inActivePlan({ response }: HttpContextContract,company: Company){
     try {
-      const user = auth.user
-   
-      const subscription = await  Subscription.query()
+      await Subscription.query()
       .where('company_id',company.id)
-      .where('status',Subscription.STATUS_ONGOING).firstOrFail();
-      subscription.status = Subscription.STATUS_TERMINATED 
-      subscription.save();
+      .where('status',Subscription.STATUS_ONGOING)
+      .update({
+        status: Subscription.STATUS_TERMINATED,
+        updated_by: company.pic_name
+      })
+
       return response.json({
         code:200,
         message: 'Berhasil menonaktifkan plan.',
-        is_subscription: subscription.status == Subscription.STATUS_ONGOING
+        is_subscription: false
       })
     } catch (error) {
       return response.status(400).json({
