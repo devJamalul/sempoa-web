@@ -53,7 +53,12 @@ export default class Payment extends BaseModel {
       ? (lastSubscriptionForYear.id + 1).toString().padStart(4, '0')
       : '0001'
 
+    var today = new Date();
+    var date = (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0');
+    var time = today.getHours().toString().padStart(2, '0') + today.getMinutes().toString().padStart(2, '0') + today.getSeconds().toString().padStart(2, '0');
+    var dateTime = date + time;
+
     // return `INV/${subscriptionIdStr}/${currentYear}/${incrementId}`
-    return `INV/${currentYear}/${incrementId}`
+    return `INV/${currentYear}/${dateTime}/${incrementId}`
   }
 }

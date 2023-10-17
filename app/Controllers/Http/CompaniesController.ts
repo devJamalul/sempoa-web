@@ -9,6 +9,7 @@ import CompanyUpdateValidator from 'App/Validators/CompanyUpdateValidator';
 import axios from 'axios';
 import sempoa from 'Config/sempoa';
 import Subscription from 'App/Models/Subscription';
+import Payload from 'App/Models/Payload';
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -184,5 +185,121 @@ export default class CompaniesController {
     }
   }
 
+  public async connect({ request, response }: HttpContextContract) {
+    try {
+      await Database.transaction(async (trx) => {
+        const now = DateTime.now()
+        const data = request.all()
+        console.table(data)
+        const company = new Company()
+        company.company_name = data.company_name
+        company.address = data.address
+        company.city = data.city
+        company.country = data.country
+        company.email = data.email
+        company.phone_number = data.phone_number
+        company.pic_name = data.pic_name
+        company.pic_email = data.pic_email
+        company.pic_phone_number = data.pic_phone_number
+        company.token = data.token
+        company.created_by = "Sistem"
+        company.updated_by = "Sistem"
+        company.useTransaction(trx)
+        await company.save()
+
+        await company.related('subscriptions').create({
+          reference_number: await Subscription.generateReferenceNumber(company.id),
+          package_name: "Trial",
+          package_description: "Trial 30 hari",
+          max_users: 2,
+          price: 0,
+          status: Subscription.STATUS_ONGOING,
+          start_date: now,
+          end_date: now.plus({ months: 1 })
+        })
+
+        // update subscription to Sempoa ERP
+        const urlSempoa = sempoa.api + '/integration/subscription';
+        const headers = {
+          headers: {
+            'Authorization': 'Bearer ' + company.token,
+            'Accept': "application/json"
+          }
+        }
+        const erpPayload = {
+          subscription_name: 'Trial',
+          subscription_end: now.plus({ months: 1 }).toFormat('yyyy-LL-dd'),
+          subscription_max_user: 2,
+          subscription_status: Subscription.STATUS_ONGOING,
+        }
+
+        // insert to payload
+        const myRequest2 = new Payload
+        myRequest2.status = 'request'
+        myRequest2.url = 'Update Subscription to Sempoa ERP: ' + company.company_name + ' for ' + 'Trial' + ' ' + data.interval_subscription + ' Bulan'
+        myRequest2.payload = JSON.stringify(erpPayload)
+        myRequest2.created_by = company.pic_name
+        myRequest2.updated_by = company.pic_name
+        myRequest2.save()
+
+        await axios.post(urlSempoa, erpPayload, headers)
+          .then(function (response) {
+            // handle success
+
+            let responseERP = response.data
+            const myResponse2 = new Payload
+            myResponse2.status = 'response'
+            myResponse2.url = 'Update Subscription to Sempoa ERP: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
+            myResponse2.payload = JSON.stringify(responseERP)
+            myResponse2.created_by = 'Sempoa ERP'
+            myResponse2.updated_by = 'Sempoa ERP'
+            myResponse2.save()
+
+            Logger.info('Success update subscription to Sempoa ERP')
+          })
+          .catch(function (error) {
+            // handle error
+            Logger.warn(JSON.stringify(error))
+            throw new Error('Error update subscription to Sempoa ERP: ' + error.message)
+          })
+          .finally(function () {
+            // always executed
+          });
+
+
+        await trx.commit()
+      })
+
+      return response.json({
+        code: 200,
+        message: 'Berhasil menghubungkan antar Sempoa Services',
+        is_subscription: false
+      })
+    } catch (error) {
+      return response.status(400).json({
+        code: 500,
+        message: 'Gagal menghubungkan antar Sempoa Services',
+      })
+    }
+  }
+
+  @bind()
+  public async reconnect({ request, response }, company: Company) {
+    try {
+      await Database.transaction(async (trx) => {
+        const data = request.all()
+        company.token = data.token
+        company.created_by = "Sistem"
+        company.updated_by = "Sistem"
+        company.useTransaction(trx)
+        await company.save()
+        await trx.commit()
+      })
+
+      Logger.info('success reconnect')
+    } catch (error) {
+      Logger.warn(error)
+    }
+  }
 
 }

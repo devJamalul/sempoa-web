@@ -77,6 +77,7 @@ export default class AuthController {
           // handle success
           var responseData = response.data
           company.token = responseData.token
+          company.company_id = responseData.company_id
           company.save()
           session.flash('success', responseData.pesan)
         })
@@ -88,7 +89,7 @@ export default class AuthController {
           // always executed
         });
       })
-      
+
       return response.redirect().toRoute('register.message')
     } catch (error) {
       Logger.warn(error.message)

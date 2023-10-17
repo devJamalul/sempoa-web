@@ -68,4 +68,6 @@ Route.group(() => {
 
 Route.group(()=>{
   Route.get('unsubscribe/:company(token)','PlansController.inActivePlan').as('plan.inactive');
+  Route.get('connect','CompaniesController.connect').as('company.connect');
+  Route.get('reconnect/:company(token)','CompaniesController.reconnect').as('company.reconnect');
 }).prefix('api').as('api');

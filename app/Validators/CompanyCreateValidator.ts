@@ -40,7 +40,7 @@ export default class CompanyCreateValidator {
       rules.email()
     ]),
     company_phone: schema.string([
-      rules.unique({ table: 'companies', column: 'phone_number' }), 
+      rules.unique({ table: 'companies', column: 'phone_number' }),
       rules.minLength(8),
       rules.maxLength(30),
     ]),
@@ -64,9 +64,8 @@ export default class CompanyCreateValidator {
     company_address: schema.string.nullable(),
     pic_name: schema.string(),
     pic_phone: schema.string([
-      rules.mobile({
-        locale:['id-ID']
-      })
+      rules.minLength(8),
+      rules.maxLength(30),
     ]),
     pic_email: schema.string([
       rules.email(),
