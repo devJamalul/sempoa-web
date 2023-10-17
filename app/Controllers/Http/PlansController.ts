@@ -54,6 +54,7 @@ export default class PlansController {
         .where('company_id', company.id)
         .where('status', Subscription.STATUS_ONGOING)
         .update({
+          is_recurring: false,
           status: Subscription.STATUS_TERMINATED
         })
 
@@ -269,6 +270,7 @@ export default class PlansController {
       .where('company_id',company.id)
       .where('status',Subscription.STATUS_ONGOING)
       .update({
+        is_recurring: false,
         status: Subscription.STATUS_TERMINATED,
         updated_by: company.pic_name
       })
