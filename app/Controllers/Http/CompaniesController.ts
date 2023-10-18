@@ -292,7 +292,7 @@ export default class CompaniesController {
   }
 
   @bind()
-  public async reconnect({ request, response }, company: Company) {
+  public async reconnect({ request }, company: Company) {
     try {
       await Database.transaction(async (trx) => {
         const data = request.all()

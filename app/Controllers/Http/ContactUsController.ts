@@ -10,7 +10,7 @@ export default class ContactUsController {
     return view.render("pages/contact-us/index")
   }
 
-  public async sendContact({ request, response, session, auth }: HttpContextContract) {
+  public async sendContact({ request, response, session }: HttpContextContract) {
     try {
 
       const data = await request.validate(ContactUsValidator)

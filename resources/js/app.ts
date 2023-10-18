@@ -9,7 +9,7 @@ const public_config = {
     facebook: 'https://www.facebook.com/sempoa.erp',
 }
 
-const currentPath = window.location.pathname;
+const currentPath = location.pathname;
 let renderPage = Home;
 if(currentPath== '/about'){
     renderPage=  About ;

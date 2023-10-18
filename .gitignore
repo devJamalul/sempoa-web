@@ -8,3 +8,5 @@ tmp
 package-lock.json
 yarn.lock
 bun.lockb
+public/assets/app.*
+public/assets/*.json
