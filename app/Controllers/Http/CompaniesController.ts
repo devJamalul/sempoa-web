@@ -133,8 +133,10 @@ export default class CompaniesController {
   @bind()
   public async update({ request, response, session, auth }, company: Company) {
     try {
+      const token = company.token
       const user = auth.user
       const data = await request.validate(CompanyUpdateValidator)
+      const isEnterprise = request.body().is_enterprise == 'on';
       await Database.transaction(async (trx) => {
         company.company_name = data.company_name
         company.address = data.company_address
@@ -150,8 +152,14 @@ export default class CompaniesController {
         await company.save()
         await trx.commit()
       })
-      session.flash('success', 'Success Update')
-      return response.redirect().toRoute('companies.index')
+
+      if(isEnterprise){
+        return response.redirect().withQs({id:token}).toRoute('subscriptions.create')
+      }else{
+        session.flash('success', 'Success Update')
+        return response.redirect().toRoute('companies.index')
+      }
+
     } catch (error) {
       Logger.warn('Error Update company', { data: error.message })
       session.flash({ error: 'Opss! , Failed Create Company', errors: error.messages, request: request.all() })
