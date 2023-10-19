@@ -58,6 +58,7 @@ Route.group(() => {
 
   Route.resource('companies', 'CompaniesController')
   Route.put('companies/update-status/:id','CompaniesController.statusUpdate').as('companies.update.status')
+  Route.post("companies/sync",'CompaniesController.sync').as('companies.sync');
 
   Route.resource('subscriptions', 'SubscriptionsController')
   .paramFor('subscriptions', 'company')

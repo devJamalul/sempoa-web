@@ -34,7 +34,6 @@ export default class PlansController {
   public async checkoutPlan({ request, response, session, auth }: HttpContextContract, company: Company) {
     const bodyRequest = request.body();
     try {
-      console.table(request.body().payload)
       const data = await request.validate(CheckoutValidator)
       const packageActive = await Subscription.packageActive(company);
       const feePayByCustomer: number = calculatePlan(data.interval_subscription, data.type_subscription, packageActive)

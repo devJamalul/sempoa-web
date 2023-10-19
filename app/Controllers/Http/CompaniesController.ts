@@ -10,6 +10,8 @@ import axios from 'axios';
 import sempoa from 'Config/sempoa';
 import Subscription from 'App/Models/Subscription';
 import Payload from 'App/Models/Payload';
+import Ws from 'App/Services/Ws'
+
 
 export default class CompaniesController {
   private title: string = 'Company';
@@ -309,5 +311,47 @@ export default class CompaniesController {
       Logger.warn(error)
     }
   }
+
+  public async sync({response}){
+    try {
+      const urlSempoa = sempoa.api + '/yuksinkronisasi';
+      
+      axios.get(urlSempoa).then((response)=>{
+        const totalRecord = response.data.data.length;
+        const records = response.data.data;
+        let percent: number= 0;
+        Ws.io.emit('process:sync:company', { percent: percent })
+        
+        for (let currentRow = 1; currentRow <= totalRecord; currentRow++) {
+          percent = Math.ceil(currentRow  / totalRecord * 100);
+          Ws.io.emit('process:sync:company', { percent: percent })
+
+          let company = records[currentRow - 1]
+          company.created_by = "Sistem"
+          company.updated_by = "Sistem"
+          Company.firstOrCreate({
+            token:company.token
+          },
+            company
+          )
+        }
+
+  
+      })
+      return response.ok({
+        code : 200 ,
+        message : 'Sync Success'
+      })
+      
+    } catch (error) {
+      return response.status(400).json({
+        code : 200 ,
+        message : 'Gagal Sync'
+      })
+    }
+   
+  }
+    
+   
 
 }
