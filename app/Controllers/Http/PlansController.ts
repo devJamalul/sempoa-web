@@ -137,7 +137,7 @@ export default class PlansController {
       myRequest2.save()
 
       await axios.post(urlSempoa, erpPayload, headers)
-        .then(function (response) {
+        .then(async function (response) {
           // handle success
 
           let responseERP = response.data
@@ -147,7 +147,7 @@ export default class PlansController {
           myResponse2.payload = JSON.stringify(responseERP)
           myResponse2.created_by = 'Sempoa ERP'
           myResponse2.updated_by = 'Sempoa ERP'
-          myResponse2.save()
+          await myResponse2.save()
 
           Logger.info('Success update subscription to Sempoa ERP')
         })
@@ -178,7 +178,7 @@ export default class PlansController {
         authentication_id: company.token_auth_id,
         amount: subscription.price,
         currency: 'IDR',
-        capture: false
+        capture: true
       }
       const headerXendit = {
         headers: {
@@ -192,11 +192,11 @@ export default class PlansController {
       myXenditChargeRequest.payload = JSON.stringify(chargePayload)
       myXenditChargeRequest.created_by = company.pic_name
       myXenditChargeRequest.updated_by = company.pic_name
-      myXenditChargeRequest.save()
+      await myXenditChargeRequest.save()
 
       // post to Xendit
       await axios.post(urlXenditCharge, chargePayload, headerXendit)
-        .then(function (response) {
+        .then(async function (response) {
           // handle success
           let responseXendit = response.data
 
@@ -207,10 +207,9 @@ export default class PlansController {
           myXenditChargeResponse.payload = JSON.stringify(responseXendit)
           myXenditChargeResponse.created_by = 'Xendit'
           myXenditChargeResponse.updated_by = 'Xendit'
-          myXenditChargeResponse.save()
+          await myXenditChargeResponse.save()
 
-          // update payment
-          Payment
+          await Payment
             .query()
             .where('reference_number', responseXendit.external_id)
             .update({
@@ -220,10 +219,7 @@ export default class PlansController {
 
           Logger.info('Success charge to Xendit')
         })
-        .catch(function (error) {
-          // handle error
-          Logger.warn(JSON.stringify(error))
-
+        .catch(async function (error) {
           // insert to payload
           const myXenditChargeResponse = new Payload
           myXenditChargeResponse.status = 'response - failed  '
@@ -231,10 +227,10 @@ export default class PlansController {
           myXenditChargeResponse.payload = JSON.stringify(error)
           myXenditChargeResponse.created_by = 'Xendit'
           myXenditChargeResponse.updated_by = 'Xendit'
-          myXenditChargeResponse.save()
+          await myXenditChargeResponse.save()
 
           // update payment
-          Payment
+          await Payment
             .query()
             .where('reference_number', payment.reference_number)
             .update({
