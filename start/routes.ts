@@ -64,6 +64,7 @@ Route.group(() => {
   .paramFor('subscriptions', 'company')
 
   Route.post('/logout', 'AuthController.logout').as('logout')
+  Route.post('/change-password','ChangePasswordController').as('change.password')
 }).middleware(['auth'])
 
 
