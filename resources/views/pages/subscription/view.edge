@@ -7,51 +7,125 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-primary font-weight-bold">
         {{ pluralize(title) }}
-        <small class="text-muted">all subscriptions</small>
       </h1>
-      <a href="{{ route('subscriptions.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+      <a href="#" onClick="history.go(-1); return false;"
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         Back
       </a>
     </div>
-    <div class="card">
-      <div class="card-body">
-        <table class="table table-bordered" id="user-table">
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Package</th>
-              <th class="text-center">Max Users</th>
-              <th class="text-center">Start</th>
-              <th class="text-center">End</th>
-              <th class="text-center">Billing Cycle</th>
-              <th class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @each(subscription in subscriptions)
-            <tr>
-              <td>{{ titleCase(subscription.status) }}</td>
-              <td>{{ subscription.package_name }}</td>
-              <td class="text-center">{{ subscription.max_users }}</td>
-              <td class="text-center">{{ subscription.start_date.toFormat('dd LLL yyyy') }}</td>
-              <td class="text-center">{{ subscription.end_date.toFormat('dd LLL yyyy') }}</td>
-              <td class="text-center">
-                @if(subscription.interval)
-                per {{ subscription.interval_count }} {{ subscription.interval }}
-                @else
-                once
-                @endif
-              </td>
-              <td class="text-center">
-                <a href="{{ route('subscriptions.edit', { company : subscription.id }) }}"
-                  class="btn btn-sm btn-primary" title="Detail">
-                  <i class="fas fa-eye"></i>
-                </a>
-              </td>
-            </tr>
-            @end
-          </tbody>
-        </table>
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            Information Company
+            <a href="{{ route('companies.edit', { id : company.id }) }}"
+              class="d-none d-sm-inline-block btn btn-sm float-right btn-primary shadow-sm">
+              Edit
+            </a>
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless" width="100%">
+              <tr>
+                <td width="150">Company Name</td>
+                <td width="10">:</td>
+                <td>{{ company.company_name }}</td>
+              </tr>
+              <tr>
+                <td width="150">Company Email</td>
+                <td width="10">:</td>
+                <td>{{ company.email }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">Country</td>
+                <td width="10">:</td>
+                <td>{{ company.country }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">Company Phone</td>
+                <td width="10">:</td>
+                <td>{{ company.phone_number }}</td>
+              </tr>
+              <tr>
+                <td width="150">City</td>
+                <td width="10">:</td>
+                <td>{{ company.city }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">Company Address</td>
+                <td width="10">:</td>
+                <td>{{ company.address }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">PIC Name</td>
+                <td width="10">:</td>
+                <td>{{ company.pic_name }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">PIC Email</td>
+                <td width="10">:</td>
+                <td>{{ company.pic_email }}</td>
+              </tr>
+
+              <tr>
+                <td width="150">PIC Phone</td>
+                <td width="10">:</td>
+                <td>{{ company.pic_phone_number }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            History Subscription
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered" id="user-table">
+              <thead>
+                <tr>
+                  <th width="50">Package</th>
+                  <th class="text-center" width="10">Max Users</th>
+                  <th class="text-center" width="100">Billing Cycle</th>
+                  <th class="text-center" width="150">Price</th>
+                  <th class="text-center" width="100">Start</th>
+                  <th class="text-center" width="100">End</th>
+                  <th class="text-center" width="10">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @each(subscription in subscriptions)
+                <tr>
+                  <td>
+                    <a href="{{ route('subscriptions.edit', { company : subscription.id }) }}">
+                      {{ subscription.package_name }}
+                    </a>
+                  </td>
+                  <td class="text-center">{{ subscription.max_users }}</td>
+
+                  <td class="text-center">
+                    @if(subscription.interval)
+                    per {{ subscription.interval_count }} {{ subscription.interval }}
+                    @else
+                    once
+                    @endif
+                  </td>
+                  <td>{{ formatPrice(subscription.price) }}</td>
+                  <td class="text-center">{{ subscription.start_date.toFormat('dd LLL yyyy') }}</td>
+                  <td class="text-center">{{ subscription.end_date.toFormat('dd LLL yyyy') }}</td>
+                  <td>{{ titleCase(subscription.status) }}</td>
+
+                </tr>
+                @end
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>

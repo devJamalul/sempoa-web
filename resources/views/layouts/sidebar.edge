@@ -29,12 +29,29 @@
   </li>
 
   <!-- Nav Item - Subscriptions -->
-  <li class="nav-item ">
-    <a class="nav-link" href="{{ route('subscriptions.index') }}">
-      <i class="fas fa-fw fa-shopping-cart"></i>
-      Subscriptions</a>
-  </li>
 
+  <li class="nav-item">
+    <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+      aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-shopping-cart"></i>
+      <span>Subscriptions</span>
+    </a>
+    <div id="collapseTwo" class="collapse {{ status == 'ongoing' || status == 'pending payment' ? 'show' : '' }}"
+      aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item {{ status == 'ongoing' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
+          qs: {
+            status: 'ongoing'
+          }
+        }) }}">Ongoing </a>
+        <a class="collapse-item {{ status == 'pending payment' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
+          qs: {
+            status: 'pending payment'
+          }
+        }) }}">Pending Payment</a>
+      </div>
+    </div>
+  </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
