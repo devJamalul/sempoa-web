@@ -137,7 +137,7 @@
       <div class="form-group ">
         <label for="pic_phone-input">PIC Phone<span class="text-small text-danger">*</span></label>
         <input type="text" class="form-control {{ flashMessages.has('errors.pic_phone') ? 'is-invalid' : '' }}"
-          name="pic_phone" id="pic_phone-input" autocomplete="off" value="{{ company.pic_phone_number}}">
+          name="pic_phone" id="pic_phone-input" autocomplete="off" value="{{ company.pic_phone_number }}">
         @if (flashMessages.has('errors.pic_phone'))
         <div class="invalid-feedback">
           {{ flashMessages.get('errors.pic_phone') }}

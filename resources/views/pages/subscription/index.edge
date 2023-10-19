@@ -12,19 +12,18 @@
         <table class="table table-bordered" id="user-table">
           <thead>
             <tr>
-              <th>Status</th>
               <th>Company</th>
               <th>Package</th>
               <th>Start</th>
               <th>End</th>
               <th class="text-center">Billing Cycle</th>
+              <th>Price</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @each(subscription in subscriptions)
             <tr>
-              <td>{{ titleCase(subscription.status) }}</td>
               <td>
                 <a href="{{ route('subscriptions.show', { company : subscription.company_id }) }}"
                   title="Subscriptions">
@@ -38,8 +37,11 @@
                 @if(subscription.interval)
                 {{ subscription.interval_count }} {{ subscription.interval }}
                 @else
-                once
+                ONCE
                 @endif
+              </td>
+              <td>
+                {{ formatPrice(subscription.price) }}
               </td>
               <td>
                 <a href="{{ route('subscriptions.edit', { company : subscription.id }) }}"

@@ -11,10 +11,13 @@ import sempoa from 'Config/sempoa';
 export default class SubscriptionsController {
   private title: string = 'Subscription';
 
-  public async index({ view }: HttpContextContract) {
+  public async index({ view,request }: HttpContextContract) {
+    let status = request.qs()?.status ;
+    const statusSubscrition = [Subscription.STATUS_ONGOING,Subscription.STATUS_PENDING_PAYMENT]
+    if(statusSubscrition.includes(status) == false) status = 'Ongoing';
     const title = this.title
-    const subscriptions = await Subscription.query().preload('company').orderBy('status', 'asc')
-    return view.render('pages/subscription/index', { title, subscriptions });
+    const subscriptions = await Subscription.query().where('status',status).preload('company').orderBy('status', 'asc')
+    return view.render('pages/subscription/index', { title, subscriptions ,status});
   }
 
   public async create({ view,request }: HttpContextContract) {
@@ -141,7 +144,7 @@ export default class SubscriptionsController {
     const subscriptions = await Subscription.query()
       .where('company_id', company.id)
       .orderBy('status', 'asc')
-    return view.render('pages.subscription.view', { title, subscriptions })
+    return view.render('pages.subscription.view', { title, subscriptions ,company})
   }
 
   @bind()

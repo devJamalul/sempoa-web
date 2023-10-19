@@ -6,7 +6,8 @@
   <div class="col-lg-9">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-primary font-weight-bold">Subscription #{{ title }}</h1>
-      <a href="{{ route('subscriptions.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+      <a href="#" onClick="history.go(-1); return false;"
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         Back
       </a>
     </div>
@@ -36,7 +37,8 @@
             {{ subscription.package_description }} <br />
             Maks. Pengguna: {{ subscription.max_users }} <br />
             Harga: Rp {{ price }} <br />
-            {{--  Harga: {{ fmt.formatNumber(subscription.price, { style: 'decimal', minimumFractionDigits: 0 }) }} <br />  --}}
+            {{-- Harga: {{ fmt.formatNumber(subscription.price, { style: 'decimal', minimumFractionDigits: 0 }) }}
+            <br /> --}}
 
           </div>
           <div class="col-lg-3">
