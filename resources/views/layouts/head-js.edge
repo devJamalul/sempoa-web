@@ -13,6 +13,11 @@
 <script src="/js/autoNumeric.js"></script>
 <script src="/js/bs-custom-file-input.min.js"></script>
 
+@if(flashMessages.has('change_password_fail'))
+<script>
+  $("#changePassword").modal('show'); 
+</script>}
+@endif
 <script>
   $("form").attr('autocomplete', 'off')
     $("input").attr('autocomplete', false)
