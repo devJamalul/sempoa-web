@@ -20,6 +20,7 @@ services:
       MYSQL_DB_NAME: web
       MYSQL_USER: web
       MYSQL_PASSWORD: web
+      SEMPOA_URL: http://192.168.77.129:8000
     depends_on:
       - mariadb
     networks:
