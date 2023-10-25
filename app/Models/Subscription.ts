@@ -43,7 +43,7 @@ export default class Subscription extends BaseModel {
   public company_id: number | null
 
   @column()
-  public package_name: string | null
+  public package_name: string 
 
   @column()
   public package_description: string | null
