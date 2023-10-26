@@ -29,7 +29,6 @@ export default class Subscription extends BaseModel {
     return subscriptionActive ? subscriptionActive.package_name : Subscription.PACKAGE_TRIAL
   }
 
-
   @column({ isPrimary: true })
   public id: number
 

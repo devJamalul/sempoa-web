@@ -40,7 +40,7 @@ export default class ChargeCredit extends BaseCommand {
     const {calculateMaxUsers, calculatePlan,} = await import('Helpers/calculatePlanHelper');
     const {default: ChargeCreditCard } = await import('App/Services/ChargeCreditCard');
     const {default: ErpIntegartion } = await import('App/Services/ErpIntegartion');
-
+    const { responseSave } = await import('Helpers/payloadHelper');
 
     
     const expiredToday:DateTime = DateTime.now();
@@ -54,7 +54,7 @@ export default class ChargeCredit extends BaseCommand {
 
     for (let index = 0; index < subscriptions.length; index++) {
       const item = subscriptions[index];
-      const trx = await Database.transaction()
+      // const trx = await Database.transaction()
       try {
         // Start Depedency
       const company = await Company.findOrFail(item.company_id);
@@ -101,8 +101,15 @@ export default class ChargeCredit extends BaseCommand {
       chargeCreditCard.payment = payment;
       chargeCreditCard.subcription = subscription;
 
-      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer)
+      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer,true,false)
+      await responseSave('pay :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
       if(payToXendit.status == 'failed') throw new Error(payToXendit.message)
+
+      if(payToXendit.response.status == 'AUTHORIZED'){
+        const captureCharge = await chargeCreditCard.captureCard(payToXendit.response.id)
+        await responseSave('Caputure Charge :','xendit','xendit',captureCharge.response,captureCharge.is_fail)
+        if(captureCharge.status == 'failed') throw new Error(captureCharge.message)
+      }
 
       subscription.status = Subscription.STATUS_ONGOING
       subscription.save();
@@ -110,14 +117,14 @@ export default class ChargeCredit extends BaseCommand {
       const erpIntegration = new ErpIntegartion()
       erpIntegration.company = company;
       erpIntegration.subscription = subscription;
-      erpIntegration.updateSubscription()
+      await erpIntegration.updateSubscription()
 
       Logger.info(`Success For Recurring For Invoice : ${payment.reference_number}`)
-      await trx.transaction()
+      // await trx.transaction()
       } catch (error) {
         console.log(error)
         Logger.warn(`Failed For Recurring: ${error.message}`)
-        await trx.rollback()
+        // await trx.rollback()
       }
       
     }
