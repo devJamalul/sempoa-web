@@ -1,5 +1,16 @@
 {
   "commands": {
+    "charge:credit": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "./commands/ChargeCredit",
+      "commandName": "charge:credit",
+      "description": "Pengambilan Uang Dengan Metode Credit Card",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

@@ -8,9 +8,11 @@ import CheckoutValidator from 'App/Validators/CheckoutValidator';
 import { calculateMaxUsers, calculatePlan, pricePlan } from 'Helpers/calculatePlanHelper';
 import sempoa from 'Config/sempoa';
 import { DateTime } from 'luxon';
-import Payload from 'App/Models/Payload';
-import axios from 'axios';
+import { requestSave,responseSave} from 'Helpers/payloadHelper'
 import Payment from 'App/Models/Payment';
+import Database from '@ioc:Adonis/Lucid/Database';
+import ChargeCreditCard from 'App/Services/ChargeCreditCard';
+import ErpIntegartion from 'App/Services/ErpIntegartion';
 
 export default class PlansController {
   @bind()
@@ -32,8 +34,10 @@ export default class PlansController {
 
   @bind()
   public async checkoutPlan({ request, response, session, auth }: HttpContextContract, company: Company) {
-    const bodyRequest = request.body();
+    const trx = await Database.transaction()
+
     try {
+      // Start Depedencies
       const data = await request.validate(CheckoutValidator)
       const packageActive = await Subscription.packageActive(company);
       const feePayByCustomer: number = calculatePlan(data.interval_subscription, data.type_subscription, packageActive)
@@ -57,6 +61,7 @@ export default class PlansController {
           status: Subscription.STATUS_TERMINATED
         })
 
+
       // insert to Subscription
       const subscription = await company.related('subscriptions').create({
         reference_number: await Subscription.generateReferenceNumber(company.id),
@@ -64,7 +69,7 @@ export default class PlansController {
         package_description: data.type_subscription + ' ' + data.interval_subscription + ' Bulan',
         max_users: maxUser,
         price: feePayByCustomer,
-        status: Subscription.STATUS_ONGOING,
+        status: Subscription.STATUS_PENDING_PAYMENT,
         start_date: now,
         end_date: (data.interval_subscription > 1)
           ? now.plus({ months: data.interval_subscription }).endOf('month')
@@ -76,89 +81,6 @@ export default class PlansController {
         updated_by: user?.name,
       })
 
-      // insert to payload - tokenization
-      const myRequest = new Payload
-      myRequest.status = 'request'
-      myRequest.url = 'Subscription ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myRequest.payload = data?.payload ?? null
-      myRequest.created_by = company.pic_name
-      myRequest.updated_by = company.pic_name
-      await myRequest.save()
-
-      const myResponse = new Payload
-      myResponse.status = 'response'
-      myResponse.url = 'Subscription ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myResponse.payload = data.response
-      myResponse.created_by = 'Xendit'
-      myResponse.updated_by = 'Xendit'
-      await myResponse.save()
-
-      // insert to payload - authentication
-      const myAuthRequest = new Payload
-      myAuthRequest.status = 'request'
-      myAuthRequest.url = 'Subscription ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myAuthRequest.payload = data?.payload_auth ?? null
-      myAuthRequest.created_by = company.pic_name
-      myAuthRequest.updated_by = company.pic_name
-      await myAuthRequest.save()
-
-      const myAuthResponse = new Payload
-      myAuthResponse.status = 'response'
-      myAuthResponse.url = 'Subscription ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myAuthResponse.payload = data.response_auth ?? null
-      myAuthResponse.created_by = 'Xendit'
-      myAuthResponse.updated_by = 'Xendit'
-      await myAuthResponse.save()
-
-      // update subscription to Sempoa ERP
-      const urlSempoa = sempoa.api + '/integration/subscription';
-      const headers = {
-        headers: {
-          'Authorization': 'Bearer ' + company.token,
-          'Accept': "application/json"
-        }
-      }
-      const erpPayload = {
-        subscription_name: data.type_subscription,
-        subscription_end: (data.interval_subscription > 1)
-          ? now.plus({ months: data.interval_subscription }).endOf('month').toFormat('yyyy-LL-dd')
-          : now.endOf('month').toFormat('yyyy-LL-dd'),
-        subscription_max_user: maxUser,
-        subscription_status: Subscription.STATUS_ONGOING,
-      }
-
-      // insert to payload
-      const myRequest2 = new Payload
-      myRequest2.status = 'request'
-      myRequest2.url = 'Update Subscription to Sempoa ERP: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myRequest2.payload = JSON.stringify(erpPayload)
-      myRequest2.created_by = company.pic_name
-      myRequest2.updated_by = company.pic_name
-      myRequest2.save()
-
-      await axios.post(urlSempoa, erpPayload, headers)
-        .then(async function (response) {
-          // handle success
-
-          let responseERP = response.data
-          const myResponse2 = new Payload
-          myResponse2.status = 'response'
-          myResponse2.url = 'Update Subscription to Sempoa ERP: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-          myResponse2.payload = JSON.stringify(responseERP)
-          myResponse2.created_by = 'Sempoa ERP'
-          myResponse2.updated_by = 'Sempoa ERP'
-          await myResponse2.save()
-
-          Logger.info('Success update subscription to Sempoa ERP')
-        })
-        .catch(function (error) {
-          // handle error
-          Logger.warn(JSON.stringify(error))
-          throw new Error('Error update subscription to Sempoa ERP: ' + error.message)
-        })
-        .finally(function () {
-          // always executed
-        });
 
       // insert to payments table
       const payment = new Payment
@@ -169,89 +91,42 @@ export default class PlansController {
       payment.created_by = company.pic_name
       payment.updated_by = company.pic_name
       await payment.save()
+    
+      // End Depedencies
 
-      // charge to Xendit
-      const urlXenditCharge = 'https://api.xendit.co/credit_card_charges'
-      const chargePayload = {
-        token_id: company.token_id,
-        external_id: payment.reference_number,
-        authentication_id: company.token_auth_id,
-        amount: subscription.price,
-        currency: 'IDR',
-        capture: true
-      }
-      const headerXendit = {
-        headers: {
-          'Authorization': 'Basic ' + sempoa.xendit.secret_key,
-        }
-      }
-      // insert to payload
-      const myXenditChargeRequest = new Payload
-      myXenditChargeRequest.status = 'request'
-      myXenditChargeRequest.url = 'Create charge: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-      myXenditChargeRequest.payload = JSON.stringify(chargePayload)
-      myXenditChargeRequest.created_by = company.pic_name
-      myXenditChargeRequest.updated_by = company.pic_name
-      await myXenditChargeRequest.save()
+      const urlPayload = `Subscription ${company.company_name} for  ${subscription.package_name} ${subscription.interval_count} Bulan`      
+      // save - tokenization
+      await requestSave(urlPayload,company.pic_name,company.pic_name,JSON.parse(data?.payload))
+      await responseSave(urlPayload,'Xendit','Xendit',JSON.parse(data.response))
+      // save - authentication
+      await requestSave(urlPayload,company.pic_name,company.pic_name,JSON.parse(data.payload_auth ?? ''))
+      await responseSave(urlPayload,'Xendit','Xendit',JSON.parse(data.response_auth ?? ''))
 
-      // post to Xendit
-      await axios.post(urlXenditCharge, chargePayload, headerXendit)
-        .then(async function (response) {
-          // handle success
-          let responseXendit = response.data
+      const chargeCreditCard = new ChargeCreditCard();
+      chargeCreditCard.company = company;
+      chargeCreditCard.payment = payment;
+      chargeCreditCard.subcription = subscription;
 
-          // insert to payload
-          const myXenditChargeResponse = new Payload
-          myXenditChargeResponse.status = 'response'
-          myXenditChargeResponse.url = 'Create charge: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-          myXenditChargeResponse.payload = JSON.stringify(responseXendit)
-          myXenditChargeResponse.created_by = 'Xendit'
-          myXenditChargeResponse.updated_by = 'Xendit'
-          await myXenditChargeResponse.save()
+      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer)
+      if(payToXendit.status == 'failed') throw new Error(payToXendit.message)
 
-          await Payment
-            .query()
-            .where('reference_number', responseXendit.external_id)
-            .update({
-              status: responseXendit.status,
-              updated_by: 'Xendit'
-            })
+      subscription.status = Subscription.STATUS_ONGOING
+      subscription.save();
 
-          Logger.info('Success charge to Xendit')
-        })
-        .catch(async function (error) {
-          // insert to payload
-          const myXenditChargeResponse = new Payload
-          myXenditChargeResponse.status = 'response - failed  '
-          myXenditChargeResponse.url = 'Create charge: ' + company.company_name + ' for ' + data.type_subscription + ' ' + data.interval_subscription + ' Bulan'
-          myXenditChargeResponse.payload = JSON.stringify(error)
-          myXenditChargeResponse.created_by = 'Xendit'
-          myXenditChargeResponse.updated_by = 'Xendit'
-          await myXenditChargeResponse.save()
+      const erpIntegration = new ErpIntegartion()
+      erpIntegration.company = company;
+      erpIntegration.subscription = subscription;
+      erpIntegration.updateSubscription()
 
-          // update payment
-          await Payment
-            .query()
-            .where('reference_number', payment.reference_number)
-            .update({
-              status: error.message,
-              updated_by: 'Xendit'
-            })
-
-          // handle error
-          throw new Error('Error charge to Xendit: ' + error.message)
-        })
-        .finally(function () {
-          // always executed
-        });
-
+      await trx.transaction()
       return response.redirect().toRoute('checkout.message');
     } catch (error) {
-      Logger.warn('Error store company: ' + error.message)
+      await trx.rollback()
+      Logger.warn('Failed Checkout Plan: ' + error.message)
       Logger.warn(error)
-      session.flash({ error: 'Opss! , Failed Create Company', errors: error.messages, request: request.all() })
+      session.flash({ error: 'Opss! , Failed Chechkout Plan', errors: error.messages, request: request.all() })
       return response.redirect().toRoute('checkout.index', {
-        'plan': bodyRequest.type_subscription,
+        'plan': request.body().type_subscription,
         'id(token)': company.token
       });
     }

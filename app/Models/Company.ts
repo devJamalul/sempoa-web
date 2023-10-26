@@ -45,10 +45,10 @@ export default class Company extends BaseModel {
   public phone_number: string | null
 
   @column()
-  public pic_name: string | null
+  public pic_name: string 
 
   @column()
-  public pic_email: string | null
+  public pic_email: string 
 
   @column()
   public pic_phone_number: string | null

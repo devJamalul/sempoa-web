@@ -1,0 +1,50 @@
+version: '3.9'
+services:
+  web:
+    container_name: sempoa_sub
+    build:
+      context: .
+      dockerfile: DockerFile.dev
+    env_file: .env
+    restart: always
+    command: node ace serve --watch --encore-args="--host ${HOST} --port 8080 --public 127.0.0.1:8080"
+    ports:
+      - '3333:3333'
+      - '8080:8080'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      MYSQL_PORT: 3306
+      MYSQL_HOST: mariadb
+      MYSQL_DB_NAME: web
+      MYSQL_USER: web
+      MYSQL_PASSWORD: web
+      SEMPOA_URL: http://192.168.77.129:8000
+    depends_on:
+      - mariadb
+    networks:
+      - sempoa-bridge-network
+
+  mariadb:
+    image: mysql:8.0
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: web
+      MYSQL_USER: web
+      MYSQL_PASSWORD: web
+      MYSQL_ROOT_PASSWORD: web
+    ports:
+      - '3309:3306'
+    volumes:
+      - sempoa-db:/var/lib/mysql
+    networks:
+      - sempoa-bridge-network
+
+volumes:
+  sempoa-db:
+
+networks:
+  sempoa-bridge-network:
+    driver: bridge

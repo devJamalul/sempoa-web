@@ -139,7 +139,7 @@ export default class SubscriptionsController {
    }
 
   @bind()
-  public async show({ view }, company: Company) {
+  public async show({ response,view }, company: Company) {
     const title = company.company_name
     const subscriptions = await Subscription.query()
       .where('company_id', company.id)
@@ -148,7 +148,7 @@ export default class SubscriptionsController {
   }
 
   @bind()
-  public async edit({ view }, company: Subscription) {
+  public async edit({ response,view }, company: Subscription) {
     const title = company.reference_number
     const subscription = company
     const price = company.price.toLocaleString('id-ID')

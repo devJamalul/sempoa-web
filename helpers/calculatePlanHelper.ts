@@ -3,7 +3,7 @@ import { configPlan} from 'Config/plan'
 import Subscription from 'App/Models/Subscription'
 
 
-const getDaysDateByMonth = function(month){
+const getDaysDateByMonth = function(month,day){
     month = month-1;
     const now =  DateTime.now();
     const startDateMonth = DateTime.now().set({
@@ -13,12 +13,14 @@ const getDaysDateByMonth = function(month){
     }).startOf('month');
     const activeDayOfMonth = now.plus({
         months: month,
+        day:day
     }).endOf('month').diff(now,'days',{
         conversionAccuracy:'casual'
     })
 
     const packageDayOfMonth = now.plus({
-        months: month
+        months: month,
+        day:day
     }).endOf('month').diff(startDateMonth,'days',{
         conversionAccuracy:'casual'
     })
@@ -31,12 +33,12 @@ const getDaysDateByMonth = function(month){
 }
 
 
-export const calculatePlan = function(monthSubscription: number,typePlan: string,typePlanActive):number{
+export const calculatePlan = function(monthSubscription: number,typePlan: string,typePlanActive,day: number = 0):number{
     const feePlan:number = pricePlan(typePlan);
     const feePlanActive:number = pricePlan(typePlanActive);
     const isUpgrade:boolean = feePlan != feePlanActive && feePlanActive != 0
     let totalPay:number =0;
-    const daysSubscription = getDaysDateByMonth(monthSubscription)
+    const daysSubscription = getDaysDateByMonth(monthSubscription,day)
     const feeCalculateByMonth:number = feePlan * monthSubscription;
     totalPay = (feeCalculateByMonth/daysSubscription.packageDayOfMonth*daysSubscription.activeDayOfMonth);
     if(isUpgrade) totalPay = totalPay - (feePlanActive/daysSubscription.packageDayOfMonth)*daysSubscription.activeDayOfMonth;
