@@ -22,7 +22,7 @@
               Nama Perusahaan
               <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Nama Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1  {{ flashMessages.has('errors.company_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="company_name" id="company_name">
             @if (flashMessages.has('errors.company_name'))
@@ -38,7 +38,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="brand_name">
               Brand
             </label>
-            <input placeholder="Brand Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.brand_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="brand_name" id="brand_name">
           </div>
@@ -60,7 +60,7 @@
               Email
               <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Surel Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_email') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="email" name="company_email" id="company_email">
             @if (flashMessages.has('errors.company_email'))
@@ -77,7 +77,7 @@
               No Telepon
               <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="No Telepon Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_phone') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="company_phone" id="company_phone">
             @if (flashMessages.has('errors.company_phone'))
@@ -99,7 +99,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_npwp">
               NPWP
             </label>
-            <input placeholder="NPWP Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_npwp') ? 'is-invalid' : '' }} company_npwp focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="company_npwp" id="company_npwp">
             @if (flashMessages.has('errors.company_npwp'))
@@ -115,7 +115,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_website">
               Website
             </label>
-            <input placeholder="Website Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_website') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="website" id="company_website">
             @if (flashMessages.has('errors.company_website'))
@@ -136,7 +136,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_country">
               Negara<span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Nama Negara"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.country') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="country" id="company_country">
             @if (flashMessages.has('errors.country'))
@@ -152,7 +152,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_city">
               Kota<span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Nama Kota"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.city') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="city" id="company_city">
             @if (flashMessages.has('errors.city'))
@@ -200,7 +200,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_fax_number">
               No Fax
             </label>
-            <input placeholder="No Fax Perusahaan"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_fax_number') ? 'is-invalid' : '' }} ring-black/20  focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="fax" id="company_fax_number">
             @if (flashMessages.has('errors.company_fax_number'))
@@ -241,7 +241,7 @@
           <label class="block tracking-wide text-gray-700 text-xs font-bold " for="company_address">
             Alamat<span class="text-sm text-red-500">*</span>
           </label>
-          <textarea placeholder="Alamat Perusahaan" rows="3"
+          <textarea  rows="3"
             class="f w-full p-2 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.address') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
             name="address" id="company_address">{{ flashMessages.get('request.company_address')|| "" }}</textarea>
           @if (flashMessages.has('errors.address'))
@@ -257,7 +257,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_name">
               Nama PIC <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Nama Penanggung Jawab"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="pic_name" id="pic_name">
             @if (flashMessages.has('errors.pic_name'))
@@ -270,7 +270,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="phone_number">
               No Telepon PIC <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="No Telepon Penanggung Jawab"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.phone_number') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="text" name="phone_number" id="phone_number">
             @if (flashMessages.has('errors.phone_number'))
@@ -288,7 +288,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="pic_email">
               Email PIC <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Surel Penanggung Jawab"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_email') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="email" name="pic_email" id="pic_email">
             @if (flashMessages.has('errors.pic_email'))
@@ -301,7 +301,7 @@
             <label class="block tracking-wide text-gray-700 text-xs font-bold " for="password">
               Password PIC <span class="text-sm text-red-500">*</span>
             </label>
-            <input placeholder="Password Penanggung Jawab"
+            <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.password') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
               type="password" name="password" id="password">
             @if (flashMessages.has('errors.password'))
