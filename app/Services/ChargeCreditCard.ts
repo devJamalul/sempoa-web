@@ -7,7 +7,11 @@ import Subscription from 'App/Models/Subscription';
 interface charge{
     withXendit(toPay:number)
 
-    updatePaymetXendit(reference_number:string,reason:string)
+    authenticationCardToPay(amount:number)
+
+    reverseAuthorization(charge_id:string,reference_number:string)
+
+    captureCard(charge_id:string,amount:number)
 }
 
 export default class ChargeCreditCard implements charge{
@@ -139,13 +143,5 @@ export default class ChargeCreditCard implements charge{
           return caputureCard;
     }
 
-    async updatePaymetXendit(reference_number:string,reason:string){
-        await Payment
-        .query()
-        .where('reference_number', reference_number)
-        .update({
-          status: reason,
-          updated_by: 'Xendit'
-        })
-    }
+
 }

@@ -2,8 +2,6 @@ import { BaseCommand } from '@adonisjs/core/build/standalone'
 
 import { DateTime } from 'luxon'
 
-import Database from '@ioc:Adonis/Lucid/Database';
-
 import Logger from '@ioc:Adonis/Core/Logger';
 
 export default class ChargeCredit extends BaseCommand {
@@ -103,7 +101,16 @@ export default class ChargeCredit extends BaseCommand {
 
       const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer,true,false)
       await responseSave('pay :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
-      if(payToXendit.status == 'failed') throw new Error(payToXendit.message)
+
+      payment.status = payToXendit.response.status;
+      payment.updated_by = 'xendit';
+      payment.save();
+
+      if(payToXendit.status == 'failed') {
+        subscription.status = Subscription.STATUS_TERMINATED
+        subscription.save();
+        throw new Error(payToXendit.message)
+      }
 
       if(payToXendit.response.status == 'AUTHORIZED'){
         const captureCharge = await chargeCreditCard.captureCard(payToXendit.response.id)
