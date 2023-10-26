@@ -41,7 +41,7 @@
               </td>
               <td>{{ company.city }}, {{ company.country }}</td>
               <td>{{ company.pic_name }}</td>
-              <td>{{ company.is_active ? 'Active' : 'Inactive' }}</td>
+              <td>{{ company.subscriptions.length > 0 ? 'Active' : 'Inactive' }}</td>
             </tr>
             @end
           </tbody>
@@ -64,7 +64,7 @@
   function sync(){
       $("#sync-companies").prop('disabled',true);
       const token = csrfToken;
-      const params = { 
+      const params = {
         _csrf: token
       };
       $.post("{{ route('companies.sync') }}", params, function(data) {

@@ -18,8 +18,11 @@ export default class CompaniesController {
 
   public async index({ view }: HttpContextContract) {
     const title = this.title
-    const companies = await Company.all()
-    return view.render('pages/company/index', { title, companies });
+    const companies = await Company.query().preload('subscriptions', (query) => {
+      query.where('status', Subscription.STATUS_ONGOING)
+    })
+
+    return view.render('pages/company/index', { title, companies, Company });
   }
 
   public async create({ view }: HttpContextContract) {
@@ -53,7 +56,7 @@ export default class CompaniesController {
         await company.save()
 
         if(isEnterprise == false){
-        
+
           await company.related('subscriptions').create({
             reference_number: await Subscription.generateReferenceNumber(company.id),
             package_name: "Trial",
@@ -117,7 +120,7 @@ export default class CompaniesController {
         session.flash('success', 'Success Created Company')
         return response.redirect().toRoute('companies.index')
       }
-      
+
     } catch (error) {
       Logger.warn('Error store company', { data: error.messages })
       Logger.warn(error)
@@ -315,13 +318,13 @@ export default class CompaniesController {
   public async sync({response}){
     try {
       const urlSempoa = sempoa.api + '/yuksinkronisasi';
-      
+
       axios.get(urlSempoa).then((response)=>{
         const totalRecord = response.data.data.length;
         const records = response.data.data;
         let percent: number= 0;
         Ws.io.emit('process:sync:company', { percent: percent })
-        
+
         for (let currentRow = 1; currentRow <= totalRecord; currentRow++) {
           percent = Math.ceil(currentRow  / totalRecord * 100);
           Ws.io.emit('process:sync:company', { percent: percent })
@@ -336,22 +339,22 @@ export default class CompaniesController {
           )
         }
 
-  
+
       })
       return response.ok({
         code : 200 ,
         message : 'Sync Success'
       })
-      
+
     } catch (error) {
       return response.status(400).json({
         code : 200 ,
         message : 'Gagal Sync'
       })
     }
-   
+
   }
-    
-   
+
+
 
 }

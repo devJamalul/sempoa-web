@@ -1,18 +1,14 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, hasMany, HasMany} from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Subscription from './Subscription'
 
 export default class Company extends BaseModel {
-
   @column({ isPrimary: true })
   public id: number
 
   @column()
   public user_id: number | null
-
-//   @column()
-//   public xendit_customer_id: string | null
 
   @column()
   public masked_card_number: string | null
@@ -45,10 +41,10 @@ export default class Company extends BaseModel {
   public phone_number: string | null
 
   @column()
-  public pic_name: string 
+  public pic_name: string
 
   @column()
-  public pic_email: string 
+  public pic_email: string
 
   @column()
   public pic_phone_number: string | null
@@ -69,7 +65,7 @@ export default class Company extends BaseModel {
   public is_verified: boolean
 
   @column()
-  public is_active:boolean
+  public is_active: boolean
 
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime
