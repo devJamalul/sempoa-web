@@ -107,8 +107,16 @@ export default class PlansController {
       chargeCreditCard.payment = payment;
       chargeCreditCard.subcription = subscription;
 
-      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer)
+
+      const payToXendit = await chargeCreditCard.withXendit(15000,false)
+      await responseSave('Create Charge :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
       if(payToXendit.status == 'failed') throw new Error(payToXendit.message)
+
+      if(payToXendit.response.status == 'AUTHORIZED'){
+        const captureCharge = await chargeCreditCard.captureCard(payToXendit.response.id)
+        await responseSave('Caputure Charge :','xendit','xendit',captureCharge.response,captureCharge.is_fail)
+        if(captureCharge.status == 'failed') throw new Error(captureCharge.message)
+      }
 
       subscription.status = Subscription.STATUS_ONGOING
       subscription.save();

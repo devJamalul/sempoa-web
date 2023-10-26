@@ -42,8 +42,8 @@ export default class ErpIntegartion implements ErpInterface{
             Logger.info('Success update subscription to Sempoa ERP')
           })
           .catch(function (error) {
+            Logger.warn('ERORR update subscription to Sempoa ERP')
             throw new Error('Error update subscription to Sempoa ERP: ' + error.message)
           })
-  
     }
 }
