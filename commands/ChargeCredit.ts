@@ -52,7 +52,8 @@ export default class ChargeCredit extends BaseCommand {
     .whereNot('package_name',Subscription.PACKAGE_TRIAL)
     .where('end_date',expiredToday.toFormat('yyyy-LL-dd'))
 
-    subscriptions.map(async(item)=>{
+    for (let index = 0; index < subscriptions.length; index++) {
+      const item = subscriptions[index];
       const trx = await Database.transaction()
       try {
         // Start Depedency
@@ -118,6 +119,7 @@ export default class ChargeCredit extends BaseCommand {
         Logger.warn(`Failed For Recurring: ${error.message}`)
         await trx.rollback()
       }
-    });
+      
+    }
   }
 }
