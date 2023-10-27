@@ -15,7 +15,9 @@
         {{-- Content --}}
         <div class="card">
             <div class="card-body">
-                <form action="#" method="post">
+                <form action="{{ route('report.subscription.export') }}" method="post">
+
+                {{ csrfField() }}
                     <label>Start Date:</label>
                     <div class="row">
                         <div class="col-12">
@@ -23,13 +25,13 @@
                                 <div class="input-group-prepend">
                                 <div class="input-group-text">Month</div>
                                 </div>
-                                <select class="custom-select month " required>
+                                <select class="custom-select month " name="start_month" required>
                                     
                                 </select>
-                                 <div class="input-group-prepend">
+                                <div class="input-group-prepend">
                                 <div class="input-group-text">Year</div>
                                 </div>
-                                <select class="custom-select years " required>
+                                <select class="custom-select years" name="start_year" required>
                                   
                                 </select>
                             </div>
@@ -42,13 +44,13 @@
                                 <div class="input-group-prepend">
                                 <div class="input-group-text">Month</div>
                                 </div>
-                                <select class="custom-select month" required>
+                                <select class="custom-select month" name="end_month" required>
                                   
                                 </select>
                                  <div class="input-group-prepend">
                                 <div class="input-group-text">Year</div>
                                 </div>
-                                <select class="custom-select years " required>
+                                <select class="custom-select years " name="end_year" required>
                           
                                 </select>
                             </div>
@@ -88,8 +90,8 @@
 
             $('.month').children().remove()
             $('.month').append(`<option value="">--</option`)
-            months.forEach((item)=>{
-                $('.month').append(`<option value="${item}">${item}</option`)
+            months.forEach((item,index)=>{
+                $('.month').append(`<option value="${index+1}">${item}</option`)
             })
         }
 

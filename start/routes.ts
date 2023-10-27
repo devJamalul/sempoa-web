@@ -70,7 +70,8 @@ Route.group(() => {
   Route.group(()=>{
     // Report Subscription
       Route.get('subscription','ReportSubscriptionController.index').as('subscription.index')
-
+      Route.post('subscription/export','ReportSubscriptionController.export').as('subscription.export')
+      
 
   }).as('report').prefix('report')
 
