@@ -19,7 +19,6 @@ export default class AuthController {
   public async register({ request, response, auth, session }: HttpContextContract) {
     try {
 
-      // return request.all();
       await Database.transaction(async (trx) => {
         const data = await request.validate(RegisterValidator)
         const user = auth.user
@@ -51,8 +50,7 @@ export default class AuthController {
           status: Subscription.STATUS_ONGOING
         })
 
-        // send to ERP
-        const prepareData = {
+        const dataToERP = {
           company_name: data.company_name,
           brand_name: data.brand_name,
           address: data.address,
@@ -65,16 +63,14 @@ export default class AuthController {
           website: data.website,
           vat_enabled: data.company_ppn_status,
           type: data.type,
-
           pic_name: data.pic_name,
           pic_email: data.pic_email,
           password: data.password,
           phone_number: data.phone_number,
         }
 
-        await axios.post(`${sempoa.api}/v1/auth/register/signup`, prepareData)
+        await axios.post(`${sempoa.api}/v1/auth/register/signup`, dataToERP)
         .then(function (response) {
-          // handle success
           var responseData = response.data
           company.token = responseData.token
           company.company_id = responseData.company_id
