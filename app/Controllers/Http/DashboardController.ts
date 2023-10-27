@@ -31,15 +31,15 @@ export default class DashboardController {
     const totalCompany = await Database
                           .from('companies')
                           .count('* as total')
-     const companyActive = await Database.rawQuery("SELECT SUM((SELECT COUNT(*) from subscriptions s WHERE s.status = 'ongoing' AND s.company_id = c.id )) as 'active_company' FROM  companies c GROUP by 'active_company'");
-     
+    const companyActive = await Database.rawQuery("SELECT SUM((SELECT COUNT(*) from subscriptions s WHERE s.status = 'ongoing' AND s.company_id = c.id )) as 'active_company' FROM  companies c GROUP by 'active_company'");
+    const totalActive = companyActive[0].length > 0 ? companyActive[0][0].active_company:0
     const counter = {
       new_company : newCompany.$extras.new_company,
       earning_monthly: earningMonthly.$extras.earning,
       earning_year: earningYear.$extras.earning,
       total_earning: totalEarning.$extras.earning,
       total_company: totalCompany[0].total,
-      total_company_active:companyActive[0][0].active_company,
+      total_company_active:totalActive,
     
     }
     counter['total_company_inactive'] = counter.total_company - counter.total_company_active;  
