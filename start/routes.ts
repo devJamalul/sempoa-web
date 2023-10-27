@@ -65,6 +65,17 @@ Route.group(() => {
 
   Route.post('/logout', 'AuthController.logout').as('logout')
   Route.post('/change-password','ChangePasswordController').as('change.password')
+
+  // Report
+  Route.group(()=>{
+    // Report Subscription
+      Route.get('subscription','ReportSubscriptionController.index').as('subscription.index')
+      Route.post('subscription/export','ReportSubscriptionController.export').as('subscription.export')
+      
+
+  }).as('report').prefix('report')
+
+
 }).middleware(['auth'])
 
 

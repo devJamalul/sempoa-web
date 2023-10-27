@@ -1,0 +1,109 @@
+@layout('layouts/app')
+
+
+@section('content')
+
+
+ <div class="col-lg-5">
+
+        {{-- Header --}}
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 mb-4 text-primary font-weight-bold">Report Subscription </h1>
+        </div>
+        {{-- End Header --}}
+
+        {{-- Content --}}
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('report.subscription.export') }}" method="post">
+
+                {{ csrfField() }}
+                    <label>Start Date:</label>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">Month</div>
+                                </div>
+                                <select class="custom-select month " name="start_month" required>
+                                    
+                                </select>
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">Year</div>
+                                </div>
+                                <select class="custom-select years" name="start_year" required>
+                                  
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <label>End Date:</label>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">Month</div>
+                                </div>
+                                <select class="custom-select month" name="end_month" required>
+                                  
+                                </select>
+                                 <div class="input-group-prepend">
+                                <div class="input-group-text">Year</div>
+                                </div>
+                                <select class="custom-select years " name="end_year" required>
+                          
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <button type="submit" name="action" value="excel" class="btn btn-success">Ekspor Excel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        {{-- End Content --}}
+
+    </div>
+@endsection
+
+@section('js')
+    <script>
+    month();
+    year();
+    function month(){
+            const months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ];
+
+            $('.month').children().remove()
+            $('.month').append(`<option value="">--</option`)
+            months.forEach((item,index)=>{
+                $('.month').append(`<option value="${index+1}">${item}</option`)
+            })
+        }
+
+    function year(){
+            $('.years').children().remove()
+            const tahunSekarang = new Date().getFullYear();
+            const batasTahun = tahunSekarang - 10;
+            $('.years').append(`<option value="">--</option`)
+            for (let tahun = tahunSekarang; tahun > batasTahun; tahun--) {
+            $('.years').append(`<option value="${tahun}">${tahun}</option`);
+            }
+        }
+    </script>
+  
+@endsection

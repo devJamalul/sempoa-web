@@ -53,8 +53,21 @@
     </div>
   </li>
   <!-- Divider -->
-  <hr class="sidebar-divider d-none d-md-block">
+  <hr class="sidebar-divider d-none d-md-blocks">
 
+ <li class="nav-item">
+  <a class="nav-link " href="#" data-toggle="collapse" data-target="#report" aria-expanded="true"
+      aria-controls="report">
+      <i class="fas fa-fw fa-book"></i>
+      <span>Report</span>
+    </a>
+    <div id="report" class="collapse "
+      aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item " href="{{ route('report.subscription.index') }}">Subscription</a>
+      </div>
+    </div>
+  </li>
   <!-- Sidebar Toggler (Sidebar) -->
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
