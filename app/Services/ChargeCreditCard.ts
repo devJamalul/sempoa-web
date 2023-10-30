@@ -4,6 +4,8 @@ import Payment from 'App/Models/Payment';
 import sempoa from 'Config/sempoa';
 import { requestSave } from 'Helpers/payloadHelper'
 import Subscription from 'App/Models/Subscription';
+import { decrypt } from 'Helpers/EncryptDataHelper';
+
 interface charge{
     withXendit(toPay:number)
 
@@ -30,20 +32,19 @@ export default class ChargeCreditCard implements charge{
     async withXendit(toPay:number,capture:boolean = true,is_used_authentication_id:boolean =true){
         
      const chargePayload:object = {
-            token_id: this.company.token_id,
+            token_id: decrypt(this.company.token_id),
             external_id: this.payment.reference_number,
             amount: toPay,
             currency: 'IDR',
             capture: capture,
         }
     
-    if(is_used_authentication_id){
-        chargePayload['authentication_id'] = this.company.token_auth_id;
-    }else{
+     if(is_used_authentication_id && this.company.token_auth_id != ''){
+         chargePayload['authentication_id'] = decrypt(this.company.token_auth_id);
+      }else{
         chargePayload['is_recurring'] = true;
-    }
+      }
     
-  
       const company = this.company  
       const url = `Create charge: ${company.company_name} for ${this.subcription.package_name}  ${this.subcription.interval_count}  Bulan`; 
       await requestSave(url,company.pic_name,company.pic_email,chargePayload)
