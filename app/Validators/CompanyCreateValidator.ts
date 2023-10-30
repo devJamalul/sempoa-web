@@ -87,5 +87,7 @@ export default class CompanyCreateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    "company_fax_number.regex":"No Fax Invalid"
+  }
 }

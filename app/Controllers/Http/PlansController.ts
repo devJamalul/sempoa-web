@@ -13,6 +13,7 @@ import Payment from 'App/Models/Payment';
 import Database from '@ioc:Adonis/Lucid/Database';
 import ChargeCreditCard from 'App/Services/ChargeCreditCard';
 import ErpIntegartion from 'App/Services/ErpIntegartion';
+import { encrypt } from 'Helpers/EncryptDataHelper';
 
 export default class PlansController {
   @bind()
@@ -46,8 +47,8 @@ export default class PlansController {
       const now = DateTime.now()
 
       // update company
-      company.token_id = data.token_id
-      company.token_auth_id = data.token_auth_id ?? null
+      company.token_id = encrypt(data.token_id)
+      company.token_auth_id = data.token_auth_id ? encrypt(data.token_auth_id) :'';
       company.masked_card_number = data.masked_card_number
       await company.save()
 

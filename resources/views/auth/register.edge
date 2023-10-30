@@ -24,7 +24,7 @@
             </label>
             <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1  {{ flashMessages.has('errors.company_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="company_name" id="company_name">
+              type="text" name="company_name" id="company_name" value="{{ flashMessages.get('request.company_name','') || '' }}" >
             @if (flashMessages.has('errors.company_name'))
             <div class="message-error">
               {{ flashMessages.get('errors.company_name') }}
@@ -40,7 +40,7 @@
             </label>
             <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.brand_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="brand_name" id="brand_name">
+              type="text" name="brand_name" id="brand_name" value="{{ flashMessages.get('request.brand_name','') || '' }}">
           </div>
           @if (flashMessages.has('errors.brand_name'))
           <div class="message-error">
@@ -62,7 +62,7 @@
             </label>
             <input 
               class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_email') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="email" name="company_email" id="company_email">
+              type="email" name="company_email" id="company_email" value="{{ flashMessages.get('request.company_email','') || '' }}">
             @if (flashMessages.has('errors.company_email'))
             <div class="message-error">
               {{ flashMessages.get('errors.company_email') }}
@@ -78,7 +78,7 @@
               <span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_phone') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="company_phone" id="company_phone">
+              type="text" name="company_phone" id="company_phone" value="{{ flashMessages.get('request.company_phone','') || '' }}">
             @if (flashMessages.has('errors.company_phone'))
             <div class="message-error">
               {{ flashMessages.get('errors.company_phone') }}
@@ -99,7 +99,7 @@
               NPWP
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_npwp') ? 'is-invalid' : '' }} company_npwp focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="company_npwp" id="company_npwp">
+              type="text" name="company_npwp" id="company_npwp" value="{{ flashMessages.get('request.company_npwp','') || '' }}">
             @if (flashMessages.has('errors.company_npwp'))
             <div class="message-error">
               {{ flashMessages.get('errors.company_npwp') }}
@@ -114,7 +114,7 @@
               Website
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.company_website') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="website" id="company_website">
+              type="text" name="website" id="company_website" value="{{ flashMessages.get('request.website','') || '' }}">
             @if (flashMessages.has('errors.company_website'))
             <div class="message-error">
               {{ flashMessages.get('errors.company_website') }}
@@ -134,7 +134,7 @@
               Negara<span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.country') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="country" id="company_country">
+              type="text" name="country" id="company_country" value="{{ flashMessages.get('request.country','') || '' }}">
             @if (flashMessages.has('errors.country'))
             <div class="message-error">
               {{ flashMessages.get('errors.country') }}
@@ -149,7 +149,7 @@
               Kota<span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.city') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="city" id="company_city">
+              type="text" name="city" id="company_city" value="{{ flashMessages.get('request.city','') || '' }}">
             @if (flashMessages.has('errors.city'))
             <div class="message-error">
               {{ flashMessages.get('errors.city') }}
@@ -172,11 +172,11 @@
             </label>
             <div class="flex gap-5 pt-3">
               <div class="space-x-2">
-                <input type="radio" name="company_ppn_status" value="true" checked>
+                <input type="radio" name="company_ppn_status" value="true" {{ flashMessages.get('request.company_ppn_status','true') == 'true' ? 'checked' :'' }}>
                 <span>Iya</span>
               </div>
               <div class=" space-x-2">
-                <input type="radio" name="company_ppn_status" value="false">
+                <input type="radio" name="company_ppn_status" value="false" {{ flashMessages.get('request.company_ppn_status') == 'false' ? 'checked' :'' }}>
                 <span>Tidak</span>
               </div>
 
@@ -196,7 +196,7 @@
               No Fax
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.fax') ? 'is-invalid' : '' }} ring-black/20  focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="fax" id="fax">
+              type="text" name="fax" id="fax" value="{{ flashMessages.get('request.fax','') || '' }}">
             @if (flashMessages.has('errors.fax'))
             <div class="message-error">
               {{ flashMessages.get('errors.fax') }}
@@ -217,9 +217,9 @@
             class=" w-full bg-slate-200 p-2 px-3 rounded-xl mt-1.5 focus:ring-2 {{ flashMessages.has('errors.type') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
             id="company_account_type" name="type" aria-describedby="company_account_type-rule_required">
             <option value="">Pilih..</option>
-            <option value="1" {{ flashMessages.get('request.type')=='1' ? 'selected' :'' }}>UMKM
+            <option value="1" {{ flashMessages.get('request.type') == '1' ? 'selected' :'' }}>UMKM
             </option>
-            <option value="2" {{ flashMessages.get('request.type')=='2' ? 'selected' :'' }}>Korporasi
+            <option value="2" {{ flashMessages.get('request.type') == '2' ? 'selected' :'' }}>Korporasi
             </option>
           </select>
           @if (flashMessages.has('errors.type'))
@@ -236,7 +236,7 @@
             Alamat<span class="text-sm text-red-500">*</span>
           </label>
           <textarea class="f w-full p-2 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.address') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-            name="address" id="company_address">{{ flashMessages.get('request.company_address')|| "" }}</textarea>
+            name="address" id="company_address">{{ flashMessages.get('request.address',"") || '' }}</textarea>
           @if (flashMessages.has('errors.address'))
           <div class="message-error">
             {{ flashMessages.get('errors.address') }}
@@ -251,7 +251,7 @@
               Nama PIC <span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_name') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="pic_name" id="pic_name">
+              type="text" name="pic_name" id="pic_name" value="{{ flashMessages.get('request.pic_name','') || '' }}">
             @if (flashMessages.has('errors.pic_name'))
             <div class="message-error">
               {{ flashMessages.get('errors.pic_name') }}
@@ -263,7 +263,7 @@
               No Telepon PIC <span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.phone_number') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="text" name="phone_number" id="phone_number">
+              type="text" name="phone_number" id="phone_number" value="{{ flashMessages.get('request.phone_number','') || '' }}">
             @if (flashMessages.has('errors.phone_number'))
             <div class="message-error">
               {{ flashMessages.get('errors.phone_number') }}
@@ -280,7 +280,7 @@
               Email PIC <span class="text-sm text-red-500">*</span>
             </label>
             <input class="w-full p-1 px-3 rounded-xl mt-1.5 ring-1 {{ flashMessages.has('errors.pic_email') ? 'is-invalid' : '' }} ring-black/20 focus:outline-none outline-none focus:ring-lightGreen focus:ring-2 duration-200"
-              type="email" name="pic_email" id="pic_email">
+              type="email" name="pic_email" id="pic_email" value="{{ flashMessages.get('request.pic_email','') || '' }}">
             @if (flashMessages.has('errors.pic_email'))
             <div class="message-error">
               {{ flashMessages.get('errors.pic_email') }}
