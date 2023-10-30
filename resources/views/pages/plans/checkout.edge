@@ -106,6 +106,7 @@
                     <div class="w-full  mb-3">
                         <label class="block tracking-wide text-gray-700 text-xs font-bold " for="interval_subscription">
                             Masa Langganan<span class="text-sm text-red-500">*</span>
+                            <span class="float-right" id="interval-date" >01 Jan 2023 - 03 Feb 2023</span>
                         </label>
                         <select
                             class="plan-fee w-full bg-slate-200 p-2 px-3 {{ flashMessages.has('errors.interval_subscription') ? 'is-invalid' : '' }} rounded-xl mt-1.5 ring-2 ring-black/20 focus:outline-none outline-none focus:ring-lightGreen duration-200"
@@ -124,6 +125,7 @@
                                 :'' }}>12
                                 Bulan</option>
                         </select>
+                    
                         @if (flashMessages.has('errors.interval_subscription'))
                         <div class="message-error">
                             {{ flashMessages.get('errors.interval_subscription') }}
@@ -402,9 +404,15 @@
             month = month - 1
             const now =  moment()
             const startDateOfmonth = moment().startOf('month');
-            const activeDayOfMonth = moment().add(month,'months').endOf('month').diff(now,'days')+1
+            const activeDayOfMonth = moment().add(month,'months').endOf('month')
             const packageDayOfMonth = moment().add(month,'months').endOf('month').diff(startDateOfmonth,'days')+1
-            return {activeDayOfMonth:activeDayOfMonth,packageDayOfMonth:packageDayOfMonth}
+            const activeDiffOfMonth = activeDayOfMonth.diff(now,'days') + 1
+
+            $("#interval-date").html(`${now.format('D MMM Y')} - ${activeDayOfMonth.format('D MMM Y')}`)
+            return {
+                activeDayOfMonth:activeDiffOfMonth,
+                packageDayOfMonth:packageDayOfMonth
+                }
         }
 
         function calculatePlan(monthSubscription,feePlan,isUpgrade,feePlanActive){

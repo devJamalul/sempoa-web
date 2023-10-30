@@ -24,7 +24,7 @@
             {{-- Start Minimalist --}}
             <div class="w-full p-4 md:w-1/2 lg:w-1/4  ">
                 <label
-                    class="flex flex-col rounded-lg shadow-lg group relative {{ configPlans.minimalist.isActive ? 'bg-green-50  border-2 border-green-800':'bg-white' }} cursor-pointer hover:shadow-2xl">
+                    class="flex flex-col rounded-lg shadow-lg group relative  {{ configPlans.minimalist.isActive ? 'bg-green-50  border-2 border-green-800':'bg-white' }} cursor-pointer hover:shadow-2xl">
                     <div class="w-full px-4 py-6 rounded-t-lg card-section-1">
                         <h3 class="mx-auto text-base font-semibold text-center  text-green-800 ">
                             Minimalist
@@ -69,8 +69,8 @@
                             'plan' : 'Minimalist',
                             'id(token)':company.token
                         })}}"
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
-                            data-plan="{{ configPlans.minimalist.price  }}">
+                            class="w-5/6 py-2 mt-2  {{ configPlans.minimalist.isActive ? 'pointer-events-none':'' }} font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            >
                             Mulai
                         </a>
                     </div>
@@ -128,7 +128,7 @@
                             'plan' : 'Basic',
                             'id(token)':company.token
                         })}}"
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            class="w-5/6 {{ configPlans.basic.isActive ? 'pointer-events-none':'' }} py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
                             data-plan="{{ configPlans.basic.price }}">
                             Mulai
                         </a>
@@ -188,7 +188,7 @@
                             'plan' : 'Medium',
                             'id(token)':company.token
                         })}}"
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
+                            class="w-5/6 {{ configPlans.medium.isActive ? 'pointer-events-none':'' }}  py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 btn-plans"
                             data-plan="{{ configPlans.medium.price }}">
                             Mulai
                         </a>
@@ -214,7 +214,7 @@
                     </div>
                     <div class="flex flex-col items-center justify-center w-full h-full py-6 rounded-b-lg bg-green-800">
                         <a href="{{ route('contact-us.index')}}" target="_blank"
-                            class="w-5/6 py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 "
+                            class="w-5/6 {{ configPlans.enterprise.isActive ? 'pointer-events-none':'' }} py-2 mt-2 font-semibold text-center uppercase bg-white border border-transparent rounded text-green-800 "
                             id="btn-contact-us">
                             Kontak Kami
                         </a>
