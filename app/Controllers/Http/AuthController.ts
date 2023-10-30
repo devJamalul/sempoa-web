@@ -79,7 +79,7 @@ export default class AuthController {
         })
         .catch (function (error) {
           // handle error
-          throw new Error('Error register to ERP: ' + error.message)
+          throw new Error('Error register to ERP : ' + error.response.data.message)
         })
         .finally(function () {
           // always executed

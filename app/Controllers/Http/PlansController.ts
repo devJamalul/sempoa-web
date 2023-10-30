@@ -108,7 +108,7 @@ export default class PlansController {
       chargeCreditCard.subcription = subscription;
 
 
-      const payToXendit = await chargeCreditCard.withXendit(15000,false)
+      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer,false)
       await responseSave('Create Charge :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
       
       payment.status = payToXendit.response.status;
