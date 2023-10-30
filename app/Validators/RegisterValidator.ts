@@ -102,5 +102,36 @@ export default class RegisterValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    // Requeired
+    "company_name.required":"Nama Perusahaan Wajib Diisi!",
+    "company_email.required":"Email Perusahaan Wajib Diisi!",
+    "company_phone.required":"No Telepon Perusahaan Wajib Diisi!",
+    "country.required":"Negara Wajib Diisi",
+    "city.required":"Kota Wajib Diisi",
+    "type.required":"Tipe Akun Wajib Diisi",
+    "address.required":"Alamat Wajib Diisi",
+    "pic_name.required":"Nama PIC Wajib Disi",
+    "phone_number.required":"No Tlpn PIC wajib Diisi",
+    "pic_email.required":"Email PIC Wajib Diisi",
+    "password.required":"Password PIC Wajib Diisi",
+
+  
+    // Unique
+    "company_name.unique" : "Nama Perusahaan Sudah Tersedia!",
+    "company_email.unique" : "Email Perusahaan Sudah Tersedia!",
+    "company_phone.unique" : "No Tlpn Perusahaan Sudah Tersedia!",
+    
+    // minxLenght
+    minLength:"Minimal {{ options.minLength }} Huruf ",
+    maxLength:"Maximal {{ options.minLength }} Huruf ",
+    email:"Email Tidak Valid",
+
+    // Regex
+    "fax.regex":"Fax Tidak Valid"
+
+    
+
+
+  }
 }

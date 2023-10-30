@@ -14,10 +14,10 @@ export default class Company extends BaseModel {
   public masked_card_number: string | null
 
   @column()
-  public token_id: string | null
+  public token_id: string 
 
   @column()
-  public token_auth_id: string | null
+  public token_auth_id: string 
 
   @column()
   public company_id: string | null

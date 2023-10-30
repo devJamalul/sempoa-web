@@ -103,8 +103,8 @@ export default class CompaniesController {
           })
           .catch(function (error) {
             // handle error
-            Logger.warn('Error ERP: ' + error.message)
-            throw new Error('Error register to ERP: ' + error.message)
+            Logger.warn('Error ERP: ' + error.response.data.message)
+            throw new Error('Error register to ERP: ' + error.response.data.message)
           })
           .finally(function () {
             // always executed
@@ -319,7 +319,7 @@ export default class CompaniesController {
     try {
       const urlSempoa = sempoa.api + '/yuksinkronisasi';
 
-      axios.get(urlSempoa).then((response)=>{
+      axios.get(urlSempoa).then(async (response)=>{
         const totalRecord = response.data.data.length;
         const records = response.data.data;
         let percent: number= 0;
@@ -329,17 +329,37 @@ export default class CompaniesController {
           percent = Math.ceil(currentRow  / totalRecord * 100);
           Ws.io.emit('process:sync:company', { percent: percent })
 
-          let company = records[currentRow - 1]
-          company.created_by = "Sistem"
-          company.updated_by = "Sistem"
-          Company.firstOrCreate({
-            token:company.token
-          },
-            company
-          )
+          let companyERP = records[currentRow - 1]
+          companyERP.created_by = "Sistem"
+          companyERP.updated_by = "Sistem"
+          
+          const company = await Company.findBy('company_id',companyERP.company_id);
+
+          if(company){
+
+            company.company_id = companyERP.company_id
+            company.company_name = companyERP.company_name
+            company.address = companyERP.address
+            company.city = companyERP.city
+            company.country = companyERP.country
+            company.email = companyERP.email
+            company.phone_number = companyERP.phone_number
+            company.pic_name = companyERP.pic_name
+            company.pic_email = companyERP.pic_email
+            company.pic_phone_number = companyERP.pic_phone_number
+            company.token = companyERP.token
+            company.updated_by = 'Sistem'
+            company.save()
+
+          }else{
+            await Company.create(companyERP)
+          }
+
         }
 
 
+      }).catch((error)=>{
+        throw new Error(`ERROR ERP ${error.response.message}`)
       })
       return response.ok({
         code : 200 ,
@@ -349,7 +369,7 @@ export default class CompaniesController {
     } catch (error) {
       return response.status(400).json({
         code : 200 ,
-        message : 'Gagal Sync'
+        message : `Gagal Sync :${error.message}`
       })
     }
 
