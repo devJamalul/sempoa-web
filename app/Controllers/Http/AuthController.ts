@@ -88,8 +88,9 @@ export default class AuthController {
 
       return response.redirect().toRoute('register.message')
     } catch (error) {
+      const errorMessage = error.message == 'E_VALIDATION_FAILURE: Validation Exception' ? 'Periksa Kembali Inputannya': error.message
       Logger.warn(error.message)
-      session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
+      session.flash({ error: `Opss! , ${errorMessage}`, errors: error.messages, request: request.all() })
       return response.redirect().toRoute('register.show')
     }
   }

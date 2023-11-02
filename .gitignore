@@ -10,3 +10,7 @@ yarn.lock
 bun.lockb
 public/assets/app.*
 public/assets/*.json
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
