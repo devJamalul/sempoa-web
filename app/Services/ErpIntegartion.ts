@@ -36,14 +36,17 @@ export default class ErpIntegartion implements ErpInterface{
           const url = `Update Subscription to Sempoa ERP: ${this.company.company_name} for  ${this.subscription.package_name}  ${this.subscription.interval_count}  Bulan`
           await requestSave(url,this.company.pic_name,this.company.pic_name,erpPayload)
 
-          await axios.post(urlSempoa, erpPayload, headers)
+         const updateSubscriptionERP = await axios.post(urlSempoa, erpPayload, headers)
           .then(async function (response) {
             await responseSave(url,'Sempoa ERP','Sempoa ERP',response.data)
             Logger.info('Success update subscription to Sempoa ERP')
+            return true;
           })
           .catch(function (error) {
             Logger.warn('ERORR update subscription to Sempoa ERP')
             throw new Error('Error update subscription to Sempoa ERP: ' + error.message)
           })
+
+          return updateSubscriptionERP;
     }
 }

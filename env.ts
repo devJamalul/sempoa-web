@@ -36,6 +36,9 @@ export default Env.rules({
   SEMPOA_URL: Env.schema.string.optional(),
   REGISTRATION_ENABLED: Env.schema.boolean(),
 
+  // URL
+  APP_URL: Env.schema.string.optional(),
+
   // mailer
   SMTP_HOST: Env.schema.string({ format: 'host' }),
   SMTP_PORT: Env.schema.number(),
