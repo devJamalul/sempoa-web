@@ -12,13 +12,20 @@ import axios from 'axios';
 import sempoa from 'Config/sempoa';
 
 export default class AuthController {
-  public async registerShow({ view }: HttpContextContract) {
-    return view.render('auth/register');
+  public async registerShow({ view, session, response, request }: HttpContextContract) {
+    try {
+      return view.render('auth/register');
+    } catch (error) {
+      Logger.warn(error.message)
+      session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
+      return response.redirect().toRoute('home')
+    }
   }
 
   public async register({ request, response, auth, session }: HttpContextContract) {
     try {
-
+      const register = sempoa.register
+      if (!register) throw new Error('Maaf, pendaftaran sedang ditutup untuk saat ini')
       await Database.transaction(async (trx) => {
         const data = await request.validate(RegisterValidator)
         const user = auth.user
@@ -70,27 +77,27 @@ export default class AuthController {
         }
 
         await axios.post(`${sempoa.api}/v1/auth/register/signup`, dataToERP)
-        .then(function (response) {
-          var responseData = response.data
-          company.token = responseData.token
-          company.company_id = responseData.company_id
-          company.save()
-          session.flash('success', responseData.pesan)
-        })
-        .catch (function (error) {
-          // handle error
-          throw new Error('Error register to ERP : ' + error.response.data.message)
-        })
-        .finally(function () {
-          // always executed
-        });
+          .then(function (response) {
+            var responseData = response.data
+            company.token = responseData.token
+            company.company_id = responseData.company_id
+            company.save()
+            session.flash('success', responseData.pesan)
+          })
+          .catch(function (error) {
+            // handle error
+            throw new Error('Error register to ERP : ' + error.response.data.message)
+          })
+          .finally(function () {
+            // always executed
+          });
       })
 
       return response.redirect().toRoute('register.message')
     } catch (error) {
       Logger.warn(error.message)
-      session.flash({ error: `Opss! , ${error.message}`, errors: error.messages, request: request.all() })
-      return response.redirect().toRoute('register.show')
+      session.flash({ error: `Opss! ${error.message}`, errors: error.messages, request: request.all() })
+      return response.redirect().back()
     }
   }
 
