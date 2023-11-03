@@ -36,33 +36,37 @@
       <i class="fas fa-fw fa-shopping-cart"></i>
       <span>Subscriptions</span>
     </a>
-    <div id="collapseTwo" class="collapse {{ status == 'ongoing' || status == 'pending payment' ? 'show' : '' }}"
+    <div id="collapseTwo" class="collapse {{ status === 'ongoing' || status === 'pending payment'|| status === 'terminated' ? 'show' : '' }}"
       aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item {{ status == 'ongoing' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
+        <a class="collapse-item {{ status === 'ongoing' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
           qs: {
             status: 'ongoing'
           }
         }) }}">Ongoing </a>
-        <a class="collapse-item {{ status == 'pending payment' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
+        <a class="collapse-item {{ status === 'pending payment' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
           qs: {
             status: 'pending payment'
           }
         }) }}">Pending Payment</a>
+        <a class="collapse-item {{ status === 'terminated' ? 'active' : '' }}" href="{{ route('subscriptions.index',{},{
+          qs: {
+            status: 'terminated'
+          }
+        }) }}">Terminated</a>
       </div>
     </div>
   </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-blocks">
 
- <li class="nav-item">
-  <a class="nav-link " href="#" data-toggle="collapse" data-target="#report" aria-expanded="true"
+  <li class="nav-item">
+    <a class="nav-link " href="#" data-toggle="collapse" data-target="#report" aria-expanded="true"
       aria-controls="report">
       <i class="fas fa-fw fa-book"></i>
       <span>Report</span>
     </a>
-    <div id="report" class="collapse "
-      aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+    <div id="report" class="collapse " aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item " href="{{ route('report.subscription.index') }}">Subscription</a>
       </div>

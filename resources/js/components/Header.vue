@@ -1,10 +1,10 @@
 <template>
   <div class="absolute top-0 z-20 w-full">
     <header class="w-full mx-auto ">
-      
+
       <!-- Desktop Nav -->
       <nav class="hidden lg:flex px-5 md:container mx-auto justify-between items-center pt-3">
-  
+
         <!-- Left Header -->
         <div class="flex gap-5 list-none items-center">
           <li>
@@ -20,20 +20,20 @@
           </li>
         </div>
         <!-- End Left Header -->
-        
+
         <!-- Right Header -->
         <div class="space-x-3">
-          <a href="/register" class="shadow-md uppercase bg-gradient-to-t from-[#07BE5E] to-lightGreen text-neutral-100 p-1.5 px-5 rounded-full text-sm font-semibold">Coba gratis 14 hari</a>
+          <a href="/register" class="shadow-md uppercase bg-gradient-to-t from-[#07BE5E] to-lightGreen text-neutral-100 p-1.5 px-5 rounded-full text-sm font-semibold">Coba gratis 30 hari</a>
           <a :href="`${public_config.loginUrl}`" class="shadow-md bg-darkGreen text-neutral-100 font-semibold p-1.5 px-5 rounded-full uppercase text-sm">Login</a>
         </div>
         <!-- End Right Header -->
-  
+
       </nav>
       <!-- End Desktop Nav -->
-  
+
       <!-- Mobile Nav -->
       <nav class="relative flex lg:hidden justify-between items-center pt-3 bg-neutral-100 px-5 md:px-10 py-3">
-  
+
         <!-- Left Header -->
         <div>
           <a href="/">
@@ -41,7 +41,7 @@
           </a>
         </div>
         <!-- End Left Header -->
-        
+
         <!-- Right Header -->
         <Popover>
           <PopoverButton>
@@ -49,7 +49,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </PopoverButton>
-          
+
           <transition
             enter-active-class="transition duration-200 ease-out"
             enter-from-class="-translate-y-2 opacity-50"
@@ -73,14 +73,14 @@
           </transition>
         </Popover>
         <!-- End Right Header -->
-  
+
       </nav>
       <!-- End Mobile Nav -->
-  
+
     </header>
   </div>
   </template>
-  
+
   <script setup >
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
     defineProps({
