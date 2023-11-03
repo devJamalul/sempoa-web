@@ -92,10 +92,10 @@ export default class PlansController {
       payment.created_by = company.pic_name
       payment.updated_by = company.pic_name
       await payment.save()
-    
+
       // End Depedencies
 
-      const urlPayload = `Subscription ${company.company_name} for  ${subscription.package_name} ${subscription.interval_count} Bulan`      
+      const urlPayload = `Subscription ${company.company_name} for  ${subscription.package_name} ${subscription.interval_count} Bulan`
       // save - tokenization
       await requestSave(urlPayload,company.pic_name,company.pic_name,JSON.parse(data?.payload))
       await responseSave(urlPayload,'Xendit','Xendit',JSON.parse(data.response))
@@ -111,11 +111,11 @@ export default class PlansController {
 
       const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer,false)
       await responseSave('Create Charge :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
-      
+
       payment.status = payToXendit.response.status;
       payment.updated_by = 'xendit';
       payment.save();
-   
+
       if(payToXendit.status == 'failed') {
         subscription.status = Subscription.STATUS_TERMINATED
         subscription.save();
@@ -135,7 +135,7 @@ export default class PlansController {
       erpIntegration.subscription = subscription;
       erpIntegration.updateSubscription()
 
-      await trx.transaction()
+      await trx.commit()
       return response.redirect().toRoute('checkout.message');
     } catch (error) {
       await trx.rollback()
@@ -153,13 +153,15 @@ export default class PlansController {
   @bind()
   public async inActivePlan({ response }: HttpContextContract,company: Company){
     try {
+      const now = DateTime.now()
       await Subscription.query()
       .where('company_id',company.id)
       .where('status',Subscription.STATUS_ONGOING)
       .update({
         is_recurring: false,
         status: Subscription.STATUS_TERMINATED,
-        updated_by: company.pic_name
+        updated_by: company.pic_name,
+        note: `Terminated at ${now}`
       })
 
       return response.json({

@@ -8,32 +8,34 @@ import axios from 'axios';
 import Payment from 'App/Models/Payment';
 import Payload from 'App/Models/Payload';
 import sempoa from 'Config/sempoa';
+import { string } from '@ioc:Adonis/Core/Helpers'
+
 export default class SubscriptionsController {
   private title: string = 'Subscription';
 
   public async index({ view,request }: HttpContextContract) {
     let status = request.qs()?.status ;
-    const statusSubscrition = [Subscription.STATUS_ONGOING,Subscription.STATUS_PENDING_PAYMENT]
-    if(statusSubscrition.includes(status) == false) status = 'Ongoing';
-    const title = this.title
+    const statusSubscrition = [Subscription.STATUS_ONGOING, Subscription.STATUS_PENDING_PAYMENT, Subscription.STATUS_TERMINATED]
+    if(statusSubscrition.includes(status) === false) status = 'Ongoing';
+    const title = `${string.titleCase(status)} ${this.title}`
     const subscriptions = await Subscription.query().where('status',status).preload('company').orderBy('status', 'asc')
     return view.render('pages/subscription/index', { title, subscriptions ,status});
   }
 
   public async create({ view,request }: HttpContextContract) {
-    
+
     const token = request.qs().id ?? 1;
     const company = await Company.query().where('token',token).firstOrFail();
     const title = 'New ' + this.title
     return view.render('pages/subscription/create', { title ,company});
-    
+
    }
 
-  public async store({ request, response, session, auth}: HttpContextContract) { 
-    
-    const company = await Company.findOrFail(request.body().company_id); 
+  public async store({ request, response, session, auth}: HttpContextContract) {
+
+    const company = await Company.findOrFail(request.body().company_id);
     try{
-      const feePayByCustomer = parseInt(request.body().total_payment.replaceAll('.',''))     
+      const feePayByCustomer = parseInt(request.body().total_payment.replaceAll('.',''))
       const user = auth.user
       const now = DateTime.now()
       const data = request.body();
@@ -82,7 +84,7 @@ export default class SubscriptionsController {
             subscription_max_user: data.max_user,
             subscription_status: Subscription.STATUS_ONGOING,
           }
-    
+
           // insert to payload
           const myRequest2 = new Payload
           myRequest2.status = 'request'
@@ -91,11 +93,11 @@ export default class SubscriptionsController {
           myRequest2.created_by = company.pic_name
           myRequest2.updated_by = company.pic_name
           myRequest2.save()
-    
+
           await axios.post(urlSempoa, erpPayload, headers)
             .then(function (response) {
               // handle success
-    
+
               let responseERP = response.data
               const myResponse2 = new Payload
               myResponse2.status = 'response'
@@ -104,7 +106,7 @@ export default class SubscriptionsController {
               myResponse2.created_by = 'Sempoa ERP'
               myResponse2.updated_by = 'Sempoa ERP'
               myResponse2.save()
-    
+
               Logger.info('Success update subscription to Sempoa ERP')
             })
             .catch(function (error) {
@@ -115,7 +117,7 @@ export default class SubscriptionsController {
             .finally(function () {
               // always executed
             });
-    
+
           // insert to payments table
           const payment = new Payment
           payment.reference_number = await Payment.generateReferenceNumber()
