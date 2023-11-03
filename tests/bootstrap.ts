@@ -7,7 +7,7 @@
 
 import type { Config } from '@japa/runner'
 import TestUtils from '@ioc:Adonis/Core/TestUtils'
-import { assert, runFailedTests, specReporter, apiClient } from '@japa/preset-adonis'
+import { assert, specReporter, apiClient } from '@japa/preset-adonis'
 import { browserClient } from '@japa/browser-client'
 import { chromium } from 'playwright'
 
@@ -22,7 +22,7 @@ import { chromium } from 'playwright'
 | Feel free to remove existing plugins or add more.
 |
 */
-export const plugins: Required<Config>['plugins'] = [assert(), runFailedTests(), apiClient(),  browserClient({
+export const plugins: Required<Config>['plugins'] = [assert(), apiClient(),  browserClient({
   async launcher(options) {
     return chromium.launch({
       ...options,

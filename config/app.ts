@@ -27,6 +27,7 @@ import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
 */
 export const appKey: string = Env.get('APP_KEY')
 export const appName: string = Env.get('APP_NAME', 'Sempoa')
+export const appUrl: string = Env.get('APP_URL','http://127.0.0.1:3333')
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +133,7 @@ export const logger: LoggerConfig = {
   */
   name: Env.get('APP_NAME'),
 
+
   /*
   |--------------------------------------------------------------------------
   | Toggle logger
@@ -164,6 +166,7 @@ export const logger: LoggerConfig = {
   |
   */
   prettyPrint: Env.get('NODE_ENV') === 'development',
+
 }
 
 /*
