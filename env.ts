@@ -34,7 +34,7 @@ export default Env.rules({
 
   // sempoa
   SEMPOA_URL: Env.schema.string.optional(),
-  REGISTRATION_ENABLED: Env.schema.boolean(),
+  REGISTRATION_ENABLED: Env.schema.boolean.optional(),
 
   // URL
   APP_URL: Env.schema.string.optional(),

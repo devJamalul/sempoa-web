@@ -25,7 +25,9 @@ export default class AuthController {
   public async register({ request, response, auth, session }: HttpContextContract) {
     try {
       const register = sempoa.register
+
       if (!register) throw new Error('Maaf, pendaftaran sedang ditutup untuk saat ini')
+      
       await Database.transaction(async (trx) => {
         const data = await request.validate(RegisterValidator)
         const user = auth.user

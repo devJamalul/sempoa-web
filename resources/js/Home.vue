@@ -23,7 +23,7 @@
   
               <!-- Hero Button -->
               
-                <a  href="/register" class="uppercase bg-gradient-to-t from-[#07BE5E] to-lightGreen shadow-md text-neutral-100 p-2 px-3 rounded-full text-xs lg:text-sm font-semibold">Coba gratis 14 hari</a>
+                <a  href="/register" class="uppercase bg-gradient-to-t from-[#07BE5E] to-lightGreen shadow-md text-neutral-100 p-2 px-3 rounded-full text-xs lg:text-sm font-semibold">Coba gratis 30 hari</a>
               <!-- End Hero Button -->
   
             </div>

@@ -34,10 +34,13 @@ test.group('Subscription',()=>{
   }
   
   test('display welcome page to register', async ({ visit }) => {
-
+    Logger.info(appUrl)
     const page = await visit(appUrl)
-    await page.getByRole('navigation').getByRole('link', { name: 'Coba Gratis 14 Hari' }).click()
+    await page.screenshot({path:'public/test/landing_page.png'})
+    await page.getByRole('navigation').getByRole('link', { name: 'Coba Gratis 30 Hari' }).click()
     await page.waitForLoadState();
+    await page.screenshot({path:'public/test/page_register.png'})
+
     await page.assertPath('/register')
   })
   
@@ -81,7 +84,7 @@ test.group('Subscription',()=>{
     await page.evaluate('document.getElementById("yearNumber").setAttribute("value", "2023")')
     await page.evaluate('document.getElementById("monthNumber").setAttribute("value", "12")')
     await page.click("#pay");
-    await page.waitForTimeout(16000)
+    await page.waitForTimeout(20000)
     await page.screenshot({ path: 'public/test/plans_checkout.png', fullPage: true });
     await page.assertUrl(`${appUrl}/checkout/message`);
   })
