@@ -38,42 +38,25 @@ test.group('Subscription',()=>{
     await page.assertUrl(`http://127.0.0.1:3333/plans/${company.token}`);
   })
 
-  test('checkout page minimalist',async({visit})=>{
+  test('checkout page minimalist',async({ visit })=>{
     const company = await Company.findByOrFail('email','jayasakti@gmail.com')
     const page = await visit(`http://127.0.0.1:3333/checkout/Minimalist/${company.token}`)
-    await page.fill("#credit_card_number",'4000000000001091')
+    await page.fill("#credit_card_number",'5200000000001005')
     await page.fill("#expiration",'12/30');
     await page.fill("#secure_code",'123');
-    await page.click("#pay")
-    await page.waitForTimeout(7000 )
-
-  
-    const frame =  await page.frame({name:"sample-inline-frame"})
-    await page.screenshot({path:'0.png'})
-    // const frameValidator= await frame.frameLocator('Cardinal-CCA-IFrame');
-    //  await frameValidator.getByRole('button',{name:'submit'})
-    //  await testx.fill('1234');
-    await page.assertUrl(`http://127.0.0.1:3333/checkout/Minimalist/${company.token}`);
-
+    await page.evaluate('document.getElementById("yearNumber").setAttribute("value", "2023")')
+    await page.evaluate('document.getElementById("monthNumber").setAttribute("value", "12")')
+    await page.screenshot({path:'before_click.png'});
+    await page.click("#pay");
+    await page.waitForTimeout(15000)
+    await page.assertUrl(`http://127.0.0.1:3333/checkout/message`);
   })
-  
 
 
+  test("Recucring testing",async({assert,client})=>{
+    assert.ok(true)
+  })
 
-})
+  }
 
-
-// Plans
-
-// find company by name and email
-// get token company
-// visit plans
-// klik 
-// assert plans checkout
-
-
-// checkout
-
-
-
-// Recurring
+)
