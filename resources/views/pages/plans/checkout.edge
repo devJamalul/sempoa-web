@@ -398,7 +398,7 @@
             $("#label-subscription").html(typeSubscription.val())
             $("#fee-subscription").html(toFormatPrice(planPrice.feeCalculateByMonth))
             $("#fee-total").html(toFormatPrice(planPrice.totalPay))
-            $("#fee-total-raw").val(planPrice.totalPay)
+            $("#fee-total-raw").val(planPrice.feeCalculateByMonth)
             $("#fee-slash").parent().hide();
             if(planPrice.slashPay > 0){
                 $("#fee-subscription").parent().addClass('line-through')

@@ -43,6 +43,7 @@ export default class PlansController {
       const packageActive = await Subscription.packageActive(company);
       const feePayByCustomer: number = calculatePlan(data.interval_subscription, data.type_subscription, packageActive)
       const maxUser: number = calculateMaxUsers(data.type_subscription)
+      const priceActivePlan:number = pricePlan(data.type_subscription)
       const user = auth.user
       const now = DateTime.now()
 
@@ -109,7 +110,7 @@ export default class PlansController {
       chargeCreditCard.subcription = subscription;
 
 
-      const payToXendit = await chargeCreditCard.withXendit(feePayByCustomer,false)
+      const payToXendit = await chargeCreditCard.withXendit(priceActivePlan,false)
       await responseSave('Create Charge :','xendit','xendit',payToXendit.response,payToXendit.is_fail)
 
       payment.status = payToXendit.response.status;
@@ -122,7 +123,7 @@ export default class PlansController {
         throw new Error(payToXendit.message)
       }
       if(payToXendit.response.status == 'AUTHORIZED'){
-        const captureCharge = await chargeCreditCard.captureCard(payToXendit.response.id)
+        const captureCharge = await chargeCreditCard.captureCard(payToXendit.response.id,feePayByCustomer)
         await responseSave('Caputure Charge :','xendit','xendit',captureCharge.response,captureCharge.is_fail)
         if(captureCharge.status == 'failed') throw new Error(captureCharge.message)
       }
