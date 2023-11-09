@@ -44,4 +44,12 @@ export default Env.rules({
   SMTP_PORT: Env.schema.number(),
   SMTP_USERNAME: Env.schema.string(),
   SMTP_PASSWORD: Env.schema.string.optional(),
+
+  // XENDIT
+  SECRET_KEY_XENDIT: Env.schema.string(),
+  PUBLIC_KEY_XENDIT: Env.schema.string(),
+  WEBHOOK_VERIFICATION_TOKEN_XENDIT: Env.schema.string(),
+
+
+
 })

@@ -11,9 +11,9 @@ export default
 
     // xendit Sempoa
     xendit: {
-      secret_key: base64.encode('xnd_development_0HISbhk70woMhW908zWzhNJcwVEFQlN2hpdjJYR4DoPnA8bMkmFCuk5PydQHil' + ':'),
-      public_key: 'xnd_public_development_jWyIbzJh36ODxvcfpV2xvPY0sQgWPm8Qo393GHCccPxigNnxHdqw5MywwyTvjx',
-      webhook_verification_token: 'cAnSZj1NeXkyj4vOwEHDNUC0kWoQRhqQKimUarygrA7O14jD',
+      secret_key: base64.encode(Env.get('SECRET_KEY_XENDIT') + ':'),
+      public_key: Env.get('PUBLIC_KEY_XENDIT'),
+      webhook_verification_token: Env.get('WEBHOOK_VERIFICATION_TOKEN_XENDIT'),
     },
 
     // xendit Pak Ivan
