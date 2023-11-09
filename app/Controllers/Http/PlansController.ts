@@ -43,7 +43,7 @@ export default class PlansController {
       const packageActive = await Subscription.packageActive(company);
       const feePayByCustomer: number = calculatePlan(data.interval_subscription, data.type_subscription, packageActive)
       const maxUser: number = calculateMaxUsers(data.type_subscription)
-      const priceActivePlan:number = pricePlan(data.type_subscription)
+      const priceActivePlan:number = pricePlan(data.type_subscription) * data.interval_subscription
       const user = auth.user
       const now = DateTime.now()
 

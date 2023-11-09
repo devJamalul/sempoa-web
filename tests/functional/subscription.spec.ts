@@ -78,6 +78,7 @@ test.group('Subscription',()=>{
   test(`checkout page minimalist by company ${companyDummy.company_name} and email is ${companyDummy.company_email} charge with card id 5200000000001005`,async({ visit })=>{
     const company = await Company.findByOrFail('email',companyDummy.company_email)
     const page = await visit(`${appUrl}/checkout/Minimalist/${company.token}`)
+    await page.selectOption('#interval_subscription','12')
     await page.fill("#credit_card_number",'5200000000001005')
     await page.fill("#expiration",'12/30');
     await page.fill("#secure_code",'123');
